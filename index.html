@@ -5,41 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Bhagavad Gita – Learn & Explore</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Devanagari:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <meta name="theme-color" content="#0A1240">
+    <meta name="theme-color" content="#07102E">
 
     <style>
         :root {
-            --primary:      #1565C0;
-            --primary-dark: #0D47A1;
-            --accent:       #C9A84C;
-            --saffron:      #E65C00;
-            --bg:           #FFFBF0;
-            --card-bg:      #FFFFFF;
-            --sidebar-bg:   #0A1240;
-            --sidebar-text: #DDE4FF;
-            --sidebar-muted:#7B90CC;
-            --text:         #1A1A2E;
-            --text-muted:   #6B7280;
-            --border:       #E8D5A0;
-            --gold:         #C9A84C;
-            --radius:       16px;
-            --sidebar-w:    290px;
-            --shadow:       0 4px 24px rgba(10,18,64,0.09);
-            --header-h:     60px;
-            --mobile-nav-h: 60px;
+            --primary:       #1A237E;
+            --primary-mid:   #283593;
+            --accent:        #9A7B0A;
+            --accent-light:  #C9A84C;
+            --bg:            #F8F6F0;
+            --card-bg:       #FFFFFF;
+            --sidebar-bg:    #07102E;
+            --sidebar-text:  #D8E0FF;
+            --sidebar-muted: #7080B8;
+            --text:          #1C1C1E;
+            --text-muted:    #78716C;
+            --border:        #E8E3D8;
+            --radius:        10px;
+            --sidebar-w:     280px;
+            --shadow:        0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+            --header-h:      64px;
+            --mobile-nav-h:  60px;
         }
         [data-theme="dark"] {
-            --bg:       #09111F;
-            --card-bg:  #111B2E;
-            --sidebar-bg: #060D1A;
-            --text:     #E8EBF7;
-            --text-muted:#8892B0;
-            --border:   #1E2A4A;
+            --bg:        #0F1117;
+            --card-bg:   #181D2E;
+            --text:      #E8EBF7;
+            --text-muted:#9CA3AF;
+            --border:    #252D42;
+            --shadow:    0 1px 3px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.3);
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -50,34 +48,34 @@
         /* ── Header ── */
         header {
             position: sticky; top: 0; z-index: 200;
-            background: linear-gradient(135deg, #0A1240 0%, #1565C0 100%);
-            color: white;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 1.4rem; height: var(--header-h);
-            box-shadow: 0 2px 20px rgba(10,18,64,0.5);
+            background: linear-gradient(120deg, #07102E 0%, #1A237E 100%);
+            color: white; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem; height: var(--header-h);
+            box-shadow: 0 1px 0 rgba(201,168,76,0.18), 0 2px 20px rgba(7,16,46,0.55);
         }
-        .header-left { display: flex; align-items: center; gap: 0.85rem; }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
         .header-om {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: rgba(201,168,76,0.18); border: 1.5px solid rgba(201,168,76,0.55);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.38);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem; color: #C9A84C; flex-shrink: 0;
+            font-size: 1.28rem; color: #C9A84C; flex-shrink: 0;
             font-family: 'Noto Sans Devanagari', serif;
         }
         .header-title {
-            font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700;
-            background: linear-gradient(135deg, #fff 30%, #C9A84C);
+            font-family: 'Cinzel', serif; font-size: 1.18rem; font-weight: 600;
+            letter-spacing: 0.04em;
+            background: linear-gradient(120deg, #fff 40%, #C9A84C);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .header-subtitle { font-size: 0.7rem; color: rgba(176,196,248,0.8); margin-top: 1px; }
-        .header-right { display: flex; gap: 0.4rem; align-items: center; }
+        .header-subtitle { font-size: 0.67rem; color: rgba(176,196,248,0.65); margin-top: 1px; }
+        .header-right { display: flex; gap: 0.35rem; align-items: center; }
         .icon-btn {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-            color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;
-            font-size: 0.81rem; display: flex; align-items: center; gap: 4px;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11);
+            color: white; padding: 6px 12px; border-radius: 7px; cursor: pointer;
+            font-size: 0.8rem; display: flex; align-items: center; gap: 4px;
             transition: background 0.15s;
         }
-        .icon-btn:hover { background: rgba(255,255,255,0.22); }
+        .icon-btn:hover { background: rgba(255,255,255,0.16); }
         #menu-toggle { display: none; }
 
         /* ── Layout ── */
@@ -85,254 +83,272 @@
 
         /* ── Sidebar ── */
         #sidebar {
-            background: var(--sidebar-bg);
-            border-right: 1px solid rgba(201,168,76,0.14);
-            display: flex; flex-direction: column; overflow: hidden;
-            transition: transform 0.28s ease;
+            background: var(--sidebar-bg); border-right: 1px solid rgba(201,168,76,0.1);
+            display: flex; flex-direction: column; overflow: hidden; transition: transform 0.28s ease;
         }
         .sidebar-header {
-            padding: 1rem; border-bottom: 1px solid rgba(201,168,76,0.12);
-            flex-shrink: 0; background: rgba(0,0,0,0.2);
+            padding: 1.1rem 1rem; border-bottom: 1px solid rgba(201,168,76,0.1);
+            flex-shrink: 0; background: rgba(0,0,0,0.22);
         }
         .search-wrap { position: relative; }
         .search-wrap input {
             width: 100%; padding: 8px 10px 8px 34px;
-            border: 1px solid rgba(201,168,76,0.22); border-radius: 10px;
-            background: rgba(255,255,255,0.06); color: var(--sidebar-text);
-            font-size: 0.86rem; outline: none; transition: border-color 0.2s;
+            border: 1px solid rgba(201,168,76,0.16); border-radius: 8px;
+            background: rgba(255,255,255,0.05); color: var(--sidebar-text);
+            font-size: 0.84rem; outline: none; transition: border-color 0.2s;
         }
         .search-wrap input::placeholder { color: var(--sidebar-muted); }
-        .search-wrap input:focus { border-color: rgba(201,168,76,0.55); background: rgba(255,255,255,0.09); }
-        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.4; color: var(--sidebar-muted); }
-        .progress-summary {
-            margin-top: 0.65rem; font-size: 0.73rem; color: var(--sidebar-muted);
-            display: flex; justify-content: space-between;
-        }
-        .total-bar { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-top: 0.4rem; }
-        .total-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #FFD54F); border-radius: 2px; transition: width 0.4s; }
-
-        #chapter-list { overflow-y: auto; flex: 1; padding: 0.5rem; }
+        .search-wrap input:focus { border-color: rgba(201,168,76,0.42); background: rgba(255,255,255,0.08); }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.35; color: var(--sidebar-muted); }
+        .progress-summary { margin-top: 0.7rem; font-size: 0.71rem; color: var(--sidebar-muted); display: flex; justify-content: space-between; }
+        .total-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 0.5rem; }
+        .total-bar-fill { height: 100%; background: linear-gradient(90deg, #9A7B0A, #C9A84C); border-radius: 2px; transition: width 0.5s; }
+        #chapter-list { overflow-y: auto; flex: 1; padding: 0.6rem; }
         #chapter-list::-webkit-scrollbar { width: 3px; }
-        #chapter-list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.22); border-radius: 2px; }
+        #chapter-list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.16); border-radius: 2px; }
         .chapter-item {
-            border-radius: 10px; padding: 0.65rem 0.85rem; cursor: pointer;
-            margin-bottom: 2px; transition: all 0.15s; border: 1px solid transparent;
+            border-radius: 8px; padding: 0.68rem 0.85rem; cursor: pointer;
+            margin-bottom: 1px; transition: all 0.15s; border: 1px solid transparent;
             color: var(--sidebar-text);
         }
-        .chapter-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(201,168,76,0.15); }
-        .chapter-item.active { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.32); }
+        .chapter-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(201,168,76,0.1); }
+        .chapter-item.active { background: rgba(201,168,76,0.09); border-color: rgba(201,168,76,0.25); }
         .ch-row { display: flex; justify-content: space-between; align-items: center; }
-        .ch-name { font-size: 0.83rem; font-weight: 600; }
-        .ch-prog { font-size: 0.68rem; color: var(--sidebar-muted); }
-        .ch-subtitle { font-size: 0.69rem; color: var(--sidebar-muted); margin-top: 2px; }
-        .mini-bar { height: 2px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-top: 5px; }
-        .mini-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #FFD54F); border-radius: 2px; transition: width 0.3s; }
+        .ch-name { font-size: 0.82rem; font-weight: 600; }
+        .ch-prog { font-size: 0.66rem; color: var(--sidebar-muted); }
+        .ch-subtitle { font-size: 0.67rem; color: var(--sidebar-muted); margin-top: 2px; }
+        .mini-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 6px; }
+        .mini-fill { height: 100%; background: linear-gradient(90deg, #9A7B0A, #C9A84C); border-radius: 2px; transition: width 0.3s; }
 
-        /* Search results */
         .search-results {
             display: none; position: absolute; left: 0; right: 0; top: calc(100% + 4px);
-            background: #162040; border: 1px solid rgba(201,168,76,0.25);
-            border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.45); z-index: 100;
+            background: #111D38; border: 1px solid rgba(201,168,76,0.18);
+            border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 100;
             max-height: 280px; overflow-y: auto;
         }
         .search-results.show { display: block; }
         .sr-item {
-            padding: 0.55rem 0.9rem; cursor: pointer; font-size: 0.82rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.1s;
-            color: var(--sidebar-text);
+            padding: 0.6rem 0.9rem; cursor: pointer; font-size: 0.81rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.1s; color: var(--sidebar-text);
         }
         .sr-item:last-child { border-bottom: none; }
-        .sr-item:hover { background: rgba(255,255,255,0.06); }
+        .sr-item:hover { background: rgba(255,255,255,0.05); }
 
         /* ── Main ── */
-        #main { overflow-y: auto; padding: 1.4rem; scroll-behavior: smooth; }
+        #main { overflow-y: auto; background: var(--bg); scroll-behavior: smooth; }
+        .reader-wrap { max-width: 800px; margin: 0 auto; padding: 2.5rem 3rem; }
 
         /* Daily verse */
         #daily-verse {
-            background: linear-gradient(135deg, #EEF2FF, #E3F2FD);
-            border: 1px solid rgba(21,101,192,0.18); border-radius: var(--radius);
-            padding: 1rem 1.3rem; margin-bottom: 1.4rem;
-            display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
-            position: relative; overflow: hidden;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.6rem 2rem; margin-bottom: 2.5rem;
+            display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+            position: relative; overflow: hidden; box-shadow: var(--shadow);
         }
-        [data-theme="dark"] #daily-verse {
-            background: linear-gradient(135deg, #0D1B4B, #0F1E40);
-            border-color: rgba(201,168,76,0.18);
+        #daily-verse::before {
+            content: 'ॐ'; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
+            font-size: 5.5rem; opacity: 0.04; color: var(--primary); pointer-events: none;
+            font-family: 'Noto Sans Devanagari', serif; line-height: 1;
         }
-        #daily-verse::after {
-            content: 'ॐ'; position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
-            font-size: 4.5rem; opacity: 0.06; color: #1565C0; pointer-events: none;
-            font-family: 'Noto Sans Devanagari', serif;
-        }
-        [data-theme="dark"] #daily-verse::after { color: var(--gold); opacity: 0.09; }
-        .daily-label { font-size: 0.67rem; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        [data-theme="dark"] .daily-label { color: var(--gold); }
-        .daily-text { font-size: 0.92rem; margin-top: 2px; }
+        [data-theme="dark"] #daily-verse::before { color: #C9A84C; opacity: 0.055; }
+        .daily-eyebrow { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.35rem; }
+        .daily-text { font-size: 0.94rem; line-height: 1.6; color: var(--text); }
+        .daily-ref { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem; font-style: italic; }
         .daily-btn {
             margin-left: auto; background: var(--primary); color: white; border: none;
-            padding: 7px 16px; border-radius: 10px; cursor: pointer; font-size: 0.82rem;
-            white-space: nowrap; font-weight: 500; transition: background 0.15s;
+            padding: 8px 20px; border-radius: 7px; cursor: pointer; font-size: 0.82rem;
+            white-space: nowrap; font-weight: 500; transition: background 0.15s; flex-shrink: 0;
         }
-        .daily-btn:hover { background: var(--primary-dark); }
+        .daily-btn:hover { background: var(--primary-mid); }
 
-        /* Chapter header */
+        /* ── Chapter header ── */
         .ch-header-card {
-            background: linear-gradient(135deg, #0A1240 0%, #1565C0 65%, #1976D2 100%);
-            color: white; border-radius: var(--radius); padding: 1.8rem 2rem; margin-bottom: 1.4rem;
-            position: relative; overflow: hidden;
+            background: linear-gradient(140deg, #07102E 0%, #1A237E 60%, #283593 100%);
+            color: white; border-radius: var(--radius); padding: 2.2rem 2.5rem;
+            margin-bottom: 2rem; position: relative; overflow: hidden;
         }
-        .ch-header-card::before {
-            content: ''; position: absolute; right: -3rem; top: -3rem;
-            width: 180px; height: 180px;
-            background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 65%);
+        .ch-header-card::after {
+            content: ''; position: absolute; right: -4rem; bottom: -4rem;
+            width: 240px; height: 240px;
+            background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 65%);
             border-radius: 50%; pointer-events: none;
         }
-        .ch-header-card h2 { font-family: 'Cinzel', serif; font-size: 1.42rem; position: relative; }
-        .ch-header-card p { opacity: 0.72; margin-top: 0.4rem; font-size: 0.88rem; position: relative; }
+        .ch-eyebrow { font-size: 0.64rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,168,76,0.75); margin-bottom: 0.4rem; font-weight: 600; }
+        .ch-header-card h2 { font-family: 'Cinzel', serif; font-size: 1.65rem; font-weight: 600; position: relative; letter-spacing: 0.02em; line-height: 1.25; }
+        .ch-skt { font-family: 'Noto Sans Devanagari', serif; font-size: 1rem; opacity: 0.55; margin-top: 0.25rem; }
+        .ch-summary-text { font-size: 0.87rem; line-height: 1.75; opacity: 0.75; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1rem; position: relative; }
+        .ch-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; position: relative; }
+        .ch-concepts { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .ch-concept { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; padding: 2px 10px; font-size: 0.68rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.85); }
+        .ch-stat { font-size: 0.8rem; opacity: 0.55; }
 
-        /* Verse card */
-        .verse-card {
-            background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 1.8rem;
-            margin-bottom: 1.4rem; box-shadow: var(--shadow);
-            border-top: 3px solid var(--gold);
-        }
-        .verse-header {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 1.4rem; flex-wrap: wrap; gap: 0.6rem;
-        }
-        .verse-label { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 700; }
-        [data-theme="dark"] .verse-label { color: var(--gold); }
-        .verse-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        /* ── Verse card ── */
+        .verse-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 2.5rem; box-shadow: var(--shadow); overflow: hidden; }
 
-        /* Buttons */
-        .btn {
-            border: none; border-radius: 9px; cursor: pointer;
-            padding: 6px 14px; font-size: 0.79rem; transition: all 0.15s;
-            white-space: nowrap; font-weight: 500;
+        .verse-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.5rem;
         }
-        .btn:hover { opacity: 0.85; transform: translateY(-1px); }
-        .btn:active { transform: translateY(0); }
-        .btn:disabled { opacity: 0.3; cursor: default; transform: none; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-ghost { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-        .btn-read { background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9; }
-        .btn-read-done { background: #2E7D32; color: white; }
-        .btn-bm { background: #FFF8E1; color: #E65100; border: 1px solid #FFE082; }
-        .btn-bm-done { background: linear-gradient(135deg, var(--gold), #FFB300); color: white; }
+        .verse-ref { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: var(--accent-light); text-transform: uppercase; }
+        .verse-controls { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 
-        /* Sanskrit block */
-        .sanskrit-block {
-            background: linear-gradient(135deg, #EEF2FF, #F0F4FF);
-            border-left: 4px solid var(--gold); border-radius: 0 12px 12px 0;
-            padding: 1.2rem 1.5rem; margin-bottom: 0.6rem;
+        /* Audio button */
+        .audio-btn {
+            background: rgba(26,35,126,0.06); border: 1px solid var(--border);
+            color: var(--primary); border-radius: 7px; padding: 5px 12px;
+            font-size: 0.78rem; cursor: pointer; display: flex; align-items: center;
+            gap: 4px; transition: all 0.15s; font-weight: 500; white-space: nowrap;
         }
-        [data-theme="dark"] .sanskrit-block {
-            background: linear-gradient(135deg, rgba(13,27,75,0.5), rgba(21,101,192,0.08));
-        }
-        .sanskrit-text {
-            font-family: 'Noto Sans Devanagari', serif;
-            font-size: 1.48rem; line-height: 2.1; color: var(--primary-dark); white-space: pre-line;
-        }
-        [data-theme="dark"] .sanskrit-text { color: #90CAF9; }
-        .translit-text {
-            font-style: italic; color: var(--text-muted);
-            margin-top: 0.5rem; font-size: 0.9rem; white-space: pre-line;
-            border-top: 1px solid var(--border); padding-top: 0.5rem;
-        }
+        .audio-btn:hover { background: rgba(26,35,126,0.11); }
+        .audio-btn.playing { background: var(--primary); color: white; border-color: var(--primary); }
+        [data-theme="dark"] .audio-btn { color: #8FB4FF; background: rgba(143,180,255,0.07); }
+        [data-theme="dark"] .audio-btn.playing { background: var(--primary); color: white; }
 
-        /* Tabs */
-        .tabs { display: flex; border-bottom: 2px solid var(--border); margin: 1.4rem 0 0.8rem; }
+        .verse-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+
+        /* Sanskrit section */
+        .sanskrit-section { padding: 2.2rem 2rem 2rem; background: #FFFEF7; border-bottom: 1px solid var(--border); }
+        [data-theme="dark"] .sanskrit-section { background: rgba(26,35,126,0.05); }
+        .sanskrit-text { font-family: 'Noto Sans Devanagari', serif; font-size: 1.6rem; line-height: 2.2; color: var(--primary); white-space: pre-line; }
+        [data-theme="dark"] .sanskrit-text { color: #8FB4FF; }
+        .translit-text { font-style: italic; color: var(--text-muted); margin-top: 1rem; font-size: 0.93rem; white-space: pre-line; line-height: 1.85; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+        /* Translation tabs */
+        .translations-section { padding: 0 2rem 1.8rem; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border); padding-top: 1.2rem; margin-bottom: 1.3rem; gap: 0; overflow-x: auto; }
         .tab {
-            padding: 7px 18px; border: none; background: transparent;
-            color: var(--text-muted); cursor: pointer; font-size: 0.86rem;
-            border-bottom: 3px solid transparent; margin-bottom: -2px;
-            transition: all 0.15s; border-radius: 8px 8px 0 0; font-weight: 500;
+            padding: 7px 18px 10px; border: none; background: transparent;
+            color: var(--text-muted); cursor: pointer; font-size: 0.84rem;
+            border-bottom: 2px solid transparent; margin-bottom: -1px;
+            transition: all 0.15s; font-weight: 500; white-space: nowrap; flex-shrink: 0;
         }
-        .tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
-        .tab.active { color: var(--primary); border-bottom-color: var(--gold); font-weight: 600; }
-        [data-theme="dark"] .tab.active { color: var(--gold); }
+        .tab:hover { color: var(--text); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--accent-light); font-weight: 600; }
+        [data-theme="dark"] .tab.active { color: #8FB4FF; }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .trans-text { font-size: 0.97rem; line-height: 1.85; }
-        .telugu-text { font-family: 'Noto Sans Telugu', sans-serif; font-size: 1.06rem; line-height: 2.1; }
-        .empty-trans {
-            color: var(--text-muted); font-style: italic; padding: 1.1rem;
-            background: var(--bg); border-radius: 10px; text-align: center; font-size: 0.86rem;
-            border: 1px dashed var(--border);
+        .trans-text { font-size: 1rem; line-height: 1.95; color: var(--text); }
+        .telugu-text { font-family: 'Noto Sans Telugu', sans-serif; font-size: 1.07rem; line-height: 2.1; }
+        .empty-trans { color: var(--text-muted); font-style: italic; padding: 1.2rem; background: var(--bg); border-radius: 8px; text-align: center; font-size: 0.86rem; border: 1px dashed var(--border); }
+
+        /* Commentary */
+        .commentary-loading { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+        details.comm-card { margin-bottom: 0.6rem; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        details.comm-card > summary {
+            list-style: none; padding: 0.85rem 1rem; cursor: pointer;
+            background: var(--bg); display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--primary); transition: background 0.15s; user-select: none;
         }
+        details.comm-card > summary::-webkit-details-marker { display: none; }
+        details.comm-card > summary::after { content: '+'; font-size: 1rem; opacity: 0.45; font-weight: 400; }
+        details[open].comm-card > summary::after { content: '−'; }
+        details.comm-card > summary:hover { background: var(--border); }
+        [data-theme="dark"] details.comm-card > summary { color: #8FB4FF; background: rgba(0,0,0,0.2); }
+        .comm-text { padding: 1rem 1rem 1.2rem; font-size: 0.91rem; line-height: 1.85; color: var(--text-muted); border-top: 1px solid var(--border); }
 
         /* Word by word */
-        .wbw-section { margin-top: 1.4rem; }
-        .wbw-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 0.55rem; font-weight: 600; }
-        .wbw-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-        .wbw-chip {
-            background: linear-gradient(135deg, #EEF2FF, #F3F4FF);
-            border: 1px solid rgba(21,101,192,0.14);
-            border-radius: 20px; padding: 3px 11px; font-size: 0.79rem; line-height: 1.6;
-            transition: all 0.15s; cursor: default;
-        }
-        .wbw-chip:hover { background: var(--primary); color: white; border-color: transparent; }
-        [data-theme="dark"] .wbw-chip { background: rgba(21,101,192,0.14); border-color: rgba(21,101,192,0.28); }
+        .wbw-section { padding: 1.5rem 2rem 1.8rem; border-top: 1px solid var(--border); background: var(--bg); }
+        [data-theme="dark"] .wbw-section { background: rgba(0,0,0,0.18); }
+        .wbw-label { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 1rem; font-weight: 700; }
+        .wbw-list { list-style: none; }
+        .wbw-entry { display: flex; gap: 1rem; padding: 0.38rem 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+        .wbw-entry:last-child { border-bottom: none; }
+        .wbw-term { font-size: 0.86rem; font-weight: 600; font-style: italic; color: var(--primary); min-width: 140px; flex-shrink: 0; }
+        [data-theme="dark"] .wbw-term { color: #8FB4FF; }
+        .wbw-meaning { font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; }
 
         /* Verse nav */
-        .verse-nav {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--border); gap: 0.5rem;
-        }
-        .verse-nav-info { font-size: 0.8rem; color: var(--text-muted); text-align: center; line-height: 1.5; }
+        .verse-nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-top: 1px solid var(--border); gap: 0.5rem; }
+        .verse-nav-info { font-size: 0.77rem; color: var(--text-muted); text-align: center; line-height: 1.5; }
+
+        /* Buttons */
+        .btn { border: none; border-radius: 7px; cursor: pointer; padding: 6px 14px; font-size: 0.79rem; transition: all 0.15s; white-space: nowrap; font-weight: 500; }
+        .btn:hover { opacity: 0.82; }
+        .btn:disabled { opacity: 0.28; cursor: default; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-ghost:hover { color: var(--text); border-color: #9CA3AF; opacity: 1; }
+        .btn-read { background: #F0FBF2; color: #276749; border: 1px solid #BBF0C8; }
+        .btn-read-done { background: #276749; color: white; }
+        .btn-bm { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+        .btn-bm-done { background: #92400E; color: white; }
+
+        /* Bookmarks list */
+        .bm-list-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 2rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; }
+        .bm-list-item:hover { background: var(--bg); }
+        .bm-list-item:last-child { border-bottom: none; }
+        .bm-ref { font-family: 'Cinzel', serif; font-size: 0.72rem; color: var(--accent-light); font-weight: 600; min-width: 70px; letter-spacing: 0.08em; }
+        .bm-name { font-size: 0.85rem; color: var(--text-muted); }
 
         /* Toast */
-        #toast {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, #0A1240, #1565C0); color: #fff;
-            padding: 0.55rem 1.5rem; border-radius: 24px; font-size: 0.85rem; z-index: 999;
-            opacity: 0; transition: opacity 0.25s; pointer-events: none;
-            box-shadow: 0 4px 20px rgba(10,18,64,0.4);
-            border: 1px solid rgba(201,168,76,0.3);
-        }
+        #toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1C1C1E; color: #fff; padding: 0.55rem 1.4rem; border-radius: 24px; font-size: 0.84rem; z-index: 999; opacity: 0; transition: opacity 0.25s; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
         #toast.show { opacity: 1; }
 
-        /* ── Mobile bottom nav ── */
-        .mobile-nav {
-            display: none;
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--sidebar-bg);
-            border-top: 1px solid rgba(201,168,76,0.18);
-            padding: 0.45rem 0 calc(0.45rem + env(safe-area-inset-bottom));
-            z-index: 190; justify-content: space-around; align-items: center;
-            height: var(--mobile-nav-h);
+        /* ── Footer ── */
+        .site-footer {
+            margin-top: 3rem; padding: 2rem 0 1.5rem;
+            border-top: 1px solid var(--border); text-align: center;
         }
-        .mobile-nav-btn {
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-            background: none; border: none; color: var(--sidebar-muted);
-            font-size: 0.58rem; cursor: pointer; padding: 4px 14px;
-            border-radius: 10px; transition: color 0.15s; letter-spacing: 0.3px;
+        .footer-om {
+            font-family: 'Noto Sans Devanagari', serif; font-size: 1.6rem;
+            color: var(--accent-light); margin-bottom: 0.9rem; line-height: 1;
         }
-        .mobile-nav-btn .nav-icon { font-size: 1.3rem; line-height: 1; }
-        .mobile-nav-btn:hover { color: var(--gold); }
+        .footer-name {
+            font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600;
+            color: var(--text); letter-spacing: 0.04em; margin-bottom: 0.25rem;
+        }
+        .footer-bio {
+            font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1.1rem;
+        }
+        .footer-links {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .footer-link {
+            font-size: 0.76rem; color: var(--text-muted); text-decoration: none;
+            display: flex; align-items: center; gap: 0.3rem; transition: color 0.15s;
+        }
+        .footer-link:hover { color: var(--accent-light); }
+        .footer-gh {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.76rem; font-weight: 600; color: var(--primary);
+            background: rgba(26,35,126,0.07); border: 1px solid rgba(26,35,126,0.14);
+            border-radius: 20px; padding: 5px 14px; text-decoration: none; transition: all 0.15s;
+            margin-bottom: 1rem;
+        }
+        .footer-gh:hover { background: var(--primary); color: white; }
+        [data-theme="dark"] .footer-gh { color: #8FB4FF; background: rgba(143,180,255,0.08); border-color: rgba(143,180,255,0.18); }
+        [data-theme="dark"] .footer-gh:hover { background: var(--primary); color: white; }
+        .footer-note { font-size: 0.67rem; color: var(--text-muted); opacity: 0.65; }
 
-        /* ── Mobile ── */
+        /* Mobile bottom nav */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--sidebar-bg); border-top: 1px solid rgba(201,168,76,0.14); padding: 0.45rem 0 calc(0.45rem + env(safe-area-inset-bottom)); z-index: 190; justify-content: space-around; align-items: center; height: var(--mobile-nav-h); }
+        .mobile-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; color: var(--sidebar-muted); font-size: 0.57rem; cursor: pointer; padding: 4px 14px; border-radius: 8px; transition: color 0.15s; letter-spacing: 0.03em; }
+        .mobile-nav-btn .nav-icon { font-size: 1.25rem; line-height: 1; }
+        .mobile-nav-btn:hover { color: var(--accent-light); }
+
+        /* Mobile */
         @media (max-width: 768px) {
-            .layout {
-                grid-template-columns: 1fr;
-                height: calc(100vh - var(--header-h) - var(--mobile-nav-h));
-            }
-            #sidebar {
-                position: fixed; left: 0; top: var(--header-h);
-                bottom: var(--mobile-nav-h); width: min(var(--sidebar-w), 88vw);
-                z-index: 150; transform: translateX(-100%);
-            }
+            .layout { grid-template-columns: 1fr; height: calc(100vh - var(--header-h) - var(--mobile-nav-h)); }
+            #sidebar { position: fixed; left: 0; top: var(--header-h); bottom: var(--mobile-nav-h); width: min(var(--sidebar-w), 88vw); z-index: 150; transform: translateX(-100%); }
             #sidebar.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.55); }
             #menu-toggle { display: flex; }
             .header-subtitle { display: none; }
-            .verse-card { padding: 1.2rem; }
-            .sanskrit-text { font-size: 1.22rem; }
-            .ch-header-card { padding: 1.3rem 1.4rem; }
-            .ch-header-card h2 { font-size: 1.2rem; }
+            .reader-wrap { padding: 1.2rem; }
+            .verse-top { padding: 0.9rem 1.2rem; }
+            .sanskrit-section { padding: 1.6rem 1.2rem 1.4rem; }
+            .translations-section { padding: 0 1.2rem 1.4rem; }
+            .wbw-section { padding: 1.2rem; }
+            .verse-nav { padding: 0.9rem 1.2rem; }
+            .bm-list-item { padding: 0.9rem 1.2rem; }
+            .sanskrit-text { font-size: 1.28rem; }
+            .ch-header-card { padding: 1.6rem 1.4rem; }
+            .ch-header-card h2 { font-size: 1.3rem; }
+            .wbw-term { min-width: 100px; }
             .mobile-nav { display: flex; }
-            #main { padding: 1rem; }
             #toast { bottom: calc(var(--mobile-nav-h) + 0.6rem); }
+            #daily-verse { padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; }
         }
     </style>
 </head>
@@ -372,52 +388,62 @@
     </aside>
 
     <main id="main">
-        <div id="daily-verse"></div>
-        <div id="app"></div>
+        <div class="reader-wrap">
+            <div id="daily-verse"></div>
+            <div id="app"></div>
+
+            <footer class="site-footer">
+                <div class="footer-om">ॐ</div>
+                <div class="footer-name">Chandra Lanka</div>
+                <div class="footer-bio">Devotee · Technology Enthusiast · Builder of things that matter</div>
+                <div class="footer-links">
+                    <a class="footer-link" href="https://techknowen.com" target="_blank" rel="noopener">💻 techknowen.com</a>
+                    <a class="footer-link" href="https://ajnacs.com" target="_blank" rel="noopener">🌐 ajnacs.com</a>
+                    <a class="footer-link" href="https://chandra-79.github.io/vratha/" target="_blank" rel="noopener">🪔 Ganapati Vratha Tracker</a>
+                </div>
+                <a class="footer-gh" href="https://github.com/chandra-79/gita-learner" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+                <p class="footer-note">Crafted with devotion · Bhagavad Gita Learner 🙏</p>
+            </footer>
+        </div>
     </main>
 </div>
 
 <nav class="mobile-nav">
-    <button class="mobile-nav-btn" onclick="toggleSidebar()">
-        <span class="nav-icon">📚</span>Chapters
-    </button>
-    <button class="mobile-nav-btn" onclick="mobileSearch()">
-        <span class="nav-icon">🔍</span>Search
-    </button>
-    <button class="mobile-nav-btn" onclick="showBookmarks()">
-        <span class="nav-icon">🔖</span>Saved
-    </button>
-    <button class="mobile-nav-btn" onclick="toggleTheme()">
-        <span class="nav-icon">🌓</span>Theme
-    </button>
+    <button class="mobile-nav-btn" onclick="toggleSidebar()"><span class="nav-icon">📚</span>Chapters</button>
+    <button class="mobile-nav-btn" onclick="mobileSearch()"><span class="nav-icon">🔍</span>Search</button>
+    <button class="mobile-nav-btn" onclick="showBookmarks()"><span class="nav-icon">🔖</span>Saved</button>
+    <button class="mobile-nav-btn" onclick="toggleTheme()"><span class="nav-icon">🌓</span>Theme</button>
 </nav>
 
 <div id="toast"></div>
 
 <script src="data.js"></script>
 <script>
-const CHAPTER_NAMES = [
-    "",
-    "Arjuna Vishada Yoga",
-    "Sankhya Yoga",
-    "Karma Yoga",
-    "Jnana Karma Sannyasa Yoga",
-    "Karma Sannyasa Yoga",
-    "Atma Samyama Yoga",
-    "Jnana Vijnana Yoga",
-    "Akshara Brahma Yoga",
-    "Raja Vidya Raja Guhya Yoga",
-    "Vibhuti Yoga",
-    "Vishvarupa Darshana Yoga",
-    "Bhakti Yoga",
-    "Kshetra Kshetrajna Vibhaga Yoga",
-    "Gunatraya Vibhaga Yoga",
-    "Purushottama Yoga",
-    "Daivasura Sampad Vibhaga Yoga",
-    "Shraddhatraya Vibhaga Yoga",
-    "Moksha Sannyasa Yoga"
+/* ── Chapter metadata ── */
+const CHAPTER_NAMES = ["","Arjuna Vishada Yoga","Sankhya Yoga","Karma Yoga","Jnana Karma Sannyasa Yoga","Karma Sannyasa Yoga","Atma Samyama Yoga","Jnana Vijnana Yoga","Akshara Brahma Yoga","Raja Vidya Raja Guhya Yoga","Vibhuti Yoga","Vishvarupa Darshana Yoga","Bhakti Yoga","Kshetra Kshetrajna Vibhaga Yoga","Gunatraya Vibhaga Yoga","Purushottama Yoga","Daivasura Sampad Vibhaga Yoga","Shraddhatraya Vibhaga Yoga","Moksha Sannyasa Yoga"];
+
+const CHAPTER_DATA = [null,
+  {skt:"अर्जुनविषादयोग", concepts:["Dharma","Duty","Compassion"], summary:"On the battlefield of Kurukshetra, Arjuna sees beloved teachers, kinsmen and friends arrayed on both sides. Overwhelmed with grief and moral paralysis, he lays down his bow and refuses to fight — setting the stage for Krishna's divine discourse."},
+  {skt:"साङ्ख्ययोग", concepts:["Atman","Karma Yoga","Sthitaprajna"], summary:"Krishna reveals that the soul is eternal — never born, never destroyed. He introduces Karma Yoga: action performed without attachment to its fruits. He describes the Sthitaprajna, the person of steady wisdom who remains unshaken in all circumstances."},
+  {skt:"कर्मयोग", concepts:["Action","Yajna","Svadharma"], summary:"Krishna explains that inaction is impossible — every being must act. Performing one's own duty (svadharma) as an offering (yajna), free from ego and attachment, purifies the heart and leads to liberation."},
+  {skt:"ज्ञानकर्मसंन्यासयोग", concepts:["Avatara","Knowledge","Lineage"], summary:"Krishna reveals the ancient lineage of Yoga and the mystery of his divine births across ages. He explains how transcendental knowledge destroys all karma like fire, and describes different types of worshippers who approach the Divine."},
+  {skt:"कर्मसंन्यासयोग", concepts:["Renunciation","Inner Peace","Brahman"], summary:"Both renunciation of action and selfless action lead to the same liberation. The true sannyasi acts through the body and senses without personal identification, experiencing the eternal Brahman within while living fully in the world."},
+  {skt:"आत्मसंयमयोग", concepts:["Meditation","Self-Control","Equanimity"], summary:"Krishna gives detailed guidance on meditation — the right place, posture, food, sleep and perseverance required. The disciplined yogi who sees the Self in all beings and all beings in the Self attains the highest union."},
+  {skt:"ज्ञानविज्ञानयोग", concepts:["Prakriti","Divine Nature","Devotees"], summary:"Krishna describes his eightfold material nature and his higher spiritual essence from which life springs. He reveals himself as the source of all that exists and explains why so few truly know him."},
+  {skt:"अक्षरब्रह्मयोग", concepts:["Death","Liberation","Two Paths"], summary:"Krishna explains Brahman, Atman and karma. He reveals the vital importance of one's consciousness at the moment of death, and describes the two cosmic paths of the soul after death — the path of light and the path of return."},
+  {skt:"राजविद्याराजगुह्ययोग", concepts:["Devotion","Omnipresence","Creation"], summary:"Krishna declares the most secret royal knowledge — all beings rest in him, yet he transcends all. He explains the cosmic cycle of creation and dissolution. Even the smallest act of devotion offered with love reaches him directly."},
+  {skt:"विभूतियोग", concepts:["Divine Glory","Omnipresence","Manifestation"], summary:"Krishna lists his infinite divine manifestations (vibhutis) — he is the sun among stars, Meru among mountains, the Ganges among rivers. Recognizing his presence everywhere in creation is itself a form of worship."},
+  {skt:"विश्वरूपदर्शनयोग", concepts:["Cosmic Form","Awe","Divine Grace"], summary:"Arjuna asks to see Krishna's universal form and is granted divine vision. He beholds the infinite, all-consuming, terrifying Vishwarupa encompassing everything. Overwhelmed, he begs Krishna to return to his gentle, beloved two-armed form."},
+  {skt:"भक्तियोग", concepts:["Devotion","Divine Love","Surrender"], summary:"Krishna declares that loving, personal devotion is the highest and most accessible path to him. He lovingly describes the qualities of his dearest devotee: free from hatred, equal to friend and foe, always content and surrendered."},
+  {skt:"क्षेत्रक्षेत्रज्ञविभागयोग", concepts:["Body","Soul","Liberation"], summary:"Krishna distinguishes the 'field' (the body and nature) from the 'knower of the field' (the eternal Self). He enumerates the constituents of Prakriti and explains how knowing this distinction leads directly to liberation."},
+  {skt:"गुणत्रयविभागयोग", concepts:["Sattva","Rajas","Tamas"], summary:"Krishna explains the three fundamental qualities of material nature — sattva (purity and clarity), rajas (passion and activity) and tamas (inertia and ignorance). All conditioned beings are bound by these three; transcending them leads to immortality."},
+  {skt:"पुरुषोत्तमयोग", concepts:["Cosmic Tree","Imperishable","Supreme Person"], summary:"Using the image of an inverted Ashvattha tree, Krishna reveals the nature of material existence. He distinguishes between the perishable (all matter), the imperishable (the soul) and himself as Purushottama — the Supreme Person beyond both."},
+  {skt:"दैवासुरसम्पद्विभागयोग", concepts:["Virtues","Vices","Scripture"], summary:"Krishna enumerates divine qualities — fearlessness, purity, compassion, truthfulness — and demonic ones — arrogance, desire, anger and self-delusion. He urges Arjuna to follow scripture as the guide for right action and dharmic living."},
+  {skt:"श्रद्धात्रयविभागयोग", concepts:["Faith","Austerity","Charity"], summary:"Faith itself takes three forms according to one's dominant guna. Krishna shows how this threefold nature manifests across food preferences, forms of worship, austerity and charity — each with sattvic, rajasic or tamasic expression."},
+  {skt:"मोक्षसंन्यासयोग", concepts:["Moksha","Surrender","Final Teaching"], summary:"The culminating chapter summarises the entire Gita. Krishna reveals the highest secret: abandon all dharmas and surrender completely to him alone. He will liberate Arjuna from all sins. Arjuna's delusion dissolves and he resolves to act."}
 ];
 
+/* ── State ── */
 const state = {
     ch: 1, v: 1, tab: "english",
     progress: JSON.parse(localStorage.getItem("gita_progress") || "{}"),
@@ -425,7 +451,6 @@ const state = {
     dark: localStorage.getItem("gita_theme") === "dark"
 };
 
-// ── Lookups ──
 const byChapter = {};
 for (const v of GITA) {
     if (!byChapter[v.chapter]) byChapter[v.chapter] = [];
@@ -435,7 +460,6 @@ function getVerse(ch, v) { return (byChapter[ch] || []).find(x => x.verse === v)
 function chVerses(ch) { return byChapter[ch] || []; }
 function totalRead() { return Object.keys(state.progress).length; }
 
-// ── Toast ──
 function toast(msg) {
     const t = document.getElementById("toast");
     t.textContent = msg; t.classList.add("show");
@@ -443,18 +467,14 @@ function toast(msg) {
     t._tid = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-// ── Tab switching ──
 function setTab(name) {
     state.tab = name;
     document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.dataset.tab === name));
 }
 
-// ── Sidebar ──
 function renderSidebar() {
-    const total = GITA.length;
-    const read = totalRead();
-    const pct = Math.round(read / total * 100);
+    const total = GITA.length, read = totalRead(), pct = Math.round(read / total * 100);
     document.getElementById("prog-label").textContent = `${read} / ${total} verses read`;
     document.getElementById("prog-pct").textContent = `${pct}%`;
     document.getElementById("total-bar").style.width = pct + "%";
@@ -474,163 +494,147 @@ function renderSidebar() {
     document.getElementById("chapter-list").innerHTML = html;
 }
 
-// ── Daily Verse ──
 function renderDailyVerse() {
     const seed = new Date().toDateString().split("").reduce((a, b) => a + b.charCodeAt(0), 0);
     const dv = GITA[seed % GITA.length];
-    const snippet = dv.transliteration.split("\n")[0].slice(0, 60);
+    const snippet = dv.transliteration.split("\n")[0].slice(0, 68);
     document.getElementById("daily-verse").innerHTML = `
         <div style="flex:1;min-width:0">
-            <div class="daily-label">✨ Verse of the Day</div>
-            <div class="daily-text">Ch ${dv.chapter} · ${dv.verse} &nbsp;—&nbsp; <em>${snippet}…</em></div>
+            <div class="daily-eyebrow">✦ Verse of the Day</div>
+            <div class="daily-text"><em>${snippet}…</em></div>
+            <div class="daily-ref">Chapter ${dv.chapter}, Verse ${dv.verse} — ${CHAPTER_NAMES[dv.chapter]}</div>
         </div>
         <button class="daily-btn" onclick="loadVerse(${dv.chapter},${dv.verse})">Read →</button>`;
 }
 
-// ── Chapter view ──
+function chapterHeader(ch) {
+    const vs = chVerses(ch), done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
+    const pct = vs.length ? Math.round(done / vs.length * 100) : 0;
+    const d = CHAPTER_DATA[ch];
+    return `<div class="ch-header-card">
+        <div class="ch-eyebrow">Chapter ${ch} of 18</div>
+        <h2>${CHAPTER_NAMES[ch]}</h2>
+        <div class="ch-skt">${d.skt}</div>
+        <p class="ch-summary-text">${d.summary}</p>
+        <div class="ch-footer">
+            <div class="ch-concepts">${d.concepts.map(c => `<span class="ch-concept">${c}</span>`).join("")}</div>
+            <span class="ch-stat">${vs.length} verses · ${done} read (${pct}%)</span>
+        </div>
+    </div>`;
+}
+
 function loadChapter(ch) {
     state.ch = ch; state.v = 1;
     renderSidebar();
-    const vs = chVerses(ch);
-    const done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
-    const pct = vs.length ? Math.round(done / vs.length * 100) : 0;
-    document.getElementById("app").innerHTML = `
-        <div class="ch-header-card">
-            <h2>Chapter ${ch}: ${CHAPTER_NAMES[ch]}</h2>
-            <p>${vs.length} verses &nbsp;·&nbsp; ${done} read (${pct}%)</p>
-        </div>
-        <div id="verse-area"></div>`;
+    document.getElementById("app").innerHTML = chapterHeader(ch) + `<div id="verse-area"></div>`;
     loadVerseArea(ch, 1);
     document.getElementById("main").scrollTo(0, 0);
     if (window.innerWidth <= 768) closeSidebar();
 }
 
-// ── Single verse navigation entry ──
 function loadVerse(ch, v) {
     state.ch = ch; state.v = v;
     renderSidebar();
-    const vs = chVerses(ch);
-    const done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
-    const pct = vs.length ? Math.round(done / vs.length * 100) : 0;
-    document.getElementById("app").innerHTML = `
-        <div class="ch-header-card">
-            <h2>Chapter ${ch}: ${CHAPTER_NAMES[ch]}</h2>
-            <p>${vs.length} verses &nbsp;·&nbsp; ${done} read (${pct}%)</p>
-        </div>
-        <div id="verse-area"></div>`;
+    document.getElementById("app").innerHTML = chapterHeader(ch) + `<div id="verse-area"></div>`;
     loadVerseArea(ch, v);
     document.getElementById("main").scrollTo(0, 0);
     if (window.innerWidth <= 768) closeSidebar();
 }
 
-// ── Render verse into #verse-area without full page rebuild ──
 function loadVerseArea(ch, v) {
+    stopAudio();
     state.ch = ch; state.v = v;
     const verse = getVerse(ch, v);
     if (!verse) return;
 
-    const key = `${ch}_${v}`;
-    const isRead = !!state.progress[key];
-    const isBm = state.bookmarks.has(key);
-    const vs = chVerses(ch);
-    const idx = vs.findIndex(x => x.verse === v);
+    const key = `${ch}_${v}`, isRead = !!state.progress[key], isBm = state.bookmarks.has(key);
+    const vs = chVerses(ch), idx = vs.findIndex(x => x.verse === v);
     const prevV = idx > 0 ? vs[idx - 1] : null;
     const nextV = idx < vs.length - 1 ? vs[idx + 1] : null;
     const globalIdx = GITA.findIndex(x => x.chapter === ch && x.verse === v);
-
-    const englishHtml = verse.translation
-        ? `<p class="trans-text">${verse.translation}</p>`
-        : `<div class="empty-trans">📜 English translation coming soon.</div>`;
-
-    const teluguHtml = verse.telugu
-        ? `<p class="trans-text telugu-text">${verse.telugu}</p>`
-        : `<div class="empty-trans">📜 తెలుగు అనువాదం త్వరలో అందుబాటులోకి వస్తుంది.</div>`;
-
-    const hindiHtml = verse.hindi
-        ? `<p class="trans-text">${verse.hindi}</p>`
-        : `<div class="empty-trans">📜 हिंदी अनुवाद शीघ्र उपलब्ध होगा।</div>`;
-
-    const wbwHtml = verse.word_by_word && verse.word_by_word.length
-        ? `<div class="wbw-section">
-               <div class="wbw-label">Word by Word</div>
-               <div class="wbw-chips">${verse.word_by_word.map(w => `<span class="wbw-chip">${w}</span>`).join("")}</div>
-           </div>`
-        : "";
-
     const t = state.tab;
+    const hasSpeech = "speechSynthesis" in window;
+
+    const engHtml  = verse.translation ? `<p class="trans-text">${verse.translation}</p>` : `<div class="empty-trans">Translation not available.</div>`;
+    const telHtml  = verse.telugu ? `<p class="trans-text telugu-text">${verse.telugu}</p>` : `<div class="empty-trans">తెలుగు అనువాదం అందుబాటులో లేదు.</div>`;
+    const hinHtml  = verse.hindi ? `<p class="trans-text">${verse.hindi}</p>` : `<div class="empty-trans">हिंदी अनुवाद उपलब्ध नहीं।</div>`;
+    const wbwHtml  = verse.word_by_word && verse.word_by_word.length
+        ? `<div class="wbw-section"><div class="wbw-label">Word by Word</div><ul class="wbw-list">${
+            verse.word_by_word.map(w => {
+                const ci = w.indexOf(':');
+                const term = ci > -1 ? w.slice(0, ci).trim() : w;
+                const mean = ci > -1 ? w.slice(ci + 1).trim() : '';
+                return `<li class="wbw-entry"><span class="wbw-term">${term}</span><span class="wbw-meaning">${mean}</span></li>`;
+            }).join('')
+          }</ul></div>` : "";
 
     const area = document.getElementById("verse-area");
     if (!area) return;
     area.innerHTML = `
     <div class="verse-card">
-        <div class="verse-header">
-            <div class="verse-label">Chapter ${ch} · Verse ${v}</div>
-            <div class="verse-actions">
-                <button class="btn ${isBm ? "btn-bm-done" : "btn-bm"}" onclick="toggleBookmark(${ch},${v})">${isBm ? "🔖 Saved" : "🔖 Save"}</button>
-                <button class="btn ${isRead ? "btn-read-done" : "btn-read"}" onclick="toggleRead(${ch},${v})">${isRead ? "✅ Read" : "📖 Mark Read"}</button>
-                <button class="btn btn-ghost" onclick="shareVerse(${ch},${v})">📤</button>
+        <div class="verse-top">
+            <span class="verse-ref">Ch. ${ch} · Verse ${v}</span>
+            <div class="verse-controls">
+                ${hasSpeech ? `<button class="audio-btn" id="audio-${ch}-${v}" onclick="toggleAudio(${ch},${v})">🔊 Listen</button>` : ""}
+                <div class="verse-actions">
+                    <button class="btn ${isBm?"btn-bm-done":"btn-bm"}" onclick="toggleBookmark(${ch},${v})">${isBm?"🔖 Saved":"🔖 Save"}</button>
+                    <button class="btn ${isRead?"btn-read-done":"btn-read"}" onclick="toggleRead(${ch},${v})">${isRead?"✅ Read":"📖 Mark"}</button>
+                    <button class="btn btn-ghost" onclick="shareVerse(${ch},${v})" title="Share">📤</button>
+                </div>
             </div>
         </div>
 
-        <div class="sanskrit-block">
+        <div class="sanskrit-section">
             <div class="sanskrit-text">${verse.sanskrit}</div>
             <div class="translit-text">${verse.transliteration}</div>
         </div>
 
-        <div class="tabs">
-            <button class="tab ${t==="english"?"active":""}" data-tab="english" onclick="setTab('english')">English</button>
-            <button class="tab ${t==="telugu"?"active":""}" data-tab="telugu" onclick="setTab('telugu')">తెలుగు</button>
-            <button class="tab ${t==="hindi"?"active":""}" data-tab="hindi" onclick="setTab('hindi')">हिंदी</button>
+        <div class="translations-section">
+            <div class="tabs">
+                <button class="tab ${t==="english"?"active":""}" data-tab="english" onclick="setTab('english')">English</button>
+                <button class="tab ${t==="telugu"?"active":""}" data-tab="telugu" onclick="setTab('telugu')">తెలుగు</button>
+                <button class="tab ${t==="hindi"?"active":""}" data-tab="hindi" onclick="setTab('hindi')">हिंदी</button>
+                <button class="tab ${t==="commentary"?"active":""}" data-tab="commentary" onclick="showCommentaryTab(${ch},${v})">Commentary</button>
+            </div>
+            <div class="tab-panel ${t==="english"?"active":""}" data-tab="english">${engHtml}</div>
+            <div class="tab-panel ${t==="telugu"?"active":""}" data-tab="telugu">${telHtml}</div>
+            <div class="tab-panel ${t==="hindi"?"active":""}" data-tab="hindi">${hinHtml}</div>
+            <div class="tab-panel ${t==="commentary"?"active":""}" data-tab="commentary" id="comm-${ch}-${v}">
+                <div class="commentary-loading">Click "Commentary" to load scholarly notes</div>
+            </div>
         </div>
-        <div class="tab-panel ${t==="english"?"active":""}" data-tab="english">${englishHtml}</div>
-        <div class="tab-panel ${t==="telugu"?"active":""}" data-tab="telugu">${teluguHtml}</div>
-        <div class="tab-panel ${t==="hindi"?"active":""}" data-tab="hindi">${hindiHtml}</div>
 
         ${wbwHtml}
 
         <div class="verse-nav">
-            <button class="btn btn-ghost" onclick="${prevV ? `loadVerseArea(${ch},${prevV.verse})` : ch > 1 ? `loadChapterLast(${ch-1})` : ""}"
-                ${!prevV && ch <= 1 ? "disabled" : ""}>
-                ← ${prevV ? `V ${prevV.verse}` : ch > 1 ? `Ch ${ch-1}` : ""}
+            <button class="btn btn-ghost" onclick="${prevV?`loadVerseArea(${ch},${prevV.verse})`:ch>1?`loadChapterLast(${ch-1})`:""}"\
+                ${!prevV&&ch<=1?"disabled":""}>
+                ← ${prevV?`Verse ${prevV.verse}`:ch>1?`Ch ${ch-1}`:""}
             </button>
-            <div class="verse-nav-info">
-                Verse ${v} of ${vs.length}<br>
-                <small>#${globalIdx + 1} of ${GITA.length}</small>
-            </div>
-            <button class="btn btn-primary" onclick="${nextV ? `loadVerseArea(${ch},${nextV.verse})` : ch < 18 ? `loadChapter(${ch+1})` : ""}"
-                ${!nextV && ch >= 18 ? "disabled" : ""}>
-                ${nextV ? `V ${nextV.verse}` : ch < 18 ? `Ch ${ch+1}` : ""} →
+            <div class="verse-nav-info">${v} of ${vs.length}<br><small>#${globalIdx+1} / ${GITA.length}</small></div>
+            <button class="btn btn-primary" onclick="${nextV?`loadVerseArea(${ch},${nextV.verse})`:ch<18?`loadChapter(${ch+1})`:""}"\
+                ${!nextV&&ch>=18?"disabled":""}>
+                ${nextV?`Verse ${nextV.verse}`:ch<18?`Ch ${ch+1}`:""} →
             </button>
         </div>
     </div>`;
 }
 
-function loadChapterLast(ch) {
-    const vs = chVerses(ch);
-    loadVerse(ch, vs[vs.length - 1].verse);
-}
+function loadChapterLast(ch) { const vs = chVerses(ch); loadVerse(ch, vs[vs.length - 1].verse); }
 
-// ── Keyboard navigation ──
 function navigateVerse(dir) {
-    const vs = chVerses(state.ch);
-    const idx = vs.findIndex(x => x.verse === state.v);
-    if (dir === 1) {
-        if (idx < vs.length - 1) loadVerseArea(state.ch, vs[idx + 1].verse);
-        else if (state.ch < 18) loadChapter(state.ch + 1);
-    } else {
-        if (idx > 0) loadVerseArea(state.ch, vs[idx - 1].verse);
-        else if (state.ch > 1) loadChapterLast(state.ch - 1);
-    }
+    const vs = chVerses(state.ch), idx = vs.findIndex(x => x.verse === state.v);
+    if (dir === 1) { if (idx < vs.length-1) loadVerseArea(state.ch, vs[idx+1].verse); else if (state.ch < 18) loadChapter(state.ch+1); }
+    else           { if (idx > 0) loadVerseArea(state.ch, vs[idx-1].verse); else if (state.ch > 1) loadChapterLast(state.ch-1); }
 }
 
-// ── Progress & Bookmarks ──
+/* ── Progress & Bookmarks ── */
 function toggleRead(ch, v) {
     const key = `${ch}_${v}`;
     if (state.progress[key]) delete state.progress[key]; else state.progress[key] = true;
     localStorage.setItem("gita_progress", JSON.stringify(state.progress));
     renderSidebar(); loadVerseArea(ch, v);
 }
-
 function toggleBookmark(ch, v) {
     const key = `${ch}_${v}`;
     if (state.bookmarks.has(key)) { state.bookmarks.delete(key); toast("Bookmark removed"); }
@@ -638,48 +642,114 @@ function toggleBookmark(ch, v) {
     localStorage.setItem("gita_bookmarks", JSON.stringify([...state.bookmarks]));
     renderSidebar(); loadVerseArea(ch, v);
 }
-
 function showBookmarks() {
     if (!state.bookmarks.size) { toast("No bookmarks yet"); return; }
     document.getElementById("app").innerHTML = `
         <div class="verse-card">
-            <div class="verse-header"><div class="verse-label">🔖 Bookmarks (${state.bookmarks.size})</div></div>
+            <div class="verse-top"><span class="verse-ref">Bookmarks</span><span style="font-size:0.82rem;color:var(--text-muted)">${state.bookmarks.size} saved</span></div>
             ${[...state.bookmarks].map(k => {
                 const [ch, v] = k.split("_").map(Number);
-                return `<div class="sr-item" onclick="loadVerse(${ch},${v})" style="border-radius:8px;margin-bottom:4px;border:1px solid var(--border);color:var(--text)">
-                    <strong>Ch ${ch} · ${v}</strong> — ${CHAPTER_NAMES[ch]}</div>`;
+                return `<div class="bm-list-item" onclick="loadVerse(${ch},${v})"><span class="bm-ref">Ch ${ch}·${v}</span><span class="bm-name">${CHAPTER_NAMES[ch]}</span></div>`;
             }).join("")}
         </div>`;
     if (window.innerWidth <= 768) closeSidebar();
 }
 
-// ── Share ──
+/* ── Share & Export ── */
 function shareVerse(ch, v) {
     const verse = getVerse(ch, v);
     if (!verse) return;
-    const text = `Bhagavad Gita Ch ${ch}·${v}\n\n${verse.sanskrit}\n\n${verse.transliteration}`;
+    const text = `Bhagavad Gita ${ch}.${v}\n\n${verse.sanskrit}\n\n${verse.transliteration}\n\n${verse.translation}`;
     if (navigator.share) navigator.share({ title: `Gita ${ch}:${v}`, text });
     else navigator.clipboard.writeText(text).then(() => toast("Copied to clipboard!"));
 }
-
-// ── Export ──
 function exportData() {
     const out = { progress: state.progress, bookmarks: [...state.bookmarks], exported: new Date().toISOString() };
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
-    a.download = "gita_backup.json"; a.click();
+    a.download = "gita_progress.json"; a.click();
     toast("Progress exported!");
 }
 
-// ── Search ──
-let debounce;
-document.getElementById("search").addEventListener("input", e => {
-    clearTimeout(debounce);
-    debounce = setTimeout(() => doSearch(e.target.value.trim()), 180);
-});
-document.getElementById("search").addEventListener("blur", () => {
-    setTimeout(() => document.getElementById("search-results").classList.remove("show"), 200);
-});
+/* ── Commentary (lazy fetch + cache) ── */
+const commentaryCache = new Map();
+const SLOK_BASE = "https://raw.githubusercontent.com/vedicscriptures/bhagavad-gita/master/slok";
+
+async function showCommentaryTab(ch, v) {
+    setTab("commentary");
+    const panel = document.getElementById(`comm-${ch}-${v}`);
+    if (!panel || panel.dataset.loaded) return;
+
+    panel.innerHTML = `<div class="commentary-loading">Loading commentaries…</div>`;
+
+    const ckey = `${ch}_${v}`;
+    let data = commentaryCache.get(ckey);
+    if (!data) {
+        try {
+            const r = await fetch(`${SLOK_BASE}/bhagavadgita_chapter_${ch}_slok_${v}.json`);
+            if (r.ok) {
+                const s = await r.json();
+                data = {
+                    sivananda:   (s?.siva?.ec   || "").trim(),
+                    prabhupada:  (s?.prabhu?.ec  || "").trim(),
+                    chinmay:     (s?.chinmay?.hc || "").trim()
+                };
+                commentaryCache.set(ckey, data);
+            }
+        } catch { /* network error */ }
+    }
+
+    if (!data || (!data.sivananda && !data.prabhupada && !data.chinmay)) {
+        panel.innerHTML = `<div class="empty-trans">No commentary available for this verse.</div>`;
+        return;
+    }
+
+    const makeCard = (author, text, open = false) => text
+        ? `<details class="comm-card"${open ? " open" : ""}><summary class="commentary-author">${author}</summary><p class="comm-text">${text}</p></details>`
+        : "";
+
+    panel.innerHTML =
+        makeCard("Swami Sivananda", data.sivananda, true) +
+        makeCard("Srila Prabhupada", data.prabhupada) +
+        makeCard("Swami Chinmayananda (हिंदी)", data.chinmay);
+    panel.dataset.loaded = "true";
+}
+
+/* ── Audio (Web Speech API — reads transliteration) ── */
+let _speechObj = null;
+
+function stopAudio() {
+    if (_speechObj && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+    _speechObj = null;
+}
+
+function toggleAudio(ch, v) {
+    const btn = document.getElementById(`audio-${ch}-${v}`);
+    if (_speechObj && window.speechSynthesis.speaking) {
+        stopAudio();
+        if (btn) { btn.textContent = "🔊 Listen"; btn.classList.remove("playing"); }
+        return;
+    }
+    const verse = getVerse(ch, v);
+    if (!verse) return;
+
+    const utter = new SpeechSynthesisUtterance(verse.transliteration);
+    utter.rate = 0.72; utter.pitch = 0.95;
+    const voices = window.speechSynthesis.getVoices();
+    const en = voices.find(vv => vv.lang.startsWith("en-")) || voices[0];
+    if (en) utter.voice = en;
+
+    const done = () => { _speechObj = null; if (btn) { btn.textContent = "🔊 Listen"; btn.classList.remove("playing"); } };
+    utter.onend = done; utter.onerror = done;
+    _speechObj = utter;
+    window.speechSynthesis.speak(utter);
+    if (btn) { btn.textContent = "⏹ Stop"; btn.classList.add("playing"); }
+}
+
+/* ── Search ── */
+let _debounce;
+document.getElementById("search").addEventListener("input", e => { clearTimeout(_debounce); _debounce = setTimeout(() => doSearch(e.target.value.trim()), 180); });
+document.getElementById("search").addEventListener("blur", () => { setTimeout(() => document.getElementById("search-results").classList.remove("show"), 200); });
 
 function doSearch(q) {
     const res = document.getElementById("search-results");
@@ -690,50 +760,32 @@ function doSearch(q) {
         (v.translation && v.translation.toLowerCase().includes(ql)) ||
         (v.word_by_word && v.word_by_word.some(w => w.toLowerCase().includes(ql)))
     ).slice(0, 10);
-    if (!hits.length) {
-        res.innerHTML = `<div class="sr-item" style="color:var(--sidebar-muted)">No results</div>`;
-    } else {
-        res.innerHTML = hits.map(v =>
-            `<div class="sr-item" onclick="loadVerse(${v.chapter},${v.verse})">
-                <strong>Ch ${v.chapter}·${v.verse}</strong> — ${v.transliteration.split("\n")[0].slice(0, 55)}…
-             </div>`).join("");
-    }
+    res.innerHTML = hits.length
+        ? hits.map(v => `<div class="sr-item" onclick="loadVerse(${v.chapter},${v.verse})"><strong>Ch ${v.chapter}·${v.verse}</strong> — ${v.transliteration.split("\n")[0].slice(0,52)}…</div>`).join("")
+        : `<div class="sr-item" style="color:var(--sidebar-muted)">No results found</div>`;
     res.classList.add("show");
 }
 
-// ── Theme ──
-function toggleTheme() {
-    state.dark = !state.dark;
-    document.body.setAttribute("data-theme", state.dark ? "dark" : "light");
-    localStorage.setItem("gita_theme", state.dark ? "dark" : "light");
-}
-
-// ── Sidebar mobile ──
+/* ── Theme / Sidebar / Mobile ── */
+function toggleTheme() { state.dark = !state.dark; document.body.setAttribute("data-theme", state.dark ? "dark" : "light"); localStorage.setItem("gita_theme", state.dark ? "dark" : "light"); }
 function toggleSidebar() { document.getElementById("sidebar").classList.toggle("open"); }
 function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); }
-function mobileSearch() {
-    document.getElementById("sidebar").classList.add("open");
-    setTimeout(() => document.getElementById("search").focus(), 280);
-}
+function mobileSearch() { document.getElementById("sidebar").classList.add("open"); setTimeout(() => document.getElementById("search").focus(), 280); }
 
-// ── Keyboard shortcuts ──
+/* ── Keyboard ── */
 window.addEventListener("keydown", e => {
     if (e.target.tagName === "INPUT") return;
-    if (e.key === "/") { e.preventDefault(); document.getElementById("search").focus(); }
-    if (e.key === "ArrowRight") navigateVerse(1);
-    if (e.key === "ArrowLeft") navigateVerse(-1);
-    if (e.key === "Escape") closeSidebar();
+    if (e.key === "/")           { e.preventDefault(); document.getElementById("search").focus(); }
+    if (e.key === "ArrowRight")  navigateVerse(1);
+    if (e.key === "ArrowLeft")   navigateVerse(-1);
+    if (e.key === "Escape")      closeSidebar();
 });
 
-// ── Service Worker ──
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 
-// ── Init ──
 function init() {
     if (state.dark) document.body.setAttribute("data-theme", "dark");
-    renderDailyVerse();
-    renderSidebar();
-    loadChapter(1);
+    renderDailyVerse(); renderSidebar(); loadChapter(1);
 }
 init();
 </script>
