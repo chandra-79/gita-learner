@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagavad Gita – Learn & Explore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Devanagari:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Bhagavad Gita","short_name":"Gita","start_url":".","display":"standalone","background_color":"#fef8ee","theme_color":"#e65100"}'>
+
+    <style>
+        :root {
+            --primary: #e65100;
+            --secondary: #ff8f00;
+            --accent: #bf360c;
+            --bg: #fef8ee;
+            --card-bg: #ffffff;
+            --sidebar-bg: #fff8f0;
+            --text: #2d2d2d;
+            --text-muted: #888;
+            --border: #e8d5b0;
+            --gold: #d4af37;
+            --radius: 14px;
+            --sidebar-w: 280px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.07);
+        }
+        [data-theme="dark"] {
+            --bg: #141414;
+            --card-bg: #1e1e1e;
+            --sidebar-bg: #1a1a1a;
+            --text: #f0ede4;
+            --text-muted: #888;
+            --border: #2e2e2e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg); color: var(--text);
+            line-height: 1.7; transition: background 0.3s, color 0.3s;
+        }
+
+        /* ── Header ── */
+        header {
+            position: sticky; top: 0; z-index: 200;
+            background: var(--primary); color: white;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.2rem; height: 56px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        .header-left { display: flex; align-items: center; gap: 0.8rem; }
+        .header-title { font-family: 'Cinzel', serif; font-size: 1.15rem; }
+        .header-subtitle { font-size: 0.72rem; opacity: 0.75; }
+        .header-right { display: flex; gap: 0.4rem; align-items: center; }
+        .icon-btn {
+            background: rgba(255,255,255,0.15); border: none; color: white;
+            padding: 6px 12px; border-radius: 8px; cursor: pointer;
+            font-size: 0.82rem; display: flex; align-items: center; gap: 4px;
+            transition: background 0.15s;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.28); }
+        #menu-toggle { display: none; }
+
+        /* ── Layout ── */
+        .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: calc(100vh - 56px); }
+
+        /* ── Sidebar ── */
+        #sidebar {
+            background: var(--sidebar-bg); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .sidebar-header {
+            padding: 0.9rem; border-bottom: 1px solid var(--border); flex-shrink: 0;
+        }
+        .search-wrap { position: relative; }
+        .search-wrap input {
+            width: 100%; padding: 8px 10px 8px 32px;
+            border: 1px solid var(--border); border-radius: 8px;
+            background: var(--card-bg); color: var(--text); font-size: 0.88rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        .search-wrap input:focus { border-color: var(--gold); }
+        .search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; opacity: 0.45; }
+        .progress-summary {
+            margin-top: 0.6rem; font-size: 0.76rem; color: var(--text-muted);
+            display: flex; justify-content: space-between;
+        }
+        .total-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 0.4rem; }
+        .total-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s; }
+
+        #chapter-list { overflow-y: auto; flex: 1; padding: 0.4rem; }
+        .chapter-item {
+            border-radius: 9px; padding: 0.6rem 0.75rem; cursor: pointer;
+            margin-bottom: 3px; transition: background 0.15s; border: 1px solid transparent;
+        }
+        .chapter-item:hover { background: var(--bg); border-color: var(--border); }
+        .chapter-item.active { background: #fff3e0; border-color: var(--gold); }
+        [data-theme="dark"] .chapter-item.active { background: #2a1a00; }
+        .ch-row { display: flex; justify-content: space-between; align-items: center; }
+        .ch-name { font-size: 0.86rem; font-weight: 600; }
+        .ch-prog { font-size: 0.7rem; color: var(--text-muted); }
+        .ch-subtitle { font-size: 0.73rem; color: var(--text-muted); margin-top: 1px; }
+        .mini-bar { height: 2px; background: var(--border); border-radius: 2px; margin-top: 5px; }
+        .mini-fill { height: 100%; background: var(--secondary); border-radius: 2px; transition: width 0.3s; }
+
+        /* ── Search results ── */
+        .search-results {
+            display: none; position: absolute; left: 0; right: 0; top: calc(100% + 4px);
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 10px; box-shadow: var(--shadow); z-index: 100;
+            max-height: 280px; overflow-y: auto;
+        }
+        .search-results.show { display: block; }
+        .sr-item {
+            padding: 0.55rem 0.9rem; cursor: pointer; font-size: 0.83rem;
+            border-bottom: 1px solid var(--border); transition: background 0.1s;
+        }
+        .sr-item:last-child { border-bottom: none; }
+        .sr-item:hover { background: var(--bg); }
+
+        /* ── Main ── */
+        #main { overflow-y: auto; padding: 1.4rem; scroll-behavior: smooth; }
+
+        /* Daily verse */
+        #daily-verse {
+            background: linear-gradient(135deg, #fff3e0, #fff8f2);
+            border: 1px solid var(--gold); border-radius: var(--radius);
+            padding: 0.9rem 1.2rem; margin-bottom: 1.4rem;
+            display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+        }
+        [data-theme="dark"] #daily-verse { background: linear-gradient(135deg, #2a1a00, #1a1200); }
+        .daily-label { font-size: 0.7rem; color: var(--secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .daily-text { font-size: 0.93rem; margin-top: 2px; }
+        .daily-btn {
+            margin-left: auto; background: var(--primary); color: white; border: none;
+            padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.83rem; white-space: nowrap;
+        }
+
+        /* Chapter header */
+        .ch-header-card {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border-radius: var(--radius); padding: 1.6rem 2rem; margin-bottom: 1.4rem;
+        }
+        .ch-header-card h2 { font-family: 'Cinzel', serif; font-size: 1.4rem; }
+        .ch-header-card p { opacity: 0.82; margin-top: 0.4rem; font-size: 0.9rem; }
+
+        /* Verse card */
+        .verse-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.8rem;
+            margin-bottom: 1.4rem; box-shadow: var(--shadow);
+        }
+        .verse-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 1.4rem; flex-wrap: wrap; gap: 0.6rem;
+        }
+        .verse-label { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--accent); }
+        .verse-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+        /* Buttons */
+        .btn {
+            border: none; border-radius: 8px; cursor: pointer;
+            padding: 6px 13px; font-size: 0.8rem; transition: opacity 0.15s; white-space: nowrap;
+        }
+        .btn:hover { opacity: 0.82; }
+        .btn:disabled { opacity: 0.35; cursor: default; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-ghost { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+        .btn-read { background: #e8f5e9; color: #2e7d32; }
+        .btn-read-done { background: #2e7d32; color: white; }
+        .btn-bm { background: #fff8e1; color: #f57f17; }
+        .btn-bm-done { background: #f57f17; color: white; }
+
+        /* Sanskrit block */
+        .sanskrit-block {
+            background: linear-gradient(135deg, #fff8f0, #fff3e0);
+            border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0;
+            padding: 1rem 1.5rem; margin-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .sanskrit-block { background: linear-gradient(135deg, #2a1800, #1e1200); }
+        .sanskrit-text {
+            font-family: 'Noto Sans Devanagari', serif;
+            font-size: 1.45rem; line-height: 2; color: var(--accent); white-space: pre-line;
+        }
+        .translit-text {
+            font-style: italic; color: var(--secondary);
+            margin-top: 0.4rem; font-size: 0.92rem; white-space: pre-line;
+        }
+
+        /* Tabs */
+        .tabs { display: flex; border-bottom: 1px solid var(--border); margin: 1.4rem 0 0.8rem; }
+        .tab {
+            padding: 7px 15px; border: none; background: transparent;
+            color: var(--text-muted); cursor: pointer; font-size: 0.88rem;
+            border-bottom: 2px solid transparent; transition: all 0.15s;
+        }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .trans-text { font-size: 0.98rem; line-height: 1.8; }
+        .telugu-text { font-family: 'Noto Sans Telugu', sans-serif; font-size: 1.05rem; line-height: 2; }
+        .empty-trans {
+            color: var(--text-muted); font-style: italic; padding: 1rem;
+            background: var(--bg); border-radius: 8px; text-align: center; font-size: 0.88rem;
+        }
+
+        /* Word by word */
+        .wbw-section { margin-top: 1.4rem; }
+        .wbw-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .wbw-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+        .wbw-chip {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 3px 9px; font-size: 0.8rem; line-height: 1.5;
+        }
+
+        /* Nav row */
+        .verse-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--border);
+            gap: 0.5rem;
+        }
+        .verse-nav-info { font-size: 0.82rem; color: var(--text-muted); text-align: center; line-height: 1.4; }
+
+        /* Toast */
+        #toast {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            background: #222; color: #fff; padding: 0.5rem 1.4rem;
+            border-radius: 20px; font-size: 0.88rem; z-index: 999;
+            opacity: 0; transition: opacity 0.25s; pointer-events: none;
+        }
+        #toast.show { opacity: 1; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .layout { grid-template-columns: 1fr; }
+            #sidebar {
+                position: fixed; left: 0; top: 56px; bottom: 0;
+                width: var(--sidebar-w); z-index: 150;
+                transform: translateX(-100%);
+            }
+            #sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.25); }
+            #menu-toggle { display: flex; }
+            .header-subtitle { display: none; }
+            .verse-card { padding: 1.2rem; }
+            .sanskrit-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="icon-btn" id="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div>
+            <div class="header-title">Bhagavad Gita</div>
+            <div class="header-subtitle">भगवद्गीता &nbsp;·&nbsp; భగవద్గీత</div>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle dark mode">🌓</button>
+        <button class="icon-btn" onclick="showBookmarks()" title="Bookmarks">🔖 <span id="bm-count">0</span></button>
+        <button class="icon-btn" onclick="exportData()" title="Export progress">💾</button>
+    </div>
+</header>
+
+<div class="layout">
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search" placeholder="Search verses… (press '/')" autocomplete="off">
+                <div class="search-results" id="search-results"></div>
+            </div>
+            <div class="progress-summary">
+                <span id="prog-label">0 / 701 verses read</span>
+                <span id="prog-pct">0%</span>
+            </div>
+            <div class="total-bar"><div class="total-bar-fill" id="total-bar" style="width:0%"></div></div>
+        </div>
+        <div id="chapter-list"></div>
+    </aside>
+
+    <main id="main">
+        <div id="daily-verse"></div>
+        <div id="app"></div>
+    </main>
+</div>
+
+<div id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const CHAPTER_NAMES = [
+    "",
+    "Arjuna Vishada Yoga",
+    "Sankhya Yoga",
+    "Karma Yoga",
+    "Jnana Karma Sannyasa Yoga",
+    "Karma Sannyasa Yoga",
+    "Atma Samyama Yoga",
+    "Jnana Vijnana Yoga",
+    "Akshara Brahma Yoga",
+    "Raja Vidya Raja Guhya Yoga",
+    "Vibhuti Yoga",
+    "Vishvarupa Darshana Yoga",
+    "Bhakti Yoga",
+    "Kshetra Kshetrajna Vibhaga Yoga",
+    "Gunatraya Vibhaga Yoga",
+    "Purushottama Yoga",
+    "Daivasura Sampad Vibhaga Yoga",
+    "Shraddhatraya Vibhaga Yoga",
+    "Moksha Sannyasa Yoga"
+];
+
+const state = {
+    ch: 1, v: 1, tab: "english",
+    progress: JSON.parse(localStorage.getItem("gita_progress") || "{}"),
+    bookmarks: new Set(JSON.parse(localStorage.getItem("gita_bookmarks") || "[]")),
+    dark: localStorage.getItem("gita_theme") === "dark"
+};
+
+// ── Lookups ──
+const byChapter = {};
+for (const v of GITA) {
+    if (!byChapter[v.chapter]) byChapter[v.chapter] = [];
+    byChapter[v.chapter].push(v);
+}
+function getVerse(ch, v) { return (byChapter[ch] || []).find(x => x.verse === v); }
+function chVerses(ch) { return byChapter[ch] || []; }
+function totalRead() { return Object.keys(state.progress).length; }
+
+// ── Toast ──
+function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// ── Tab switching ──
+function setTab(name) {
+    state.tab = name;
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.dataset.tab === name));
+}
+
+// ── Sidebar ──
+function renderSidebar() {
+    const total = GITA.length;
+    const read = totalRead();
+    const pct = Math.round(read / total * 100);
+    document.getElementById("prog-label").textContent = `${read} / ${total} verses read`;
+    document.getElementById("prog-pct").textContent = `${pct}%`;
+    document.getElementById("total-bar").style.width = pct + "%";
+    document.getElementById("bm-count").textContent = state.bookmarks.size;
+
+    let html = "";
+    for (let i = 1; i <= 18; i++) {
+        const vs = chVerses(i);
+        const done = vs.filter(x => state.progress[`${i}_${x.verse}`]).length;
+        const p = vs.length ? Math.round(done / vs.length * 100) : 0;
+        html += `<div class="chapter-item ${state.ch === i ? "active" : ""}" onclick="loadChapter(${i})">
+            <div class="ch-row"><span class="ch-name">Ch ${i}</span><span class="ch-prog">${done}/${vs.length}</span></div>
+            <div class="ch-subtitle">${CHAPTER_NAMES[i]}</div>
+            <div class="mini-bar"><div class="mini-fill" style="width:${p}%"></div></div>
+        </div>`;
+    }
+    document.getElementById("chapter-list").innerHTML = html;
+}
+
+// ── Daily Verse ──
+function renderDailyVerse() {
+    const seed = new Date().toDateString().split("").reduce((a, b) => a + b.charCodeAt(0), 0);
+    const dv = GITA[seed % GITA.length];
+    const snippet = dv.transliteration.split("\n")[0].slice(0, 60);
+    document.getElementById("daily-verse").innerHTML = `
+        <div style="flex:1;min-width:0">
+            <div class="daily-label">✨ Verse of the Day</div>
+            <div class="daily-text">Ch ${dv.chapter} · ${dv.verse} &nbsp;—&nbsp; <em>${snippet}…</em></div>
+        </div>
+        <button class="daily-btn" onclick="loadVerse(${dv.chapter},${dv.verse})">Read →</button>`;
+}
+
+// ── Chapter view ──
+function loadChapter(ch) {
+    state.ch = ch; state.v = 1;
+    renderSidebar();
+    const vs = chVerses(ch);
+    const done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
+    const pct = vs.length ? Math.round(done / vs.length * 100) : 0;
+    document.getElementById("app").innerHTML = `
+        <div class="ch-header-card">
+            <h2>Chapter ${ch}: ${CHAPTER_NAMES[ch]}</h2>
+            <p>${vs.length} verses &nbsp;·&nbsp; ${done} read (${pct}%)</p>
+        </div>
+        <div id="verse-area"></div>`;
+    loadVerseArea(ch, 1);
+    document.getElementById("main").scrollTo(0, 0);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+// ── Single verse navigation entry ──
+function loadVerse(ch, v) {
+    state.ch = ch; state.v = v;
+    renderSidebar();
+    const vs = chVerses(ch);
+    const done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
+    const pct = vs.length ? Math.round(done / vs.length * 100) : 0;
+    document.getElementById("app").innerHTML = `
+        <div class="ch-header-card">
+            <h2>Chapter ${ch}: ${CHAPTER_NAMES[ch]}</h2>
+            <p>${vs.length} verses &nbsp;·&nbsp; ${done} read (${pct}%)</p>
+        </div>
+        <div id="verse-area"></div>`;
+    loadVerseArea(ch, v);
+    document.getElementById("main").scrollTo(0, 0);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+// ── Render verse into #verse-area without full page rebuild ──
+function loadVerseArea(ch, v) {
+    state.ch = ch; state.v = v;
+    const verse = getVerse(ch, v);
+    if (!verse) return;
+
+    const key = `${ch}_${v}`;
+    const isRead = !!state.progress[key];
+    const isBm = state.bookmarks.has(key);
+    const vs = chVerses(ch);
+    const idx = vs.findIndex(x => x.verse === v);
+    const prevV = idx > 0 ? vs[idx - 1] : null;
+    const nextV = idx < vs.length - 1 ? vs[idx + 1] : null;
+    const globalIdx = GITA.findIndex(x => x.chapter === ch && x.verse === v);
+
+    const englishHtml = verse.translation
+        ? `<p class="trans-text">${verse.translation}</p>`
+        : `<div class="empty-trans">📜 English translation coming soon.<br><small>Try the Sanskrit text and word-by-word analysis available above.</small></div>`;
+
+    const teluguHtml = verse.telugu
+        ? `<p class="trans-text telugu-text">${verse.telugu}</p>`
+        : `<div class="empty-trans">📜 తెలుగు అనువాదం త్వరలో అందుబాటులోకి వస్తుంది.</div>`;
+
+    const hindiHtml = verse.hindi
+        ? `<p class="trans-text">${verse.hindi}</p>`
+        : `<div class="empty-trans">📜 हिंदी अनुवाद शीघ्र उपलब्ध होगा।</div>`;
+
+    const wbwHtml = verse.word_by_word && verse.word_by_word.length
+        ? `<div class="wbw-section">
+               <div class="wbw-label">Word by Word</div>
+               <div class="wbw-chips">${verse.word_by_word.map(w => `<span class="wbw-chip">${w}</span>`).join("")}</div>
+           </div>`
+        : "";
+
+    const t = state.tab;
+
+    const area = document.getElementById("verse-area");
+    if (!area) return;
+    area.innerHTML = `
+    <div class="verse-card">
+        <div class="verse-header">
+            <div class="verse-label">Chapter ${ch} · Verse ${v}</div>
+            <div class="verse-actions">
+                <button class="btn ${isBm ? "btn-bm-done" : "btn-bm"}" onclick="toggleBookmark(${ch},${v})">${isBm ? "🔖 Saved" : "🔖 Save"}</button>
+                <button class="btn ${isRead ? "btn-read-done" : "btn-read"}" onclick="toggleRead(${ch},${v})">${isRead ? "✅ Read" : "📖 Mark Read"}</button>
+                <button class="btn btn-ghost" onclick="shareVerse(${ch},${v})">📤</button>
+            </div>
+        </div>
+
+        <div class="sanskrit-block">
+            <div class="sanskrit-text">${verse.sanskrit}</div>
+            <div class="translit-text">${verse.transliteration}</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab ${t==="english"?"active":""}" data-tab="english" onclick="setTab('english')">English</button>
+            <button class="tab ${t==="telugu"?"active":""}" data-tab="telugu" onclick="setTab('telugu')">తెలుగు</button>
+            <button class="tab ${t==="hindi"?"active":""}" data-tab="hindi" onclick="setTab('hindi')">हिंदी</button>
+        </div>
+        <div class="tab-panel ${t==="english"?"active":""}" data-tab="english">${englishHtml}</div>
+        <div class="tab-panel ${t==="telugu"?"active":""}" data-tab="telugu">${teluguHtml}</div>
+        <div class="tab-panel ${t==="hindi"?"active":""}" data-tab="hindi">${hindiHtml}</div>
+
+        ${wbwHtml}
+
+        <div class="verse-nav">
+            <button class="btn btn-ghost" onclick="${prevV ? `loadVerseArea(${ch},${prevV.verse})` : ch > 1 ? `loadChapterLast(${ch-1})` : ""}"
+                ${!prevV && ch <= 1 ? "disabled" : ""}>
+                ← ${prevV ? `V ${prevV.verse}` : ch > 1 ? `Ch ${ch-1}` : ""}
+            </button>
+            <div class="verse-nav-info">
+                Verse ${v} of ${vs.length}<br>
+                <small>#${globalIdx + 1} of ${GITA.length}</small>
+            </div>
+            <button class="btn btn-primary" onclick="${nextV ? `loadVerseArea(${ch},${nextV.verse})` : ch < 18 ? `loadChapter(${ch+1})` : ""}"
+                ${!nextV && ch >= 18 ? "disabled" : ""}>
+                ${nextV ? `V ${nextV.verse}` : ch < 18 ? `Ch ${ch+1}` : ""} →
+            </button>
+        </div>
+    </div>`;
+}
+
+function loadChapterLast(ch) {
+    const vs = chVerses(ch);
+    loadVerse(ch, vs[vs.length - 1].verse);
+}
+
+// ── Keyboard navigation ──
+function navigateVerse(dir) {
+    const vs = chVerses(state.ch);
+    const idx = vs.findIndex(x => x.verse === state.v);
+    if (dir === 1) {
+        if (idx < vs.length - 1) loadVerseArea(state.ch, vs[idx + 1].verse);
+        else if (state.ch < 18) loadChapter(state.ch + 1);
+    } else {
+        if (idx > 0) loadVerseArea(state.ch, vs[idx - 1].verse);
+        else if (state.ch > 1) loadChapterLast(state.ch - 1);
+    }
+}
+
+// ── Progress & Bookmarks ──
+function toggleRead(ch, v) {
+    const key = `${ch}_${v}`;
+    if (state.progress[key]) delete state.progress[key]; else state.progress[key] = true;
+    localStorage.setItem("gita_progress", JSON.stringify(state.progress));
+    renderSidebar(); loadVerseArea(ch, v);
+}
+
+function toggleBookmark(ch, v) {
+    const key = `${ch}_${v}`;
+    if (state.bookmarks.has(key)) { state.bookmarks.delete(key); toast("Bookmark removed"); }
+    else { state.bookmarks.add(key); toast("Bookmarked!"); }
+    localStorage.setItem("gita_bookmarks", JSON.stringify([...state.bookmarks]));
+    renderSidebar(); loadVerseArea(ch, v);
+}
+
+function showBookmarks() {
+    if (!state.bookmarks.size) { toast("No bookmarks yet"); return; }
+    document.getElementById("app").innerHTML = `
+        <div class="verse-card">
+            <div class="verse-header"><div class="verse-label">🔖 Bookmarks (${state.bookmarks.size})</div></div>
+            ${[...state.bookmarks].map(k => {
+                const [ch, v] = k.split("_").map(Number);
+                return `<div class="sr-item" onclick="loadVerse(${ch},${v})" style="border-radius:8px;margin-bottom:3px;border:1px solid var(--border)">
+                    <strong>Ch ${ch} · ${v}</strong> — ${CHAPTER_NAMES[ch]}</div>`;
+            }).join("")}
+        </div>`;
+}
+
+// ── Share ──
+function shareVerse(ch, v) {
+    const verse = getVerse(ch, v);
+    if (!verse) return;
+    const text = `Bhagavad Gita Ch ${ch}·${v}\n\n${verse.sanskrit}\n\n${verse.transliteration}`;
+    if (navigator.share) navigator.share({ title: `Gita ${ch}:${v}`, text });
+    else navigator.clipboard.writeText(text).then(() => toast("Copied to clipboard!"));
+}
+
+// ── Export ──
+function exportData() {
+    const out = { progress: state.progress, bookmarks: [...state.bookmarks], exported: new Date().toISOString() };
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
+    a.download = "gita_backup.json"; a.click();
+    toast("Progress exported!");
+}
+
+// ── Search ──
+let debounce;
+document.getElementById("search").addEventListener("input", e => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => doSearch(e.target.value.trim()), 180);
+});
+document.getElementById("search").addEventListener("blur", () => {
+    setTimeout(() => document.getElementById("search-results").classList.remove("show"), 200);
+});
+
+function doSearch(q) {
+    const res = document.getElementById("search-results");
+    if (!q || q.length < 2) { res.classList.remove("show"); return; }
+    const ql = q.toLowerCase();
+    const hits = GITA.filter(v =>
+        (v.transliteration && v.transliteration.toLowerCase().includes(ql)) ||
+        (v.translation && v.translation.toLowerCase().includes(ql)) ||
+        (v.word_by_word && v.word_by_word.some(w => w.toLowerCase().includes(ql)))
+    ).slice(0, 10);
+    if (!hits.length) {
+        res.innerHTML = `<div class="sr-item" style="color:var(--text-muted)">No results</div>`;
+    } else {
+        res.innerHTML = hits.map(v =>
+            `<div class="sr-item" onclick="loadVerse(${v.chapter},${v.verse})">
+                <strong>Ch ${v.chapter}·${v.verse}</strong> — ${v.transliteration.split("\n")[0].slice(0, 55)}…
+             </div>`).join("");
+    }
+    res.classList.add("show");
+}
+
+// ── Theme ──
+function toggleTheme() {
+    state.dark = !state.dark;
+    document.body.setAttribute("data-theme", state.dark ? "dark" : "light");
+    localStorage.setItem("gita_theme", state.dark ? "dark" : "light");
+}
+
+// ── Sidebar mobile ──
+function toggleSidebar() { document.getElementById("sidebar").classList.toggle("open"); }
+function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); }
+
+// ── Keyboard shortcuts ──
+window.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT") return;
+    if (e.key === "/") { e.preventDefault(); document.getElementById("search").focus(); }
+    if (e.key === "ArrowRight") navigateVerse(1);
+    if (e.key === "ArrowLeft") navigateVerse(-1);
+    if (e.key === "Escape") closeSidebar();
+});
+
+// ── Service Worker ──
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+
+// ── Init ──
+function init() {
+    if (state.dark) document.body.setAttribute("data-theme", "dark");
+    renderDailyVerse();
+    renderSidebar();
+    loadChapter(1);
+}
+init();
+</script>
+</body>
+</html>

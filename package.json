@@ -1,0 +1,29 @@
+{
+  "name": "bhagavad-gita-dataset",
+  "version": "1.0.0",
+  "description": "Compile all 700 verses of the Bhagavad Gita in Sanskrit, English, Hindi, transliteration, and word-by-word glosses from open-source datasets",
+  "type": "module",
+  "scripts": {
+    "build": "node build_gita.mjs",
+    "start": "node build_gita.mjs",
+    "dev": "npx http-server . -p 3000 -c-1 --cors"
+  },
+  "keywords": [
+    "bhagavad-gita",
+    "gita",
+    "sanskrit",
+    "hindi",
+    "english",
+    "transliteration",
+    "dataset",
+    "json"
+  ],
+  "author": "",
+  "license": "Unlicense",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
