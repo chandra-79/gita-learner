@@ -1,9 +1,12 @@
-const CACHE_NAME = 'gita-v1';
+const CACHE_NAME = 'gita-v2';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/data.js',
-    'https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap'
+    './',
+    './index.html',
+    './data.js',
+    './manifest.json',
+    './icons/icon-192.png',
+    './icons/icon-512.png',
+    'https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Devanagari:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&display=swap'
 ];
 
 self.addEventListener('install', (e) => {

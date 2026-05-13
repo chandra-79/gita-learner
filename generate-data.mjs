@@ -15,7 +15,7 @@
 import { writeFileSync } from "fs";
 
 const RAVISIYER = "https://ravisiyer.github.io/gita-data/v1";
-const VEDICSCRIPTURES = "https://api.github.com/repos/vedicscriptures/bhagavad-gita/contents/chapters";
+const VEDICSCRIPTURES_RAW = "https://raw.githubusercontent.com/vedicscriptures/bhagavad-gita/master/slok";
 
 let fetchCount = 0;
 const startTime = Date.now();
@@ -47,9 +47,20 @@ async function getRavisiyer(path) {
   return getJson(`${RAVISIYER}/${path}`, `Ravisiyer: ${path}`);
 }
 
-async function getVedicscripturesChapter(ch) {
-  const url = `${VEDICSCRIPTURES}/${ch}.json`;
-  return getJson(url, `Vedicscriptures Ch ${String(ch).padStart(2, "0")}`);
+function pickHindi(slok) {
+  return (
+    slok?.tej?.ht ||
+    slok?.chinmay?.hc ||
+    slok?.san?.ht ||
+    slok?.puru?.ht ||
+    slok?.anand?.ht ||
+    ""
+  );
+}
+
+async function getVedicscripturesSlok(ch, v) {
+  const url = `${VEDICSCRIPTURES_RAW}/bhagavadgita_chapter_${ch}_slok_${v}.json`;
+  return getJson(url, `Vedicscriptures Ch ${String(ch).padStart(2, "0")} V ${String(v).padStart(2, "0")}`);
 }
 
 const clean = (s) => (s == null ? "" : String(s).trim());
@@ -71,26 +82,26 @@ function pickEnglishTranslation(translationsByVerse, verseId) {
   return clean(candidates[0].description);
 }
 
-async function fetchHindi() {
+async function fetchHindi(verses) {
   const hindiByChapterVerse = new Map();
-  console.log("\n  Fetching Hindi translations (chapters 1-18):");
+  console.log("\n  Fetching Hindi translations (per-verse, raw GitHub):");
 
-  for (let ch = 1; ch <= 18; ch++) {
-    const chapterData = await getVedicscripturesChapter(ch);
-    if (!chapterData) continue;
-
-    if (!hindiByChapterVerse.has(ch)) {
-      hindiByChapterVerse.set(ch, new Map());
-    }
-
-    if (Array.isArray(chapterData)) {
-      for (const verse of chapterData) {
-        if (verse && verse.verse != null) {
-          const hindi = clean(verse.hindi);
-          if (hindi) {
-            hindiByChapterVerse.get(ch).set(verse.verse, hindi);
-          }
-        }
+  const CONCURRENCY = 20;
+  for (let i = 0; i < verses.length; i += CONCURRENCY) {
+    const batch = verses.slice(i, i + CONCURRENCY);
+    const results = await Promise.all(
+      batch.map((v) => getVedicscripturesSlok(v.chapter_number, v.verse_number))
+    );
+    for (let j = 0; j < batch.length; j++) {
+      const v = batch[j];
+      const slok = results[j];
+      if (!slok) continue;
+      const ch = v.chapter_number;
+      const vn = v.verse_number;
+      const hindi = clean(pickHindi(slok));
+      if (hindi) {
+        if (!hindiByChapterVerse.has(ch)) hindiByChapterVerse.set(ch, new Map());
+        hindiByChapterVerse.get(ch).set(vn, hindi);
       }
     }
   }
@@ -121,13 +132,13 @@ async function fetchHindi() {
 
   const byVerse = new Map();
   for (const t of translations) {
-    if (!t || t.verseId == null) continue;
-    if (!byVerse.has(t.verseId)) byVerse.set(t.verseId, []);
-    byVerse.get(t.verseId).push(t);
+    if (!t || t.verse_id == null) continue;
+    if (!byVerse.has(t.verse_id)) byVerse.set(t.verse_id, []);
+    byVerse.get(t.verse_id).push(t);
   }
 
-  console.log("\nPhase 3: Hindi Translations (GitHub API, best-effort)");
-  const hindiByChapterVerse = await fetchHindi();
+  console.log("\nPhase 3: Hindi Translations (raw GitHub, best-effort)");
+  const hindiByChapterVerse = await fetchHindi(verses);
 
   // Sort verses canonically
   verses.sort(
@@ -186,7 +197,6 @@ async function fetchHindi() {
   const body = `const GITA = ${JSON.stringify(records, null, 2)};
 
 if (typeof module !== "undefined") module.exports = GITA;
-export default GITA;
 `;
 
   const outPath = "./data.js";
