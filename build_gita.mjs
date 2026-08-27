@@ -156,37 +156,6 @@ function pickEnglishTranslation(translationsByVerse, verseId) {
   return clean(candidates[0].description);
 }
 
-const clean = (s) => (s == null ? "" : String(s).trim());
-
-/**
- * The source's word_meanings field is a single string like:
- *   "dharma-kṣhetre—the land of dharma; kuru-kṣhetre—at Kurukshetra; ..."
- * Split on `;` and normalize the em-dash to ": " for readability.
- */
-function parseWordMeanings(raw) {
-  if (!raw) return [];
-  return raw
-    .split(/;\s*/)
-    .map((s) => s.replace(/\s*—\s*/g, ": ").trim())
-    .filter(Boolean);
-}
-
-/**
- * Pick the best available English translation for a given verseId.
- * The translation.json schema in this dataset is roughly:
- *   { id, verseId, authorId, lang, description }
- * We prefer English; if multiple, take the shortest non-empty one
- * (tends to be the cleanest translation rather than a long commentary).
- */
-function pickEnglishTranslation(translationsByVerse, verseId) {
-  const candidates = (translationsByVerse.get(verseId) || []).filter(
-    (t) => (t.lang || "").toLowerCase() === "english" && clean(t.description)
-  );
-  if (candidates.length === 0) return "";
-  candidates.sort((a, b) => a.description.length - b.description.length);
-  return clean(candidates[0].description);
-}
-
 /**
  * Fetch and index Hindi translations from vedicscriptures/bhagavad-gita.
  * Returns a map of { chapter_number -> { verse_number -> hindi_text } }.

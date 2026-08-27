@@ -192,18 +192,6 @@
         .verse-ref { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: var(--accent-light); text-transform: uppercase; }
         .verse-controls { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 
-        /* Audio button */
-        .audio-btn {
-            background: rgba(26,35,126,0.06); border: 1px solid var(--border);
-            color: var(--primary); border-radius: 7px; padding: 5px 12px;
-            font-size: 0.78rem; cursor: pointer; display: flex; align-items: center;
-            gap: 4px; transition: all 0.15s; font-weight: 500; white-space: nowrap;
-        }
-        .audio-btn:hover { background: rgba(26,35,126,0.11); }
-        .audio-btn.playing { background: var(--primary); color: white; border-color: var(--primary); }
-        [data-theme="dark"] .audio-btn { color: #8FB4FF; background: rgba(143,180,255,0.07); }
-        [data-theme="dark"] .audio-btn.playing { background: var(--primary); color: white; }
-
         .verse-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
 
         /* Sanskrit section */
@@ -321,6 +309,443 @@
         [data-theme="dark"] .footer-gh { color: #8FB4FF; background: rgba(143,180,255,0.08); border-color: rgba(143,180,255,0.18); }
         [data-theme="dark"] .footer-gh:hover { background: var(--primary); color: white; }
         .footer-note { font-size: 0.67rem; color: var(--text-muted); opacity: 0.65; }
+        .footer-tour-link { font-size: 0.72rem; color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; margin-top: 0.6rem; display: inline-block; }
+        .footer-tour-link:hover { color: var(--accent-light); }
+
+        /* ── Streak badge ── */
+        #streak-btn { gap: 5px; font-weight: 600; }
+        #streak-btn .streak-num { color: #FFA726; font-size: 0.88rem; }
+        #streak-btn.streak-hot { background: rgba(255,167,38,0.13); border-color: rgba(255,167,38,0.3); }
+
+        /* ── Milestone modal ── */
+        #milestone-overlay {
+            display:none; position:fixed; inset:0; z-index:9500;
+            background:rgba(7,16,46,0.88); align-items:center; justify-content:center;
+            animation:fadeIn .35s ease;
+        }
+        #milestone-overlay.show { display:flex; }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        #milestone-card {
+            background:var(--card-bg); border:1px solid rgba(201,168,76,0.35);
+            border-radius:20px; padding:2.6rem 2.4rem 2rem; max-width:400px; width:90vw;
+            text-align:center; box-shadow:0 24px 72px rgba(0,0,0,0.55);
+            animation:slideUp .38s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes slideUp { from{transform:translateY(28px);opacity:0} to{transform:none;opacity:1} }
+        .ms-icon { font-size:4rem; line-height:1; margin-bottom:0.6rem; }
+        .ms-days { font-family:'Cinzel',serif; font-size:1.7rem; font-weight:700;
+                   background:linear-gradient(135deg,#C9A84C,#F5D87A); -webkit-background-clip:text;
+                   -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:0.3rem; }
+        .ms-msg { font-size:0.92rem; color:var(--text-muted); line-height:1.65; margin-bottom:1.4rem; }
+        .ms-stats { display:flex; justify-content:center; gap:2rem; margin-bottom:1.6rem;
+                    padding:0.9rem 1rem; background:var(--bg); border-radius:10px; }
+        .ms-stat-val { font-family:'Cinzel',serif; font-size:1.4rem; font-weight:700;
+                       color:var(--accent-light); display:block; }
+        .ms-stat-lbl { font-size:0.67rem; text-transform:uppercase; letter-spacing:0.1em;
+                       color:var(--text-muted); margin-top:2px; display:block; }
+        .ms-dots { display:flex; justify-content:center; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.4rem; }
+        .ms-dot-item { font-size:0.7rem; padding:3px 10px; border-radius:20px;
+                       border:1px solid var(--border); color:var(--text-muted); }
+        .ms-dot-item.reached { background:rgba(201,168,76,0.12); border-color:rgba(201,168,76,0.35);
+                               color:var(--accent-light); }
+        .ms-btn { background:linear-gradient(135deg,#1A237E,#3949AB); color:white; border:none;
+                  border-radius:10px; padding:11px 28px; font-size:0.88rem; font-weight:600;
+                  cursor:pointer; box-shadow:0 3px 14px rgba(26,35,126,0.38); transition:all .15s; }
+        .ms-btn:hover { opacity:0.9; box-shadow:0 5px 20px rgba(26,35,126,0.55); }
+
+        /* ── Verse image card generator ── */
+        #card-overlay {
+            display:none; position:fixed; inset:0; z-index:9400;
+            background:rgba(7,16,46,0.9); align-items:center; justify-content:center; padding:1rem;
+        }
+        #card-overlay.show { display:flex; }
+        #card-modal {
+            background:var(--card-bg); border:1px solid rgba(201,168,76,0.25);
+            border-radius:18px; padding:1.6rem; max-width:680px; width:100%;
+            box-shadow:0 20px 60px rgba(0,0,0,0.5);
+        }
+        .card-modal-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+        .card-modal-title { font-family:'Cinzel',serif; font-size:0.95rem; font-weight:600; color:var(--text); }
+        .card-close { background:none; border:none; font-size:1.3rem; cursor:pointer;
+                      color:var(--text-muted); transition:color .15s; line-height:1; }
+        .card-close:hover { color:var(--text); }
+        #card-preview { width:100%; border-radius:10px; display:block;
+                        box-shadow:0 4px 24px rgba(0,0,0,0.35); }
+        .card-actions { display:flex; gap:0.6rem; margin-top:1rem; flex-wrap:wrap; }
+        .card-dl-btn { flex:1; background:linear-gradient(135deg,#1A237E,#3949AB); color:white;
+                       border:none; border-radius:9px; padding:10px 20px; font-size:0.84rem;
+                       font-weight:600; cursor:pointer; transition:all .15s;
+                       box-shadow:0 3px 14px rgba(26,35,126,0.38); }
+        .card-dl-btn:hover { opacity:0.9; }
+        .card-share-btn { background:var(--bg); color:var(--text); border:1px solid var(--border);
+                          border-radius:9px; padding:10px 18px; font-size:0.84rem;
+                          cursor:pointer; transition:all .15s; }
+        .card-share-btn:hover { border-color:#9CA3AF; }
+
+        /* ── Personal notes ── */
+        .notes-section { padding:1.2rem 2rem 1.5rem; border-top:1px solid var(--border);
+                         background:var(--bg); display:none; }
+        [data-theme="dark"] .notes-section { background:rgba(0,0,0,0.14); }
+        .notes-section.open { display:block; }
+        .notes-label { font-size:0.63rem; text-transform:uppercase; letter-spacing:0.14em;
+                       color:var(--text-muted); margin-bottom:0.6rem; font-weight:700; }
+        .notes-area {
+            width:100%; min-height:96px; resize:vertical;
+            background:var(--card-bg); border:1px solid var(--border);
+            border-radius:8px; padding:0.75rem 0.9rem; font-size:0.86rem;
+            line-height:1.7; color:var(--text); font-family:inherit;
+            transition:border-color .2s; outline:none;
+        }
+        .notes-area:focus { border-color:rgba(201,168,76,0.55); }
+        .notes-area::placeholder { color:var(--text-muted); opacity:0.6; }
+        .btn-note { background:#FEFCE8; color:#92400E; border:1px solid #FDE68A; }
+        .btn-note-active { background:#92400E; color:white; }
+        @media (max-width:768px) {
+            .notes-section { padding:1rem; }
+            .ms-stats { gap:1.2rem; }
+        }
+
+        /* ── Font sizes ── */
+        body.fs-large .sanskrit-text   { font-size:1.9rem; }
+        body.fs-large .translit-text   { font-size:1.06rem; }
+        body.fs-large .trans-text      { font-size:1.1rem; }
+        body.fs-xlarge .sanskrit-text  { font-size:2.2rem; }
+        body.fs-xlarge .translit-text  { font-size:1.18rem; }
+        body.fs-xlarge .trans-text     { font-size:1.22rem; }
+
+        /* ── Chapter complete banner ── */
+        #chapter-complete {
+            display:none; position:fixed; top:var(--header-h); left:0; right:0; z-index:201;
+            background:linear-gradient(120deg,#07102E 0%,#1A237E 60%,#283593 100%);
+            color:white; padding:0.85rem 1.5rem; align-items:center; gap:1rem;
+            box-shadow:0 4px 20px rgba(0,0,0,0.4);
+        }
+        #chapter-complete.show { display:flex; animation:slideDown .42s cubic-bezier(.4,0,.2,1); }
+        @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:none;opacity:1} }
+        .cc-main { flex:1; text-align:center; }
+        .cc-title { font-family:'Cinzel',serif; font-size:1rem; font-weight:700;
+                    background:linear-gradient(135deg,#C9A84C,#F5D87A);
+                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .cc-msg { font-size:0.78rem; color:rgba(255,255,255,0.72); margin-top:2px; }
+        .cc-close { background:none; border:none; color:rgba(255,255,255,0.45); cursor:pointer;
+                    font-size:1.2rem; line-height:1; flex-shrink:0; transition:color .15s; padding:4px; }
+        .cc-close:hover { color:white; }
+
+        /* ── Keyboard shortcuts overlay ── */
+        #shortcuts-overlay {
+            display:none; position:fixed; inset:0; z-index:9300;
+            background:rgba(7,16,46,0.88); align-items:center; justify-content:center;
+        }
+        #shortcuts-overlay.show { display:flex; }
+        #shortcuts-modal {
+            background:var(--card-bg); border:1px solid rgba(201,168,76,0.25);
+            border-radius:18px; padding:2rem; max-width:460px; width:90vw;
+            box-shadow:0 20px 60px rgba(0,0,0,0.5);
+        }
+        .shortcuts-title { font-family:'Cinzel',serif; font-size:1rem; font-weight:600;
+                           margin-bottom:1.4rem; color:var(--text); }
+        .shortcuts-grid { display:grid; grid-template-columns:auto 1fr; gap:0.5rem 1.2rem; align-items:center; }
+        .shortcut-key { font-family:monospace; background:var(--bg); border:1px solid var(--border);
+                        border-radius:5px; padding:2px 9px; font-size:0.8rem; font-weight:700;
+                        color:var(--primary); text-align:center; white-space:nowrap; }
+        [data-theme="dark"] .shortcut-key { color:#8FB4FF; }
+        .shortcut-desc { font-size:0.83rem; color:var(--text-muted); }
+        .shortcuts-close { display:block; margin-top:1.4rem; width:100%; padding:9px;
+                           background:var(--bg); border:1px solid var(--border); border-radius:9px;
+                           cursor:pointer; font-size:0.84rem; color:var(--text-muted); transition:all .15s; }
+        .shortcuts-close:hover { border-color:#9CA3AF; color:var(--text); }
+
+        /* ── Reading plans overlay ── */
+        #plans-overlay {
+            display:none; position:fixed; inset:0; z-index:9200;
+            background:rgba(7,16,46,0.92); align-items:flex-start; justify-content:center;
+            padding:2rem 1rem; overflow-y:auto;
+        }
+        #plans-overlay.show { display:flex; }
+        #plans-modal {
+            background:var(--card-bg); border:1px solid rgba(201,168,76,0.25);
+            border-radius:18px; padding:2rem; max-width:680px; width:100%;
+            box-shadow:0 20px 60px rgba(0,0,0,0.5); margin:auto;
+        }
+        .plans-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+        .plans-title { font-family:'Cinzel',serif; font-size:1.05rem; font-weight:600; color:var(--text); }
+        .plans-close { background:none; border:none; font-size:1.3rem; cursor:pointer;
+                       color:var(--text-muted); transition:color .15s; }
+        .plans-close:hover { color:var(--text); }
+        .plans-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
+        @media (max-width:500px) { .plans-grid { grid-template-columns:1fr; } }
+        .plan-card {
+            background:var(--bg); border:1px solid var(--border); border-radius:12px;
+            padding:1.3rem; cursor:pointer; transition:all .18s; text-align:left;
+        }
+        .plan-card:hover { border-color:rgba(201,168,76,0.4); background:rgba(201,168,76,0.04); }
+        .plan-icon  { font-size:2rem; line-height:1; margin-bottom:0.5rem; }
+        .plan-name  { font-family:'Cinzel',serif; font-size:0.88rem; font-weight:600; color:var(--text); margin-bottom:0.25rem; }
+        .plan-desc  { font-size:0.75rem; color:var(--text-muted); line-height:1.55; }
+        .plan-count { font-size:0.68rem; color:var(--accent-light); margin-top:0.5rem; font-weight:600; }
+        .plan-progress-bar  { height:3px; background:var(--border); border-radius:3px; margin-top:0.55rem; }
+        .plan-progress-fill { height:100%; background:linear-gradient(90deg,#9A7B0A,#C9A84C); border-radius:3px; transition:width .4s; }
+        .plan-detail-hdr { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.7rem; }
+        .plan-back { background:none; border:none; cursor:pointer; color:var(--text-muted);
+                     font-size:0.84rem; transition:color .15s; }
+        .plan-back:hover { color:var(--text); }
+        .plan-verses { display:flex; flex-wrap:wrap; gap:0.4rem; max-height:300px; overflow-y:auto;
+                       padding:0.3rem 0; margin-top:0.8rem; }
+        .plan-verse-chip {
+            padding:4px 11px; border-radius:20px; font-size:0.72rem; cursor:pointer;
+            border:1px solid var(--border); background:var(--card-bg); color:var(--text-muted);
+            transition:all .15s; font-weight:500; font-family:'Cinzel',serif; letter-spacing:0.03em;
+        }
+        .plan-verse-chip:hover { border-color:rgba(201,168,76,0.4); color:var(--text); }
+        .plan-verse-chip.done { background:rgba(39,103,73,0.12); border-color:#BBF0C8; color:#276749; }
+        [data-theme="dark"] .plan-verse-chip.done { background:rgba(39,103,73,0.22); color:#4ade80; border-color:#4ade80; }
+
+        /* ── Quiz mode ── */
+        #quiz-overlay {
+            display:none; position:fixed; inset:0; z-index:9100;
+            background:rgba(7,16,46,0.92); align-items:center; justify-content:center; padding:1rem;
+        }
+        #quiz-overlay.show { display:flex; }
+        #quiz-modal {
+            background:var(--card-bg); border:1px solid rgba(201,168,76,0.25);
+            border-radius:18px; padding:2rem; max-width:560px; width:100%;
+            box-shadow:0 20px 60px rgba(0,0,0,0.5); max-height:92vh; overflow-y:auto;
+        }
+        .quiz-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; }
+        .quiz-title { font-family:'Cinzel',serif; font-size:0.95rem; font-weight:600; color:var(--text); }
+        .quiz-close { background:none; border:none; font-size:1.3rem; cursor:pointer;
+                      color:var(--text-muted); transition:color .15s; }
+        .quiz-close:hover { color:var(--text); }
+        .quiz-meta { display:flex; justify-content:space-between; font-size:0.72rem;
+                     color:var(--text-muted); margin-bottom:0.5rem; }
+        .quiz-progress-bar { height:3px; background:var(--border); border-radius:3px; margin-bottom:1.5rem; }
+        .quiz-progress-fill { height:100%; background:linear-gradient(90deg,#9A7B0A,#C9A84C); border-radius:3px; transition:width .3s; }
+        .quiz-question { font-size:0.9rem; line-height:1.8; color:var(--text);
+                         background:var(--bg); border-radius:10px; padding:1rem 1.2rem;
+                         border-left:3px solid rgba(201,168,76,0.5); margin-bottom:1.3rem; }
+        .quiz-prompt  { font-size:0.72rem; color:var(--text-muted); margin-bottom:1rem;
+                        text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.55rem; margin-bottom:1.2rem; }
+        .quiz-opt {
+            padding:0.75rem 1rem; border:1px solid var(--border); border-radius:10px;
+            cursor:pointer; font-size:0.84rem; color:var(--text); text-align:left;
+            background:var(--bg); transition:all .15s; width:100%;
+        }
+        .quiz-opt:hover:not(:disabled) { border-color:rgba(201,168,76,0.4); background:rgba(201,168,76,0.05); }
+        .quiz-opt.correct { background:rgba(39,103,73,0.12); border-color:#4ade80; color:#276749; font-weight:600; }
+        .quiz-opt.wrong   { background:rgba(220,38,38,0.08); border-color:#f87171; color:#dc2626; }
+        [data-theme="dark"] .quiz-opt.correct { color:#4ade80; background:rgba(39,103,73,0.22); }
+        [data-theme="dark"] .quiz-opt.wrong   { color:#f87171; background:rgba(220,38,38,0.14); }
+        .quiz-feedback { font-size:0.82rem; color:var(--text-muted); min-height:1.6rem; margin-bottom:0.9rem; line-height:1.55; }
+        .quiz-next-btn { width:100%; padding:10px; background:linear-gradient(135deg,#1A237E,#3949AB); color:white;
+                         border:none; border-radius:9px; cursor:pointer; font-size:0.88rem; font-weight:600;
+                         display:none; transition:opacity .15s; box-shadow:0 3px 14px rgba(26,35,126,0.38); }
+        .quiz-next-btn:hover { opacity:0.9; }
+        .quiz-score-big { font-family:'Cinzel',serif; font-size:3.5rem; font-weight:700; line-height:1;
+                          background:linear-gradient(135deg,#C9A84C,#F5D87A);
+                          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .quiz-score-lbl { font-size:0.78rem; color:var(--text-muted); text-transform:uppercase;
+                          letter-spacing:0.1em; margin:0.3rem 0 1rem; }
+        .quiz-result-msg { font-size:0.9rem; line-height:1.7; color:var(--text-muted); margin-bottom:1.4rem; }
+        .quiz-result-btns { display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap; }
+        .quiz-retry { padding:9px 22px; background:linear-gradient(135deg,#1A237E,#3949AB); color:white;
+                      border:none; border-radius:9px; cursor:pointer; font-size:0.84rem; font-weight:600; }
+        .quiz-done  { padding:9px 22px; background:var(--bg); color:var(--text);
+                      border:1px solid var(--border); border-radius:9px; cursor:pointer; font-size:0.84rem; }
+
+        /* ── Cross-references ── */
+        .xref-section { padding:1rem 2rem 1.4rem; border-top:1px solid var(--border); background:var(--bg); }
+        [data-theme="dark"] .xref-section { background:rgba(0,0,0,0.1); }
+        .xref-label { font-size:0.63rem; text-transform:uppercase; letter-spacing:0.14em;
+                      color:var(--text-muted); margin-bottom:0.6rem; font-weight:700; }
+        .xref-chips { display:flex; flex-wrap:wrap; gap:0.4rem; }
+        .xref-chip {
+            padding:4px 12px; border-radius:20px; font-size:0.72rem; cursor:pointer;
+            border:1px solid rgba(201,168,76,0.28); background:rgba(201,168,76,0.06);
+            color:var(--accent-light); transition:all .15s; font-weight:600;
+            font-family:'Cinzel',serif; letter-spacing:0.04em;
+        }
+        .xref-chip:hover { background:rgba(201,168,76,0.16); border-color:rgba(201,168,76,0.55); }
+        @media (max-width:768px) { .xref-section { padding:1rem; } }
+
+        /* hide desktop-only header buttons on mobile */
+        @media (max-width:768px) {
+            #plans-btn, #quiz-btn, #font-btn, #shortcuts-btn, #about-btn { display:none; }
+        }
+
+        /* ── About the Gita ── */
+        .about-hero {
+            padding:2rem 2rem 1.8rem;
+            background:linear-gradient(140deg,#07102E 0%,#1A237E 60%,#283593 100%);
+            position:relative; overflow:hidden;
+        }
+        .about-hero::after {
+            content:'ॐ'; position:absolute; right:1.5rem; bottom:-1.2rem;
+            font-family:'Noto Sans Devanagari',serif; font-size:8rem; opacity:0.05;
+            color:#C9A84C; line-height:1; pointer-events:none;
+        }
+        .about-hero-quote {
+            font-family:'Cinzel',serif; font-size:1rem; line-height:1.9;
+            color:rgba(255,255,255,0.9); font-style:italic; position:relative;
+        }
+        .about-hero-ref { font-size:0.72rem; color:rgba(201,168,76,0.85); margin-top:0.7rem; }
+        .about-section { padding:1.6rem 2rem; border-top:1px solid var(--border); }
+        .about-section-title {
+            font-family:'Cinzel',serif; font-size:0.78rem; font-weight:700;
+            color:var(--accent-light); letter-spacing:0.12em; margin-bottom:0.9rem;
+            text-transform:uppercase;
+        }
+        .about-para { font-size:0.88rem; line-height:1.9; color:var(--text-muted); }
+        .about-para + .about-para { margin-top:0.8rem; }
+
+        .about-5w-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; }
+        @media (max-width:700px) { .about-5w-grid { grid-template-columns:1fr; } }
+        @media (min-width:501px) and (max-width:700px) { .about-5w-grid { grid-template-columns:1fr 1fr; } }
+        .about-5w-card {
+            background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:1rem;
+        }
+        .about-5w-icon { font-size:1.4rem; line-height:1; margin-bottom:0.4rem; }
+        .about-5w-label {
+            font-family:'Cinzel',serif; font-size:0.68rem; font-weight:700;
+            color:var(--accent-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.4rem;
+        }
+        .about-5w-text { font-size:0.79rem; line-height:1.7; color:var(--text-muted); }
+
+        .about-groups { display:flex; flex-direction:column; gap:0.8rem; }
+        .about-group { border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
+        .about-group-num { font-size:0.64rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--accent-light); font-weight:700; margin-bottom:0.25rem; }
+        .about-group-name { font-family:'Cinzel',serif; font-size:1rem; font-weight:700; color:var(--text); }
+        .about-group-sub { font-size:0.76rem; color:var(--text-muted); margin:0.2rem 0 0.65rem; font-style:italic; }
+        .about-group-desc { font-size:0.82rem; line-height:1.78; color:var(--text-muted); margin-bottom:0.8rem; }
+        .about-group-chapters { display:flex; flex-wrap:wrap; gap:0.4rem; }
+        .about-ch-pill {
+            padding:3px 11px; border-radius:20px; font-size:0.7rem; cursor:pointer;
+            border:1px solid var(--border); background:var(--card-bg); color:var(--text-muted);
+            transition:all .15s; font-weight:500; font-family:'Cinzel',serif; letter-spacing:0.03em;
+        }
+        .about-ch-pill:hover { border-color:rgba(201,168,76,0.45); color:var(--accent-light); }
+        @media (max-width:768px) { .about-section { padding:1.2rem; } .about-hero { padding:1.4rem; } }
+
+        /* ── Better header buttons ── */
+        .btn-label {
+            display:none; font-size:0.68rem; letter-spacing:0.02em;
+            font-weight:500; color:rgba(255,255,255,0.75);
+        }
+        @media (min-width:1280px) {
+            .icon-btn { padding:7px 13px; font-size:0.82rem; gap:5px; }
+            .btn-label { display:inline; }
+        }
+        /* Mobile nav — more pronounced */
+        .mobile-nav-btn .nav-icon { font-size:1.45rem; }
+        .mobile-nav-btn { font-size:0.6rem; font-weight:600; letter-spacing:0.04em; padding:5px 8px; }
+        .mobile-nav-btn:hover, .mobile-nav-btn:active { color:var(--accent-light); background:rgba(255,255,255,0.06); border-radius:10px; }
+
+        /* ── Offline banner ── */
+        #offline-banner {
+            display:none; position:fixed; bottom:1.5rem; left:50%;
+            transform:translateX(-50%); background:#1C1C1E; color:rgba(255,255,255,0.82);
+            padding:0.5rem 1.4rem; border-radius:24px; font-size:0.78rem; z-index:600;
+            box-shadow:0 4px 20px rgba(0,0,0,0.45); white-space:nowrap;
+            align-items:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.08);
+        }
+        #offline-banner.show { display:flex; }
+        @media (max-width:768px) { #offline-banner { bottom:calc(var(--mobile-nav-h) + 0.8rem); } }
+
+        /* ── Reading streak calendar ── */
+        .streak-calendar { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin:1rem 0; }
+        .streak-cal-hdr { font-size:0.58rem; text-align:center; color:var(--text-muted); padding-bottom:2px; font-weight:600; }
+        .streak-cal-day {
+            aspect-ratio:1; border-radius:4px; border:1px solid var(--border);
+            background:var(--bg); transition:transform .1s;
+        }
+        .streak-cal-day:hover { transform:scale(1.15); }
+        .streak-cal-day.read { background:linear-gradient(135deg,#9A7B0A,#C9A84C); border-color:rgba(201,168,76,0.4); }
+        .streak-cal-day.today { border-color:var(--primary); border-width:2px; }
+        .streak-cal-day.today.read { border-color:#F5D87A; border-width:2px; }
+        .streak-cal-day.empty { opacity:0; pointer-events:none; }
+        .streak-cal-legend { display:flex; align-items:center; gap:0.5rem; font-size:0.68rem; color:var(--text-muted); margin-top:0.3rem; }
+        .streak-cal-swatch { width:12px; height:12px; border-radius:2px; border:1px solid var(--border); flex-shrink:0; }
+
+        /* ── Quiz difficulty picker ── */
+        .quiz-diff-title { font-family:'Cinzel',serif; font-size:0.88rem; font-weight:600;
+                           color:var(--text); margin-bottom:1.2rem; text-align:center; }
+        .quiz-diff-grid { display:flex; flex-direction:column; gap:0.75rem; }
+        .quiz-diff-card {
+            display:flex; align-items:flex-start; gap:1rem; padding:1rem 1.2rem;
+            border:1px solid var(--border); border-radius:12px; cursor:pointer;
+            background:var(--bg); transition:all .18s; text-align:left;
+        }
+        .quiz-diff-card:hover { border-color:rgba(201,168,76,0.4); background:rgba(201,168,76,0.04); }
+        .quiz-diff-icon { font-size:1.6rem; line-height:1; flex-shrink:0; }
+        .quiz-diff-name { font-family:'Cinzel',serif; font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:0.2rem; }
+        .quiz-diff-desc { font-size:0.75rem; color:var(--text-muted); line-height:1.55; }
+
+        /* ── Onboarding Tour ── */
+        /* Four strips that surround the spotlight hole */
+        .tc-strip {
+            position:fixed; z-index:9000; background:rgba(7,16,46,0.84);
+            cursor:pointer; display:none;
+            transition:top .38s cubic-bezier(.4,0,.2,1),left .38s cubic-bezier(.4,0,.2,1),
+                        width .38s cubic-bezier(.4,0,.2,1),height .38s cubic-bezier(.4,0,.2,1);
+        }
+        /* Golden border around the spotlight */
+        #tc-border {
+            position:fixed; z-index:9001; pointer-events:none; display:none;
+            border:2px solid rgba(201,168,76,0.85); border-radius:14px;
+            transition:all .38s cubic-bezier(.4,0,.2,1);
+            animation:tc-glow 2.6s ease-in-out infinite;
+        }
+        @keyframes tc-glow {
+            0%,100% { box-shadow:0 0 0 4px rgba(201,168,76,0.1), 0 0 30px rgba(201,168,76,0.15); }
+            50%      { box-shadow:0 0 0 8px rgba(201,168,76,0.2), 0 0 55px rgba(201,168,76,0.32); }
+        }
+        /* Tour card */
+        #tour-card {
+            display:none; position:fixed; z-index:9002;
+            background:var(--card-bg);
+            border:1px solid rgba(201,168,76,0.25);
+            border-radius:18px; padding:0 0 1.4rem; max-width:340px; width:calc(100vw - 32px);
+            box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 2px 10px rgba(0,0,0,0.25);
+            transition:left .38s cubic-bezier(.4,0,.2,1),top .38s cubic-bezier(.4,0,.2,1);
+            overflow:hidden;
+        }
+        .tc-header {
+            background:linear-gradient(135deg,#07102E 0%,#1A237E 60%,#283593 100%);
+            padding:1.1rem 1.6rem 1rem; position:relative; overflow:hidden;
+        }
+        .tc-header::after {
+            content:'ॐ'; position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+            font-family:'Noto Sans Devanagari',serif; font-size:3.5rem; opacity:0.07;
+            color:#C9A84C; line-height:1; pointer-events:none;
+        }
+        .tc-dots { display:flex; gap:5px; margin-bottom:0.6rem; }
+        .tc-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2); transition:all .22s; flex-shrink:0; }
+        .tc-dot.on { width:22px; border-radius:3px; background:var(--accent-light); }
+        #tour-ttl { font-family:'Cinzel',serif; font-size:0.98rem; font-weight:600;
+                    color:#fff; line-height:1.35; position:relative; }
+        .tc-body { padding:1.2rem 1.6rem 0; }
+        #tour-txt { font-size:0.84rem; line-height:1.78; color:var(--text-muted); margin-bottom:1.15rem; }
+        .tc-hint { font-size:0.68rem; color:var(--text-muted); opacity:0.5;
+                   margin:-0.6rem 0 1rem; display:flex; align-items:center; gap:4px; }
+        .tc-actions { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding:0 1.6rem; }
+        .tc-skip { font-size:0.74rem; color:var(--text-muted); background:none; border:none; cursor:pointer; padding:4px 0; transition:color .15s; }
+        .tc-skip:hover { color:var(--text); }
+        .tc-prev { background:transparent; color:var(--text-muted); border:1px solid var(--border);
+                   border-radius:8px; padding:7px 15px; font-size:0.81rem; cursor:pointer; transition:all .15s; }
+        .tc-prev:hover { color:var(--text); border-color:#9CA3AF; }
+        .tc-next { background:linear-gradient(135deg,#1A237E 0%,#3949AB 100%); color:white;
+                   border:none; border-radius:9px; padding:9px 22px; font-size:0.84rem;
+                   cursor:pointer; font-weight:600; letter-spacing:0.02em;
+                   box-shadow:0 3px 14px rgba(26,35,126,0.38); transition:all .15s; }
+        .tc-next:hover { box-shadow:0 5px 20px rgba(26,35,126,0.55); opacity:0.95; }
+        /* Welcome step overrides */
+        #tour-card.tc-center { top:50%!important; left:50%!important; transform:translate(-50%,-50%)!important; max-width:440px; }
+        #tour-card.tc-center .tc-dots { justify-content:center; }
+        #tour-card.tc-center #tour-ttl { font-size:1.26rem; text-align:center; }
+        #tour-card.tc-center .tc-body { text-align:center; }
+        #tour-card.tc-center .tc-actions { flex-direction:column; gap:0.6rem; padding:0 1.6rem; }
+        #tour-card.tc-center .tc-next { padding:11px; font-size:0.9rem; }
+        #tour-card.tc-center .tc-skip { order:2; }
 
         /* Mobile bottom nav */
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--sidebar-bg); border-top: 1px solid rgba(201,168,76,0.14); padding: 0.45rem 0 calc(0.45rem + env(safe-area-inset-bottom)); z-index: 190; justify-content: space-around; align-items: center; height: var(--mobile-nav-h); }
@@ -357,16 +782,25 @@
 <header>
     <div class="header-left">
         <button class="icon-btn" id="menu-toggle" onclick="toggleSidebar()">☰</button>
-        <div class="header-om">ॐ</div>
-        <div>
-            <div class="header-title">Bhagavad Gita</div>
-            <div class="header-subtitle">भगवद्गीता &nbsp;·&nbsp; భగవద్గీత</div>
+        <div style="cursor:pointer;display:flex;align-items:center;gap:1rem" onclick="goHome()" title="Go to Home">
+            <div class="header-om">ॐ</div>
+            <div>
+                <div class="header-title">Bhagavad Gita</div>
+                <div class="header-subtitle">भगवद्गीता &nbsp;·&nbsp; భగవద్గీత</div>
+            </div>
         </div>
     </div>
     <div class="header-right">
-        <button class="icon-btn" onclick="toggleTheme()" title="Toggle dark mode">🌓</button>
-        <button class="icon-btn" onclick="showBookmarks()" title="Bookmarks">🔖 <span id="bm-count">0</span></button>
-        <button class="icon-btn" onclick="exportData()" title="Export progress">💾</button>
+        <button class="icon-btn streak-hot" id="streak-btn" onclick="showStreakPanel()" title="Reading streak — your daily progress">🔥 <span class="streak-num" id="streak-count">0</span><span class="btn-label">Streak</span></button>
+        <button class="icon-btn" onclick="toggleTheme()" title="Switch dark / light mode">🌓<span class="btn-label">Theme</span></button>
+        <button class="icon-btn" onclick="showHistory()" title="Recently visited verses">🕐<span class="btn-label">History</span></button>
+        <button class="icon-btn" onclick="showBookmarks()" title="Your saved bookmarks">🔖 <span id="bm-count">0</span><span class="btn-label">Saved</span></button>
+        <button class="icon-btn" id="about-btn" onclick="showAbout()" title="About the Bhagavad Gita — story, structure, significance">📜<span class="btn-label">About</span></button>
+        <button class="icon-btn" id="plans-btn" onclick="showPlans()" title="Guided reading plans — Beginner, 50 Essentials, Karma Yoga, 18-Day">🗺️<span class="btn-label">Plans</span></button>
+        <button class="icon-btn" id="quiz-btn" onclick="startQuiz()" title="Quiz — test your Gita knowledge (Easy / Medium / Hard)">🧠<span class="btn-label">Quiz</span></button>
+        <button class="icon-btn" id="font-btn" onclick="cycleFontSize()" title="Cycle font size: Normal → Large → X-Large (A key)">Aa<span class="btn-label">Font</span></button>
+        <button class="icon-btn" id="shortcuts-btn" onclick="showShortcuts()" title="Keyboard shortcuts reference (? key)">⌨️<span class="btn-label">Keys</span></button>
+        <button class="icon-btn" onclick="exportData()" title="Export your reading progress as JSON">💾<span class="btn-label">Export</span></button>
     </div>
 </header>
 
@@ -403,6 +837,8 @@
                 </div>
                 <a class="footer-gh" href="https://github.com/chandra-79/gita-learner" target="_blank" rel="noopener">⭐ Star on GitHub</a>
                 <p class="footer-note">Crafted with devotion · Bhagavad Gita Learner 🙏</p>
+                <button class="footer-tour-link" onclick="replayTour()">↺ Replay intro tour</button>
+                <button class="footer-tour-link" onclick="showAbout()" style="margin-left:1rem">📜 About the Gita</button>
             </footer>
         </div>
     </main>
@@ -411,11 +847,119 @@
 <nav class="mobile-nav">
     <button class="mobile-nav-btn" onclick="toggleSidebar()"><span class="nav-icon">📚</span>Chapters</button>
     <button class="mobile-nav-btn" onclick="mobileSearch()"><span class="nav-icon">🔍</span>Search</button>
-    <button class="mobile-nav-btn" onclick="showBookmarks()"><span class="nav-icon">🔖</span>Saved</button>
+    <button class="mobile-nav-btn" onclick="showPlans()"><span class="nav-icon">🗺️</span>Plans</button>
+    <button class="mobile-nav-btn" onclick="startQuiz()"><span class="nav-icon">🧠</span>Quiz</button>
     <button class="mobile-nav-btn" onclick="toggleTheme()"><span class="nav-icon">🌓</span>Theme</button>
 </nav>
 
 <div id="toast"></div>
+
+<!-- Milestone celebration modal -->
+<div id="milestone-overlay">
+    <div id="milestone-card">
+        <div class="ms-icon" id="ms-icon">🔥</div>
+        <div class="ms-days" id="ms-days">7 Day Streak!</div>
+        <p class="ms-msg" id="ms-msg">One full week of wisdom.</p>
+        <div class="ms-stats">
+            <div><span class="ms-stat-val" id="ms-cur">7</span><span class="ms-stat-lbl">Current streak</span></div>
+            <div><span class="ms-stat-val" id="ms-best">7</span><span class="ms-stat-lbl">Best streak</span></div>
+            <div><span class="ms-stat-val" id="ms-total">0</span><span class="ms-stat-lbl">Verses read</span></div>
+        </div>
+        <div class="ms-dots" id="ms-dots"></div>
+        <button class="ms-btn" onclick="closeMilestone()">Continue Reading →</button>
+    </div>
+</div>
+
+<!-- Verse image card generator -->
+<div id="card-overlay" onclick="if(event.target===this)closeCardModal()">
+    <div id="card-modal">
+        <div class="card-modal-hdr">
+            <span class="card-modal-title">📷 Verse Image Card</span>
+            <button class="card-close" onclick="closeCardModal()">✕</button>
+        </div>
+        <canvas id="card-preview"></canvas>
+        <div class="card-actions">
+            <button class="card-dl-btn" onclick="downloadCard()">⬇ Download PNG</button>
+            <button class="card-share-btn" id="card-share-btn" onclick="shareCard()" style="display:none">📤 Share Image</button>
+        </div>
+    </div>
+</div>
+
+<!-- Offline banner -->
+<div id="offline-banner">📴 <span>Reading offline — your progress is saved locally</span></div>
+
+<!-- Chapter completion banner -->
+<div id="chapter-complete">
+    <div class="cc-main">
+        <div class="cc-title" id="cc-title">🎉 Chapter Complete!</div>
+        <div class="cc-msg"  id="cc-msg">You've finished all verses of this chapter</div>
+    </div>
+    <button class="cc-close" onclick="closeChapterComplete()">✕</button>
+</div>
+
+<!-- Keyboard shortcuts overlay -->
+<div id="shortcuts-overlay" onclick="if(event.target===this)closeShortcuts()">
+    <div id="shortcuts-modal">
+        <div class="shortcuts-title">⌨️ Keyboard Shortcuts</div>
+        <div class="shortcuts-grid">
+            <span class="shortcut-key">/</span>       <span class="shortcut-desc">Focus search</span>
+            <span class="shortcut-key">→ ←</span>     <span class="shortcut-desc">Next / previous verse</span>
+            <span class="shortcut-key">R</span>        <span class="shortcut-desc">Mark verse as read</span>
+            <span class="shortcut-key">B</span>        <span class="shortcut-desc">Toggle bookmark</span>
+            <span class="shortcut-key">N</span>        <span class="shortcut-desc">Toggle personal notes</span>
+            <span class="shortcut-key">A</span>        <span class="shortcut-desc">Cycle font size</span>
+            <span class="shortcut-key">Q</span>        <span class="shortcut-desc">Start quiz</span>
+            <span class="shortcut-key">P</span>        <span class="shortcut-desc">Reading plans</span>
+            <span class="shortcut-key">?</span>        <span class="shortcut-desc">This shortcuts panel</span>
+            <span class="shortcut-key">Esc</span>      <span class="shortcut-desc">Close panel / sidebar</span>
+        </div>
+        <button class="shortcuts-close" onclick="closeShortcuts()">Close</button>
+    </div>
+</div>
+
+<!-- Reading plans overlay -->
+<div id="plans-overlay" onclick="if(event.target===this)closePlans()">
+    <div id="plans-modal">
+        <div class="plans-hdr">
+            <span class="plans-title">🗺️ Reading Plans</span>
+            <button class="plans-close" onclick="closePlans()">✕</button>
+        </div>
+        <div id="plans-content"></div>
+    </div>
+</div>
+
+<!-- Quiz overlay -->
+<div id="quiz-overlay" onclick="if(event.target===this)closeQuiz()">
+    <div id="quiz-modal">
+        <div class="quiz-hdr">
+            <span class="quiz-title">🧠 Gita Quiz</span>
+            <button class="quiz-close" onclick="closeQuiz()">✕</button>
+        </div>
+        <div id="quiz-content"></div>
+    </div>
+</div>
+
+<!-- Tour: 4 strips form the spotlight cutout + golden border + card -->
+<div class="tc-strip" id="tc-top"    onclick="endTour()"></div>
+<div class="tc-strip" id="tc-bottom" onclick="endTour()"></div>
+<div class="tc-strip" id="tc-left"   onclick="endTour()"></div>
+<div class="tc-strip" id="tc-right"  onclick="endTour()"></div>
+<div id="tc-border"></div>
+<div id="tour-card" onclick="event.stopPropagation()">
+    <div class="tc-header">
+        <div class="tc-dots" id="tc-dots"></div>
+        <div id="tour-ttl"></div>
+    </div>
+    <div class="tc-body">
+        <p id="tour-txt"></p>
+        <p class="tc-hint" id="tc-hint">👆 Click outside to exit</p>
+    </div>
+    <div class="tc-actions">
+        <button class="tc-skip" onclick="endTour()">Skip tour</button>
+        <button class="tc-prev" id="tc-prev" onclick="moveTour(-1)">← Back</button>
+        <button class="tc-next" id="tc-next" onclick="moveTour(1)">Next →</button>
+    </div>
+</div>
 
 <script src="data.js"></script>
 <script>
@@ -446,8 +990,11 @@ const CHAPTER_DATA = [null,
 /* ── State ── */
 const state = {
     ch: 1, v: 1, tab: "english",
-    progress: JSON.parse(localStorage.getItem("gita_progress") || "{}"),
+    progress:  JSON.parse(localStorage.getItem("gita_progress")  || "{}"),
     bookmarks: new Set(JSON.parse(localStorage.getItem("gita_bookmarks") || "[]")),
+    history:   JSON.parse(localStorage.getItem("gita_history")   || "[]"),
+    streak:    JSON.parse(localStorage.getItem("gita_streak")    || '{"count":0,"lastDate":"","best":0}'),
+    notes:     JSON.parse(localStorage.getItem("gita_notes")     || "{}"),
     dark: localStorage.getItem("gita_theme") === "dark"
 };
 
@@ -459,6 +1006,71 @@ for (const v of GITA) {
 function getVerse(ch, v) { return (byChapter[ch] || []).find(x => x.verse === v); }
 function chVerses(ch) { return byChapter[ch] || []; }
 function totalRead() { return Object.keys(state.progress).length; }
+
+/* ── Cross-references (famous verse pairs) ── */
+const XREFS = {
+    "2_11": ["2_13","2_22"],
+    "2_20": ["2_19","2_23","15_7"],
+    "2_47": ["3_19","12_12","18_66"],
+    "2_62": ["2_63","3_37"],
+    "3_19": ["2_47","18_66"],
+    "3_27": ["13_29","18_17"],
+    "3_35": ["18_47"],
+    "4_7":  ["4_8","9_7"],
+    "4_8":  ["4_7"],
+    "4_24": ["9_27","18_65"],
+    "6_5":  ["6_6"],
+    "6_6":  ["6_5"],
+    "6_19": ["2_53","6_26"],
+    "7_7":  ["9_4","10_20"],
+    "8_5":  ["8_7","8_14"],
+    "8_7":  ["8_5","8_14"],
+    "9_22": ["12_6","12_7","18_66"],
+    "9_27": ["4_24","18_65"],
+    "9_34": ["18_65","18_66"],
+    "10_8": ["7_7","9_4"],
+    "10_20":["7_7","15_15"],
+    "11_33":["2_19","18_17"],
+    "12_2": ["12_6","12_8"],
+    "12_6": ["9_22","18_65","18_66"],
+    "13_2": ["13_33","7_4"],
+    "15_1": ["15_15"],
+    "15_15":["10_20","18_61"],
+    "17_3": ["7_21"],
+    "18_61":["15_15","10_20"],
+    "18_65":["9_34","9_27","18_66"],
+    "18_66":["9_22","2_47","12_6"],
+};
+
+/* ── Reading plans ── */
+const PLANS = [
+    {
+        id:"beginner", icon:"🌱", name:"Beginner's Path",
+        desc:"30 hand-picked verses — the perfect introduction to the Gita's core teachings, one idea at a time.",
+        verses:[[1,1],[2,11],[2,13],[2,14],[2,17],[2,19],[2,20],[2,22],[2,47],[2,56],
+                [3,16],[3,19],[3,27],[3,35],[4,7],[4,8],[4,14],[4,24],[5,29],[6,5],
+                [6,6],[6,19],[7,7],[9,22],[9,27],[11,33],[12,2],[15,15],[18,61],[18,66]]
+    },
+    {
+        id:"essentials", icon:"✨", name:"50 Essential Verses",
+        desc:"The 50 most beloved shlokas spanning all 18 chapters — as cherished by scholars and devotees.",
+        verses:[[1,1],[2,11],[2,13],[2,14],[2,17],[2,19],[2,20],[2,22],[2,23],[2,47],
+                [2,53],[2,56],[2,62],[2,63],[3,16],[3,19],[3,21],[3,27],[3,35],[4,1],
+                [4,7],[4,8],[4,14],[4,24],[4,39],[5,10],[5,29],[6,5],[6,6],[6,19],
+                [7,7],[8,5],[8,7],[9,22],[9,27],[9,34],[10,8],[10,20],[11,33],[12,2],
+                [12,6],[12,7],[13,2],[13,33],[15,1],[15,15],[17,3],[18,61],[18,65],[18,66]]
+    },
+    {
+        id:"karma-yoga", icon:"🔥", name:"Karma Yoga",
+        desc:"Chapters 3, 4 & 5 in full — the complete teaching on selfless action, duty and renunciation.",
+        verses: GITA.filter(v => v.chapter >= 3 && v.chapter <= 5).map(v => [v.chapter, v.verse])
+    },
+    {
+        id:"18day", icon:"📅", name:"18-Day Journey",
+        desc:"One chapter per day — immerse in the complete Gita across 18 days of devoted study.",
+        verses: GITA.map(v => [v.chapter, v.verse])
+    }
+];
 
 function toast(msg) {
     const t = document.getElementById("toast");
@@ -485,7 +1097,7 @@ function renderSidebar() {
         const vs = chVerses(i);
         const done = vs.filter(x => state.progress[`${i}_${x.verse}`]).length;
         const p = vs.length ? Math.round(done / vs.length * 100) : 0;
-        html += `<div class="chapter-item ${state.ch === i ? "active" : ""}" onclick="loadChapter(${i})">
+        html += `<div class="chapter-item ${state.ch === i && state.ch !== 0 ? "active" : ""}" onclick="loadChapter(${i})">
             <div class="ch-row"><span class="ch-name">Ch ${i}</span><span class="ch-prog">${done}/${vs.length}</span></div>
             <div class="ch-subtitle">${CHAPTER_NAMES[i]}</div>
             <div class="mini-bar"><div class="mini-fill" style="width:${p}%"></div></div>
@@ -542,18 +1154,27 @@ function loadVerse(ch, v) {
 }
 
 function loadVerseArea(ch, v) {
-    stopAudio();
     state.ch = ch; state.v = v;
+    addToHistory(ch, v);
     const verse = getVerse(ch, v);
     if (!verse) return;
 
     const key = `${ch}_${v}`, isRead = !!state.progress[key], isBm = state.bookmarks.has(key);
+    const hasNote = !!(state.notes[key] && state.notes[key].trim());
+    const xrefs = (XREFS[key] || []).filter(r => { const [rc,rv]=r.split("_").map(Number); return !!getVerse(rc,rv); });
+    const xrefHtml = xrefs.length ? `
+        <div class="xref-section">
+            <div class="xref-label">See Also</div>
+            <div class="xref-chips">${xrefs.map(r => {
+                const [rc,rv] = r.split("_").map(Number);
+                return `<button class="xref-chip" onclick="loadVerse(${rc},${rv})" title="${CHAPTER_NAMES[rc]}">${rc}:${rv}</button>`;
+            }).join("")}</div>
+        </div>` : "";
     const vs = chVerses(ch), idx = vs.findIndex(x => x.verse === v);
     const prevV = idx > 0 ? vs[idx - 1] : null;
     const nextV = idx < vs.length - 1 ? vs[idx + 1] : null;
     const globalIdx = GITA.findIndex(x => x.chapter === ch && x.verse === v);
     const t = state.tab;
-    const hasSpeech = "speechSynthesis" in window;
 
     const engHtml  = verse.translation ? `<p class="trans-text">${verse.translation}</p>` : `<div class="empty-trans">Translation not available.</div>`;
     const telHtml  = verse.telugu ? `<p class="trans-text telugu-text">${verse.telugu}</p>` : `<div class="empty-trans">తెలుగు అనువాదం అందుబాటులో లేదు.</div>`;
@@ -575,10 +1196,11 @@ function loadVerseArea(ch, v) {
         <div class="verse-top">
             <span class="verse-ref">Ch. ${ch} · Verse ${v}</span>
             <div class="verse-controls">
-                ${hasSpeech ? `<button class="audio-btn" id="audio-${ch}-${v}" onclick="toggleAudio(${ch},${v})">🔊 Listen</button>` : ""}
                 <div class="verse-actions">
                     <button class="btn ${isBm?"btn-bm-done":"btn-bm"}" onclick="toggleBookmark(${ch},${v})">${isBm?"🔖 Saved":"🔖 Save"}</button>
                     <button class="btn ${isRead?"btn-read-done":"btn-read"}" onclick="toggleRead(${ch},${v})">${isRead?"✅ Read":"📖 Mark"}</button>
+                    <button class="btn ${hasNote?"btn-note-active":"btn-note"}" id="note-btn-${key}" onclick="toggleNoteSection('${key}')" title="Personal notes">📝</button>
+                    <button class="btn btn-ghost" onclick="openCardModal(${ch},${v})" title="Save as image">📷</button>
                     <button class="btn btn-ghost" onclick="shareVerse(${ch},${v})" title="Share">📤</button>
                 </div>
             </div>
@@ -606,6 +1228,14 @@ function loadVerseArea(ch, v) {
 
         ${wbwHtml}
 
+        ${xrefHtml}
+
+        <div class="notes-section ${hasNote?"open":""}" id="notes-${key}">
+            <div class="notes-label">📝 Personal Notes</div>
+            <textarea class="notes-area" oninput="debounceSaveNote('${key}',this.value)"
+                      placeholder="Your personal reflection on this verse…">${state.notes[key]||""}</textarea>
+        </div>
+
         <div class="verse-nav">
             <button class="btn btn-ghost" onclick="${prevV?`loadVerseArea(${ch},${prevV.verse})`:ch>1?`loadChapterLast(${ch-1})`:""}"\
                 ${!prevV&&ch<=1?"disabled":""}>
@@ -631,9 +1261,11 @@ function navigateVerse(dir) {
 /* ── Progress & Bookmarks ── */
 function toggleRead(ch, v) {
     const key = `${ch}_${v}`;
-    if (state.progress[key]) delete state.progress[key]; else state.progress[key] = true;
+    const wasRead = !!state.progress[key];
+    if (wasRead) delete state.progress[key]; else state.progress[key] = true;
     localStorage.setItem("gita_progress", JSON.stringify(state.progress));
     renderSidebar(); loadVerseArea(ch, v);
+    if (!wasRead) checkChapterComplete(ch);
 }
 function toggleBookmark(ch, v) {
     const key = `${ch}_${v}`;
@@ -652,6 +1284,57 @@ function showBookmarks() {
                 return `<div class="bm-list-item" onclick="loadVerse(${ch},${v})"><span class="bm-ref">Ch ${ch}·${v}</span><span class="bm-name">${CHAPTER_NAMES[ch]}</span></div>`;
             }).join("")}
         </div>`;
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+/* ── Home ── */
+function goHome() {
+    state.ch = 0; state.v = 0;
+    renderSidebar();
+    document.getElementById("app").innerHTML = "";
+    document.getElementById("main").scrollTo(0, 0);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+/* ── Reading history ── */
+function addToHistory(ch, v) {
+    const key = `${ch}_${v}`;
+    state.history = state.history.filter(h => h.key !== key);
+    state.history.unshift({ key, ch, v, ts: Date.now() });
+    if (state.history.length > 50) state.history = state.history.slice(0, 50);
+    localStorage.setItem("gita_history", JSON.stringify(state.history));
+    // Track reading day for calendar
+    const today = new Date().toDateString();
+    const rdays = JSON.parse(localStorage.getItem("gita_reading_days") || "{}");
+    rdays[today] = (rdays[today] || 0) + 1;
+    localStorage.setItem("gita_reading_days", JSON.stringify(rdays));
+}
+
+function relTime(ts) {
+    const d = Date.now() - ts;
+    if (d < 60000)     return "just now";
+    if (d < 3600000)   return Math.floor(d / 60000) + "m ago";
+    if (d < 86400000)  return Math.floor(d / 3600000) + "h ago";
+    if (d < 604800000) return Math.floor(d / 86400000) + "d ago";
+    return new Date(ts).toLocaleDateString();
+}
+
+function showHistory() {
+    if (!state.history.length) { toast("No history yet — start reading!"); return; }
+    document.getElementById("app").innerHTML = `
+        <div class="verse-card">
+            <div class="verse-top">
+                <span class="verse-ref">Recently Visited</span>
+                <span style="font-size:0.82rem;color:var(--text-muted)">${state.history.length} verse${state.history.length !== 1 ? "s" : ""}</span>
+            </div>
+            ${state.history.map(h => `
+                <div class="bm-list-item" onclick="loadVerse(${h.ch},${h.v})">
+                    <span class="bm-ref">Ch ${h.ch}·${h.v}</span>
+                    <span class="bm-name">${CHAPTER_NAMES[h.ch]}</span>
+                    <span style="font-size:0.68rem;color:var(--text-muted);margin-left:auto;flex-shrink:0">${relTime(h.ts)}</span>
+                </div>`).join("")}
+        </div>`;
+    document.getElementById("main").scrollTo(0, 0);
     if (window.innerWidth <= 768) closeSidebar();
 }
 
@@ -715,37 +1398,6 @@ async function showCommentaryTab(ch, v) {
     panel.dataset.loaded = "true";
 }
 
-/* ── Audio (Web Speech API — reads transliteration) ── */
-let _speechObj = null;
-
-function stopAudio() {
-    if (_speechObj && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
-    _speechObj = null;
-}
-
-function toggleAudio(ch, v) {
-    const btn = document.getElementById(`audio-${ch}-${v}`);
-    if (_speechObj && window.speechSynthesis.speaking) {
-        stopAudio();
-        if (btn) { btn.textContent = "🔊 Listen"; btn.classList.remove("playing"); }
-        return;
-    }
-    const verse = getVerse(ch, v);
-    if (!verse) return;
-
-    const utter = new SpeechSynthesisUtterance(verse.transliteration);
-    utter.rate = 0.72; utter.pitch = 0.95;
-    const voices = window.speechSynthesis.getVoices();
-    const en = voices.find(vv => vv.lang.startsWith("en-")) || voices[0];
-    if (en) utter.voice = en;
-
-    const done = () => { _speechObj = null; if (btn) { btn.textContent = "🔊 Listen"; btn.classList.remove("playing"); } };
-    utter.onend = done; utter.onerror = done;
-    _speechObj = utter;
-    window.speechSynthesis.speak(utter);
-    if (btn) { btn.textContent = "⏹ Stop"; btn.classList.add("playing"); }
-}
-
 /* ── Search ── */
 let _debounce;
 document.getElementById("search").addEventListener("input", e => { clearTimeout(_debounce); _debounce = setTimeout(() => doSearch(e.target.value.trim()), 180); });
@@ -758,6 +1410,8 @@ function doSearch(q) {
     const hits = GITA.filter(v =>
         (v.transliteration && v.transliteration.toLowerCase().includes(ql)) ||
         (v.translation && v.translation.toLowerCase().includes(ql)) ||
+        (v.hindi && v.hindi.toLowerCase().includes(ql)) ||
+        (v.telugu && v.telugu.toLowerCase().includes(ql)) ||
         (v.word_by_word && v.word_by_word.some(w => w.toLowerCase().includes(ql)))
     ).slice(0, 10);
     res.innerHTML = hits.length
@@ -774,18 +1428,870 @@ function mobileSearch() { document.getElementById("sidebar").classList.add("open
 
 /* ── Keyboard ── */
 window.addEventListener("keydown", e => {
-    if (e.target.tagName === "INPUT") return;
-    if (e.key === "/")           { e.preventDefault(); document.getElementById("search").focus(); }
-    if (e.key === "ArrowRight")  navigateVerse(1);
-    if (e.key === "ArrowLeft")   navigateVerse(-1);
-    if (e.key === "Escape")      closeSidebar();
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.key === "/")          { e.preventDefault(); document.getElementById("search").focus(); }
+    if (e.key === "ArrowRight") navigateVerse(1);
+    if (e.key === "ArrowLeft")  navigateVerse(-1);
+    if (e.key === "Escape")     { closeSidebar(); closeShortcuts(); closePlans(); closeQuiz(); }
+    if (e.key === "?")          { closeQuiz(); closePlans(); showShortcuts(); }
+    if (e.key === "r"||e.key==="R") { if (state.v) toggleRead(state.ch, state.v); }
+    if (e.key === "b"||e.key==="B") { if (state.v) toggleBookmark(state.ch, state.v); }
+    if (e.key === "n"||e.key==="N") { if (state.v) toggleNoteSection(`${state.ch}_${state.v}`); }
+    if (e.key === "a"||e.key==="A") cycleFontSize();
+    if (e.key === "q"||e.key==="Q") { closeShortcuts(); closePlans(); startQuiz(); }
+    if (e.key === "p"||e.key==="P") { closeShortcuts(); closeQuiz(); showPlans(); }
 });
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 
+/* ══════════════════════════════════════════════
+   READING STREAK + GAMIFICATION
+══════════════════════════════════════════════ */
+const MILESTONES = [
+    { days:3,   icon:"🌱", title:"3-Day Streak!",    msg:"A new habit is taking root." },
+    { days:7,   icon:"🔥", title:"7-Day Streak!",    msg:"One full week of wisdom." },
+    { days:14,  icon:"📖", title:"14-Day Streak!",   msg:"A fortnight of focused reading." },
+    { days:21,  icon:"🧘", title:"21-Day Streak!",   msg:"21 days — a discipline is born." },
+    { days:30,  icon:"🙏", title:"30-Day Streak!",   msg:"A month of devotion. Remarkable." },
+    { days:50,  icon:"💪", title:"50-Day Streak!",   msg:"Perseverance is your very nature." },
+    { days:75,  icon:"🌊", title:"75-Day Streak!",   msg:"The Gita's wisdom flows through you." },
+    { days:100, icon:"🏆", title:"100-Day Streak!",  msg:"A century of commitment. Jai Shri Krishna!" },
+    { days:200, icon:"✨", title:"200-Day Streak!",  msg:"Two hundred days — you are transformed." },
+    { days:365, icon:"🕉️", title:"365-Day Streak!",  msg:"A full year of the Gita. You are blessed." },
+];
+
+function initStreak() {
+    const today = new Date().toDateString();
+    const s = state.streak;
+    if (s.lastDate === today) { updateStreakUI(); return; }
+
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    s.count = (s.lastDate === yesterday && s.count > 0) ? s.count + 1 : 1;
+    s.lastDate = today;
+    s.best = Math.max(s.best || 0, s.count);
+    localStorage.setItem("gita_streak", JSON.stringify(s));
+    updateStreakUI();
+    if (s.count > 1) setTimeout(() => checkMilestone(s.count), 1400);
+}
+
+function updateStreakUI() {
+    const n = state.streak.count || 0;
+    document.getElementById("streak-count").textContent = n;
+    const btn = document.getElementById("streak-btn");
+    btn.classList.toggle("streak-hot", n >= 3);
+    btn.title = `${n}-day streak${n >= 3 ? " 🔥" : ""}`;
+}
+
+function checkMilestone(n) {
+    const ms = MILESTONES.find(m => m.days === n);
+    if (!ms) return;
+    document.getElementById("ms-icon").textContent  = ms.icon;
+    document.getElementById("ms-days").textContent  = ms.title;
+    document.getElementById("ms-msg").textContent   = ms.msg;
+    document.getElementById("ms-cur").textContent   = n;
+    document.getElementById("ms-best").textContent  = state.streak.best;
+    document.getElementById("ms-total").textContent = totalRead();
+    // milestone dots
+    document.getElementById("ms-dots").innerHTML = MILESTONES.map(m =>
+        `<span class="ms-dot-item ${m.days <= n ? "reached" : ""}">${m.icon} ${m.days}d</span>`
+    ).join("");
+    document.getElementById("milestone-overlay").classList.add("show");
+}
+function closeMilestone() {
+    document.getElementById("milestone-overlay").classList.remove("show");
+}
+
+function buildReadingCalendar() {
+    const rdays = JSON.parse(localStorage.getItem("gita_reading_days") || "{}");
+    const today = new Date();
+    // 35 days: 5 weeks
+    const cells = [];
+    for (let i = 34; i >= 0; i--) {
+        const d = new Date(today.getTime() - i * 86400000);
+        cells.push({ key: d.toDateString(), read: !!rdays[d.toDateString()], isToday: i === 0 });
+    }
+    // Pad front so week starts on Sunday
+    const firstDow = new Date(today.getTime() - 34 * 86400000).getDay();
+    const padded = [...Array(firstDow).fill(null), ...cells];
+    const dayHdrs = ['S','M','T','W','T','F','S'].map(d =>
+        `<div class="streak-cal-hdr">${d}</div>`).join("");
+    const dayCells = padded.map(c => c
+        ? `<div class="streak-cal-day ${c.read?"read":""} ${c.isToday?"today":""}" title="${c.key}"></div>`
+        : `<div class="streak-cal-day empty"></div>`
+    ).join("");
+    const readCount = cells.filter(c => c.read).length;
+    return `<div style="margin-bottom:0.3rem;font-size:0.7rem;color:var(--text-muted)">${readCount} of 35 days — <em>keep the chain going!</em></div>
+        <div class="streak-calendar">${dayHdrs}${dayCells}</div>
+        <div class="streak-cal-legend">
+            <div class="streak-cal-swatch"></div><span>No reading</span>
+            <div class="streak-cal-swatch" style="background:linear-gradient(135deg,#9A7B0A,#C9A84C);border-color:rgba(201,168,76,0.4)"></div><span>Read</span>
+            <div class="streak-cal-swatch" style="border-color:var(--primary);border-width:2px"></div><span>Today</span>
+        </div>`;
+}
+
+function showStreakPanel() {
+    const s = state.streak;
+    const nextMs = MILESTONES.find(m => m.days > (s.count || 0));
+    const daysToNext = nextMs ? nextMs.days - s.count : null;
+    document.getElementById("app").innerHTML = `
+        <div class="verse-card">
+            <div class="verse-top">
+                <span class="verse-ref">Reading Streak</span>
+                <span style="font-size:1.4rem">🔥</span>
+            </div>
+            <div style="padding:2rem;text-align:center">
+                <div style="font-family:'Cinzel',serif;font-size:3.5rem;font-weight:700;
+                     background:linear-gradient(135deg,#C9A84C,#F5D87A);
+                     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                     background-clip:text;line-height:1">${s.count || 0}</div>
+                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.1em">Day${s.count!==1?"s":""} in a row</div>
+                <div style="display:flex;justify-content:center;gap:2.5rem;margin:1.4rem 0;padding:1rem;background:var(--bg);border-radius:12px">
+                    <div><div style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--accent-light)">${s.best||0}</div><div style="font-size:0.67rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Best streak</div></div>
+                    <div><div style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--accent-light)">${totalRead()}</div><div style="font-size:0.67rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Verses read</div></div>
+                    ${daysToNext ? `<div><div style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--accent-light)">${daysToNext}</div><div style="font-size:0.67rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">To next badge</div></div>` : ""}
+                </div>
+                <div style="margin:0 auto;max-width:320px;text-align:left">
+                    ${buildReadingCalendar()}
+                </div>
+                <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.4rem;margin:1.4rem 0">
+                    ${MILESTONES.map(m => `<span class="ms-dot-item ${(s.count||0)>=m.days?"reached":""}">${m.icon} ${m.days}d</span>`).join("")}
+                </div>
+                ${daysToNext ? `<p style="font-size:0.82rem;color:var(--text-muted)">Next: <strong>${nextMs.icon} ${nextMs.title}</strong> in ${daysToNext} day${daysToNext!==1?"s":""}</p>` : `<p style="font-size:0.9rem;color:var(--accent-light);font-weight:600">All milestones reached! 🕉️</p>`}
+            </div>
+        </div>`;
+    document.getElementById("main").scrollTo(0, 0);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+/* ══════════════════════════════════════════════
+   VERSE IMAGE CARD GENERATOR
+══════════════════════════════════════════════ */
+let _cardVerse = null;
+
+function openCardModal(ch, v) {
+    _cardVerse = getVerse(ch, v);
+    if (!_cardVerse) return;
+    document.getElementById("card-overlay").classList.add("show");
+    // Show share button only if Web Share API supports files
+    const shareBtn = document.getElementById("card-share-btn");
+    shareBtn.style.display = (navigator.canShare && navigator.canShare({files:[new File([],"x.png",{type:"image/png"})]})) ? "block" : "none";
+    // Draw async after fonts load
+    document.fonts.ready.then(() => drawVerseCard(_cardVerse));
+}
+function closeCardModal() {
+    document.getElementById("card-overlay").classList.remove("show");
+}
+
+function drawVerseCard(verse) {
+    const canvas = document.getElementById("card-preview");
+    const W = 1200, H = 630;
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+
+    // Background
+    const grad = ctx.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, "#07102E"); grad.addColorStop(0.65, "#1A237E"); grad.addColorStop(1, "#283593");
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid texture
+    ctx.strokeStyle = "rgba(255,255,255,0.025)"; ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 48) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 48) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // OM watermark
+    ctx.save();
+    ctx.font = `380px 'Noto Sans Devanagari', sans-serif`;
+    ctx.fillStyle = "rgba(201,168,76,0.07)";
+    ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+    ctx.fillText("ॐ", W + 20, H + 40);
+    ctx.restore();
+
+    const pad = 70, cw = W - pad * 2;
+
+    // Branding line
+    ctx.font = `600 16px 'Cinzel', Georgia, serif`;
+    ctx.fillStyle = "rgba(201,168,76,0.85)";
+    ctx.textAlign = "left"; ctx.textBaseline = "top";
+    ctx.fillText("BHAGAVAD GITA", pad, 52);
+    ctx.textAlign = "right";
+    ctx.fillText(`Chapter ${verse.chapter}  ·  Verse ${verse.verse}`, W - pad, 52);
+
+    // Gold rule 1
+    ctx.fillStyle = "rgba(201,168,76,0.38)"; ctx.fillRect(pad, 82, cw, 1);
+
+    // Sanskrit
+    const sktLines = verse.sanskrit.split("\n").map(l => l.trim()).filter(Boolean).slice(0, 3);
+    ctx.font = `400 36px 'Noto Sans Devanagari', 'Arial Unicode MS', sans-serif`;
+    ctx.fillStyle = "rgba(255,255,255,0.93)";
+    ctx.textAlign = "left"; ctx.textBaseline = "top";
+    let sY = 106;
+    sktLines.forEach(line => { ctx.fillText(line, pad, sY); sY += 58; });
+
+    // Gold rule 2
+    ctx.fillStyle = "rgba(201,168,76,0.38)"; ctx.fillRect(pad, sY + 10, cw, 1);
+
+    // Translation — word-wrap
+    ctx.font = `400 25px system-ui, -apple-system, sans-serif`;
+    ctx.fillStyle = "rgba(255,255,255,0.80)";
+    let trans = verse.translation;
+    if (trans.length > 230) trans = trans.slice(0, 227) + "…";
+    const words = trans.split(" ");
+    let line = "", tLines = [];
+    for (const w of words) {
+        const test = line ? line + " " + w : w;
+        if (ctx.measureText(test).width > cw && line) {
+            tLines.push(line); line = w;
+            if (tLines.length >= 4) break;
+        } else line = test;
+    }
+    if (line && tLines.length < 4) tLines.push(line);
+    let tY = sY + 30;
+    tLines.forEach(l => { ctx.fillText(l, pad, tY); tY += 40; });
+
+    // Gold rule 3
+    const footerRuleY = Math.min(tY + 18, H - 80);
+    ctx.fillStyle = "rgba(201,168,76,0.3)"; ctx.fillRect(pad, footerRuleY, cw, 1);
+
+    // Footer
+    const footerY = footerRuleY + 26;
+    ctx.font = `600 15px 'Cinzel', Georgia, serif`;
+    ctx.fillStyle = "rgba(201,168,76,0.72)";
+    ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    ctx.fillText(CHAPTER_NAMES[verse.chapter], pad, footerY);
+    ctx.font = `400 13px system-ui, sans-serif`;
+    ctx.fillStyle = "rgba(255,255,255,0.28)";
+    ctx.textAlign = "right";
+    ctx.fillText("gita-learner", W - pad, footerY);
+}
+
+function downloadCard() {
+    const canvas = document.getElementById("card-preview");
+    const v = _cardVerse;
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = `gita-${v.chapter}-${v.verse}.png`;
+    a.click();
+    toast("Image downloaded!");
+}
+
+async function shareCard() {
+    const canvas = document.getElementById("card-preview");
+    canvas.toBlob(async blob => {
+        const file = new File([blob], `gita-${_cardVerse.chapter}-${_cardVerse.verse}.png`, { type: "image/png" });
+        try {
+            await navigator.share({ files: [file], title: `Bhagavad Gita ${_cardVerse.chapter}:${_cardVerse.verse}` });
+        } catch { toast("Share cancelled"); }
+    }, "image/png");
+}
+
+/* ══════════════════════════════════════════════
+   PERSONAL NOTES
+══════════════════════════════════════════════ */
+let _noteSaveTimer = null;
+
+function toggleNoteSection(key) {
+    const section = document.getElementById("notes-" + key);
+    if (!section) return;
+    section.classList.toggle("open");
+    if (section.classList.contains("open")) section.querySelector("textarea").focus();
+}
+
+function debounceSaveNote(key, text) {
+    clearTimeout(_noteSaveTimer);
+    _noteSaveTimer = setTimeout(() => {
+        const trimmed = text.trim();
+        if (trimmed) state.notes[key] = trimmed;
+        else delete state.notes[key];
+        localStorage.setItem("gita_notes", JSON.stringify(state.notes));
+        // Update the 📝 button indicator
+        const btn = document.getElementById("note-btn-" + key);
+        if (btn) btn.className = `btn ${trimmed ? "btn-note-active" : "btn-note"}`;
+    }, 420);
+}
+
+/* ── Onboarding Tour ── */
+const TOUR = [
+    { welcome:true,
+      title:"Welcome to Bhagavad Gita 🙏",
+      text:"Explore all 701 verses in Sanskrit, English, Hindi and Telugu — with scholarly commentaries, personal notes, guided reading plans and quizzes. Let us take you on a quick tour." },
+    { sel:"#daily-verse", pos:"bottom",
+      title:"✦ Verse of the Day",
+      text:"A fresh verse greets you every morning, chosen by date. Click 'Read →' to open it — your daily moment of wisdom from the Gita." },
+    { sel:"#chapter-list", pos:"right", sidebar:true,
+      title:"📚 Chapter Browser",
+      text:"All 18 chapters with live progress bars. Your reading history is saved automatically in your browser — pick up exactly where you left off." },
+    { sel:".search-wrap", pos:"bottom", sidebar:true,
+      title:"🔍 Search in 4 Languages",
+      text:"Search by English keyword, Sanskrit transliteration, Hindi (हिंदी) or Telugu (తెలుగు) text. Press '/' on desktop to jump to search instantly." },
+    { sel:".sanskrit-section", pos:"bottom",
+      title:"🕉 Sanskrit & Transliteration",
+      text:"The original Devanagari script with IAST transliteration below — read along and learn to pronounce each line of the verse. Use 'Aa' to adjust font size." },
+    { sel:".tabs", pos:"bottom",
+      title:"🌐 Three Languages + Commentary",
+      text:"Switch between English, Telugu and Hindi translations. The Commentary tab loads scholarly notes from Sivananda, Prabhupada and Chinmayananda on demand." },
+    { sel:".wbw-section", pos:"top",
+      title:"📖 Word by Word + See Also",
+      text:"Every Sanskrit term individually broken down. Famous verses also show 'See Also' chips linking to related shlokas across the entire Gita." },
+    { sel:"#plans-btn", sel_mobile:".mobile-nav", pos:"below-left",
+      title:"🗺️ Guided Reading Plans",
+      text:"Four curated paths: Beginner's Path (30 verses), 50 Essentials, Karma Yoga deep-dive, and the full 18-Day Journey. Tap any verse chip to jump directly to it." },
+    { sel:"#quiz-btn", sel_mobile:".mobile-nav", pos:"below-left",
+      title:"🧠 Quiz — Three Difficulty Levels",
+      text:"Easy: read a translation, pick the chapter. Medium: read the transliteration. Hard: read the Sanskrit. 10 questions per session with a score at the end." },
+    { sel:".header-right", pos:"below-left",
+      title:"📜 All Your Tools",
+      text:"📜 Story & structure of the Gita · 🔥 Reading streak & milestones · 🕐 Visit history · 🔖 Bookmarks · Aa Font size · ⌨️ Keyboard shortcuts · 💾 Export progress." },
+];
+
+let _ti = 0;
+const _strips = () => ["tc-top","tc-bottom","tc-left","tc-right"].map(id => document.getElementById(id));
+
+function _showTour(on) {
+    _strips().forEach(el => el.style.display = on ? "block" : "none");
+    document.getElementById("tc-border").style.display = on ? "block" : "none";
+    document.getElementById("tour-card").style.display = on ? "block" : "none";
+}
+
+function startTour() {
+    if (localStorage.getItem("gita_tour_done")) return;
+    _ti = 0; _showTour(true); drawTourStep();
+}
+function replayTour() {
+    _ti = 0; _showTour(true); drawTourStep();
+}
+function endTour() {
+    localStorage.setItem("gita_tour_done", "1");
+    _showTour(false);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+function moveTour(dir) {
+    if (dir === 1 && _ti >= TOUR.length - 1) { endTour(); return; }
+    _ti = Math.max(0, Math.min(TOUR.length - 1, _ti + dir));
+    drawTourStep();
+}
+
+function setSpotlight(sx, sy, sw, sh) {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const T = document.getElementById("tc-top"),    B = document.getElementById("tc-bottom"),
+          L = document.getElementById("tc-left"),   R = document.getElementById("tc-right"),
+          brd = document.getElementById("tc-border");
+    T.style.cssText   = `display:block;top:0;left:0;width:100%;height:${sy}px`;
+    B.style.cssText   = `display:block;top:${sy+sh}px;left:0;width:100%;height:${Math.max(0,vh-sy-sh)}px`;
+    L.style.cssText   = `display:block;top:${sy}px;left:0;width:${Math.max(0,sx)}px;height:${sh}px`;
+    R.style.cssText   = `display:block;top:${sy}px;left:${sx+sw}px;width:${Math.max(0,vw-sx-sw)}px;height:${sh}px`;
+    brd.style.cssText = `display:block;left:${sx}px;top:${sy}px;width:${sw}px;height:${sh}px;border-radius:14px`;
+}
+
+function drawTourStep() {
+    const step = TOUR[_ti], isLast = _ti === TOUR.length - 1;
+
+    document.getElementById("tc-dots").innerHTML =
+        TOUR.map((_,i) => `<div class="tc-dot ${i===_ti?"on":""}"></div>`).join("");
+    document.getElementById("tour-ttl").textContent = step.title;
+    document.getElementById("tour-txt").textContent = step.text;
+    document.getElementById("tc-next").textContent  = isLast ? "Done ✓" : "Next →";
+    document.getElementById("tc-prev").style.visibility = _ti === 0 ? "hidden" : "visible";
+    document.getElementById("tc-hint").style.display = step.welcome ? "none" : "flex";
+
+    const card = document.getElementById("tour-card");
+
+    if (step.welcome) {
+        /* full-screen dim: make all 4 strips cover the viewport */
+        const vw = window.innerWidth, vh = window.innerHeight;
+        document.getElementById("tc-top").style.cssText    = `display:block;top:0;left:0;width:100%;height:100%`;
+        ["tc-bottom","tc-left","tc-right"].forEach(id =>
+            document.getElementById(id).style.cssText = "display:block;top:0;left:0;width:0;height:0");
+        document.getElementById("tc-border").style.display = "none";
+        card.className = "tc-center";
+        card.style.left = ""; card.style.top = ""; card.style.width = ""; card.style.transform = "";
+        return;
+    }
+
+    card.className = "";
+    const isMobile = window.innerWidth <= 768;
+    if (step.sidebar && isMobile) {
+        document.getElementById("sidebar").classList.add("open");
+        setTimeout(() => placeTour(step), 320);
+    } else {
+        if (!step.sidebar && isMobile) closeSidebar();
+        setTimeout(() => placeTour(step), 40);
+    }
+}
+
+function placeTour(step) {
+    const selToUse = (window.innerWidth <= 768 && step.sel_mobile) ? step.sel_mobile : step.sel;
+    const el  = document.querySelector(selToUse);
+    const card = document.getElementById("tour-card");
+    if (!el) { document.getElementById("tc-border").style.display = "none"; return; }
+
+    el.scrollIntoView({ block: "nearest" });
+
+    // Double-rAF so scroll settles before we measure
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        const r   = el.getBoundingClientRect();
+        const pad = 10, mg = 16;
+        const vw  = window.innerWidth, vh = window.innerHeight;
+        const sx = r.left - pad, sy = r.top - pad, sw = r.width + pad*2, sh = r.height + pad*2;
+
+        setSpotlight(sx, sy, sw, sh);
+
+        // Pin width first so the browser computes the real wrapped height
+        const cw = Math.min(340, vw - 32);
+        card.style.width      = cw + "px";
+        card.style.visibility = "hidden";
+        card.style.top        = "-9999px";
+        card.style.left       = "-9999px";
+        card.style.transform  = "";
+
+        const ch = card.offsetHeight; // actual rendered height
+
+        // Auto-flip side if preferred direction doesn't have room
+        let pos = step.pos;
+        const spaceBelow = vh - (sy + sh) - mg;
+        const spaceAbove = sy - mg;
+        if (pos === "bottom"    && spaceBelow < ch && spaceAbove >= ch) pos = "top";
+        if (pos === "top"       && spaceAbove < ch && spaceBelow >= ch) pos = "bottom";
+        if (pos === "right"     && (vw - sx - sw - mg) < cw)           pos = spaceBelow >= ch ? "bottom" : "top";
+        if (pos === "below-left"&& spaceBelow < ch && spaceAbove >= ch) pos = "above-left";
+
+        let top, left;
+        switch (pos) {
+            case "bottom":
+                top  = sy + sh + mg;
+                left = r.left + r.width / 2 - cw / 2;
+                break;
+            case "top":
+                top  = sy - mg - ch;
+                left = r.left + r.width / 2 - cw / 2;
+                break;
+            case "right":
+                top  = r.top + r.height / 2 - ch / 2;
+                left = sx + sw + mg;
+                break;
+            case "below-left":
+                top  = sy + sh + mg;
+                left = r.right - cw;
+                break;
+            case "above-left":
+                top  = sy - mg - ch;
+                left = r.right - cw;
+                break;
+            default:
+                top  = sy + sh + mg;
+                left = r.left;
+        }
+
+        // Hard-clamp using the real card height — buttons always stay visible
+        left = Math.max(mg, Math.min(left, vw - cw - mg));
+        top  = Math.max(mg, Math.min(top,  vh - ch - mg));
+
+        card.style.left       = left + "px";
+        card.style.top        = top  + "px";
+        card.style.visibility = "visible";
+    }));
+}
+
+/* ══════════════════════════════════════════════
+   FONT SIZE
+══════════════════════════════════════════════ */
+const FONT_SIZES = ["", "fs-large", "fs-xlarge"];
+let _fsIdx = parseInt(localStorage.getItem("gita_fontsize") || "0");
+
+function applyFontSize() {
+    document.body.classList.remove(...FONT_SIZES.filter(Boolean));
+    if (FONT_SIZES[_fsIdx]) document.body.classList.add(FONT_SIZES[_fsIdx]);
+}
+function cycleFontSize() {
+    _fsIdx = (_fsIdx + 1) % FONT_SIZES.length;
+    applyFontSize();
+    localStorage.setItem("gita_fontsize", _fsIdx);
+    const labels = ["Normal", "Large", "X-Large"];
+    toast(`Font size: ${labels[_fsIdx]}`);
+}
+
+/* ══════════════════════════════════════════════
+   CHAPTER COMPLETION
+══════════════════════════════════════════════ */
+let _ccTimer;
+
+function checkChapterComplete(ch) {
+    const vs = chVerses(ch);
+    const done = vs.filter(x => state.progress[`${ch}_${x.verse}`]).length;
+    if (done < vs.length) return;
+    document.getElementById("cc-title").textContent = `🎉 Chapter ${ch} Complete!`;
+    document.getElementById("cc-msg").textContent   =
+        `All ${vs.length} verses of ${CHAPTER_NAMES[ch]} — well done! 🙏`;
+    const banner = document.getElementById("chapter-complete");
+    banner.classList.remove("show");
+    void banner.offsetWidth; // force reflow so animation replays
+    banner.classList.add("show");
+    clearTimeout(_ccTimer);
+    _ccTimer = setTimeout(closeChapterComplete, 6000);
+}
+function closeChapterComplete() {
+    document.getElementById("chapter-complete").classList.remove("show");
+}
+
+/* ══════════════════════════════════════════════
+   KEYBOARD SHORTCUTS PANEL
+══════════════════════════════════════════════ */
+function showShortcuts() { document.getElementById("shortcuts-overlay").classList.add("show"); }
+function closeShortcuts() { document.getElementById("shortcuts-overlay").classList.remove("show"); }
+
+/* ══════════════════════════════════════════════
+   READING PLANS
+══════════════════════════════════════════════ */
+function showPlans() {
+    document.getElementById("plans-overlay").classList.add("show");
+    renderPlansGrid();
+}
+function closePlans() { document.getElementById("plans-overlay").classList.remove("show"); }
+
+function renderPlansGrid() {
+    document.getElementById("plans-content").innerHTML = `
+        <div class="plans-grid">
+            ${PLANS.map((p, i) => {
+                const total = p.verses.length;
+                const done  = p.verses.filter(([c,v]) => state.progress[`${c}_${v}`]).length;
+                const pct   = total ? Math.round(done / total * 100) : 0;
+                return `<div class="plan-card" onclick="selectPlan(${i})">
+                    <div class="plan-icon">${p.icon}</div>
+                    <div class="plan-name">${p.name}</div>
+                    <div class="plan-desc">${p.desc}</div>
+                    <div class="plan-count">${done} / ${total} verses · ${pct}%</div>
+                    <div class="plan-progress-bar"><div class="plan-progress-fill" style="width:${pct}%"></div></div>
+                </div>`;
+            }).join("")}
+        </div>`;
+}
+
+function selectPlan(idx) {
+    const p = PLANS[idx];
+    const total = p.verses.length;
+    const done  = p.verses.filter(([c,v]) => state.progress[`${c}_${v}`]).length;
+    const pct   = total ? Math.round(done / total * 100) : 0;
+    document.getElementById("plans-content").innerHTML = `
+        <div>
+            <div class="plan-detail-hdr">
+                <button class="plan-back" onclick="renderPlansGrid()">← Back</button>
+                <span style="font-size:1.4rem">${p.icon}</span>
+                <span style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:600;color:var(--text)">${p.name}</span>
+            </div>
+            <div class="plan-progress-bar"><div class="plan-progress-fill" style="width:${pct}%"></div></div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin:0.5rem 0 0.6rem">${done} of ${total} complete · ${pct}%</div>
+            ${(() => {
+                const next = p.verses.find(([c,v]) => !state.progress[`${c}_${v}`]);
+                return next
+                    ? `<button class="btn btn-primary" style="width:100%;padding:10px;font-size:0.84rem;margin-bottom:0.8rem;border-radius:9px"
+                           onclick="closePlans();loadVerse(${next[0]},${next[1]})">
+                           ▶ Continue: ${next[0]}:${next[1]} — ${CHAPTER_NAMES[next[0]]} →
+                       </button>`
+                    : `<div style="text-align:center;padding:0.6rem;color:var(--accent-light);font-family:'Cinzel',serif;font-size:0.82rem;margin-bottom:0.6rem">🎉 Plan Complete! All verses read.</div>`;
+            })()}
+            <div class="plan-verses">
+                ${p.verses.map(([c,v]) => {
+                    const isDone = !!state.progress[`${c}_${v}`];
+                    return `<button class="plan-verse-chip ${isDone?"done":""}"
+                        onclick="closePlans();loadVerse(${c},${v})"
+                        title="Ch ${c}: ${CHAPTER_NAMES[c]}">${c}:${v}</button>`;
+                }).join("")}
+            </div>
+        </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   QUIZ MODE
+══════════════════════════════════════════════ */
+let _quiz = { questions:[], idx:0, score:0, answered:false, difficulty:"easy" };
+
+function cleanTranslation(t) {
+    return (t || "").replace(/^\d+\.\d+\s+/, "").trim();
+}
+
+function buildQuizQuestions(difficulty) {
+    let pool;
+    if (difficulty === "easy")   pool = GITA.filter(v => cleanTranslation(v.translation||"").length > 60);
+    else if (difficulty === "medium") pool = GITA.filter(v => v.transliteration && v.transliteration.length > 20);
+    else                         pool = GITA.filter(v => v.sanskrit && v.sanskrit.length > 15);
+    return [...pool].sort(() => Math.random() - 0.5).slice(0, 10).map(verse => {
+        const correct = verse.chapter;
+        const wrongs  = [...Array(18).keys()].map(i => i+1)
+            .filter(c => c !== correct).sort(() => Math.random() - 0.5).slice(0, 3);
+        const options = [correct, ...wrongs].sort(() => Math.random() - 0.5);
+        return { verse, correctIdx: options.indexOf(correct), options };
+    });
+}
+
+function startQuiz() {
+    document.getElementById("quiz-overlay").classList.add("show");
+    renderQuizDifficultyPicker();
+}
+function closeQuiz() { document.getElementById("quiz-overlay").classList.remove("show"); }
+
+function renderQuizDifficultyPicker() {
+    document.getElementById("quiz-content").innerHTML = `
+        <div class="quiz-diff-title">Choose Your Difficulty</div>
+        <div class="quiz-diff-grid">
+            <div class="quiz-diff-card" onclick="beginQuiz('easy')">
+                <div class="quiz-diff-icon">🟢</div>
+                <div><div class="quiz-diff-name">Easy</div>
+                <div class="quiz-diff-desc">Read an English translation — identify which chapter it comes from.</div></div>
+            </div>
+            <div class="quiz-diff-card" onclick="beginQuiz('medium')">
+                <div class="quiz-diff-icon">🟡</div>
+                <div><div class="quiz-diff-name">Medium</div>
+                <div class="quiz-diff-desc">Read the Sanskrit transliteration (romanised) — identify the chapter.</div></div>
+            </div>
+            <div class="quiz-diff-card" onclick="beginQuiz('hard')">
+                <div class="quiz-diff-icon">🔴</div>
+                <div><div class="quiz-diff-name">Hard</div>
+                <div class="quiz-diff-desc">Read the Devanagari Sanskrit — identify the chapter. For serious students.</div></div>
+            </div>
+        </div>`;
+}
+
+function beginQuiz(difficulty) {
+    _quiz = { questions: buildQuizQuestions(difficulty), idx:0, score:0, answered:false, difficulty };
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    const q   = _quiz.questions[_quiz.idx];
+    const pct = Math.round(_quiz.idx / _quiz.questions.length * 100);
+    const d   = _quiz.difficulty;
+    const diffColor = d==="easy" ? "#4ade80" : d==="medium" ? "#fbbf24" : "#f87171";
+    let questionHtml, prompt;
+    if (d === "easy") {
+        const t = cleanTranslation(q.verse.translation);
+        questionHtml = `<div class="quiz-question">"${t.length>220?t.slice(0,217)+"…":t}"</div>`;
+        prompt = "Which chapter is this verse from?";
+    } else if (d === "medium") {
+        const lines = q.verse.transliteration.split("\n").filter(Boolean).slice(0,3).join("\n");
+        questionHtml = `<div class="quiz-question" style="font-style:italic;font-size:0.84rem;line-height:2">${lines}</div>`;
+        prompt = "Which chapter is this transliteration from?";
+    } else {
+        const lines = q.verse.sanskrit.split("\n").filter(Boolean).slice(0,2).join("\n");
+        questionHtml = `<div class="quiz-question" style="font-family:'Noto Sans Devanagari',serif;font-size:1.2rem;line-height:2.1;color:var(--primary)">${lines}</div>`;
+        prompt = "Which chapter contains this Sanskrit verse?";
+    }
+    document.getElementById("quiz-content").innerHTML = `
+        <div class="quiz-meta">
+            <span>Question ${_quiz.idx+1} of ${_quiz.questions.length}</span>
+            <span>Score: ${_quiz.score} · <span style="color:${diffColor};font-weight:600">${d[0].toUpperCase()+d.slice(1)}</span></span>
+        </div>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+        ${questionHtml}
+        <div class="quiz-prompt">${prompt}</div>
+        <div class="quiz-options">
+            ${q.options.map((ch,i) =>
+                `<button class="quiz-opt" data-idx="${i}" onclick="answerQuiz(${i})">
+                    <strong>Chapter ${ch}</strong> — ${CHAPTER_NAMES[ch]}
+                </button>`
+            ).join("")}
+        </div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+        <button class="quiz-next-btn" id="quiz-next" onclick="nextQuizQuestion()">Next →</button>`;
+}
+
+function answerQuiz(idx) {
+    if (_quiz.answered) return;
+    _quiz.answered = true;
+    const q = _quiz.questions[_quiz.idx];
+    const correct = idx === q.correctIdx;
+    if (correct) _quiz.score++;
+    document.querySelectorAll(".quiz-opt").forEach((btn,i) => {
+        btn.disabled = true;
+        if (i === q.correctIdx) btn.classList.add("correct");
+        else if (i === idx && !correct) btn.classList.add("wrong");
+    });
+    const answerCh = q.options[q.correctIdx];
+    const fb = document.getElementById("quiz-feedback");
+    if (fb) fb.textContent = correct
+        ? `✅ Correct! Chapter ${answerCh}: ${CHAPTER_NAMES[answerCh]}`
+        : `❌ It was Chapter ${answerCh}: ${CHAPTER_NAMES[answerCh]}`;
+    const nxt = document.getElementById("quiz-next");
+    if (nxt) {
+        nxt.style.display = "block";
+        nxt.textContent = _quiz.idx === _quiz.questions.length-1 ? "See Results →" : "Next →";
+    }
+}
+
+function nextQuizQuestion() {
+    _quiz.idx++; _quiz.answered = false;
+    if (_quiz.idx >= _quiz.questions.length) renderQuizResult();
+    else renderQuizQuestion();
+}
+
+function renderQuizResult() {
+    const { score, questions, difficulty } = _quiz;
+    const pct = Math.round(score / questions.length * 100);
+    const msg = pct>=80 ? "Excellent! Your knowledge of the Gita runs deep. 🙏"
+              : pct>=50 ? "Good effort — keep reading and you'll master it soon. 📖"
+              : "The Gita reveals itself slowly — come back and try again. 🌱";
+    document.getElementById("quiz-content").innerHTML = `
+        <div style="text-align:center;padding:1rem 0">
+            <div class="quiz-score-big">${score}/${questions.length}</div>
+            <div class="quiz-score-lbl">${pct}% · ${difficulty[0].toUpperCase()+difficulty.slice(1)}</div>
+            <p class="quiz-result-msg">${msg}</p>
+            <div class="quiz-result-btns">
+                <button class="quiz-retry" onclick="startQuiz()">Try Again</button>
+                <button class="quiz-done"  onclick="closeQuiz()">Close</button>
+            </div>
+        </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   ABOUT THE GITA
+══════════════════════════════════════════════ */
+function showAbout() {
+    const mkGroup = (chs, num, name, sub, desc, bg, bc) => `
+        <div class="about-group" style="background:${bg};border-color:${bc}">
+            <div class="about-group-num">${num}</div>
+            <div class="about-group-name">${name}</div>
+            <div class="about-group-sub">${sub}</div>
+            <div class="about-group-desc">${desc}</div>
+            <div class="about-group-chapters">
+                ${chs.map(i => `<span class="about-ch-pill" onclick="loadChapter(${i})">Ch ${i} · ${CHAPTER_NAMES[i]}</span>`).join("")}
+            </div>
+        </div>`;
+
+    document.getElementById("app").innerHTML = `
+    <div class="verse-card">
+
+        <div class="about-hero">
+            <div class="about-hero-quote">"Whenever there is a decline of righteousness and a rise of unrighteousness, I manifest Myself. For the protection of the good, for the destruction of evil, and for the firm establishment of Dharma — I am born age after age."</div>
+            <div class="about-hero-ref">— Bhagavad Gita 4:7 – 4:8</div>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section-title">The Song of God</div>
+            <p class="about-para">The <strong>Bhagavad Gita</strong> — literally "The Song of the Lord" — is one of the world's greatest spiritual classics. Comprising 18 chapters and 701 verses, it is a dialogue between Lord Krishna and the warrior Arjuna set on the battlefield of Kurukshetra moments before a great war. Though its stage is a battlefield, its teaching is universal — a guide for every human being facing any crossroads of life.</p>
+            <p class="about-para">It forms part of the epic <em>Mahabharata</em> (Book 6, Bhishma Parva, chapters 23–40) and is revered as a Smriti text — a scripture of human remembrance — that distils the wisdom of the ancient Upanishads into an accessible, living dialogue.</p>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section-title">The Circumstances — Where, When, Who, Why &amp; What</div>
+            <div class="about-5w-grid">
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">📍</div>
+                    <div class="about-5w-label">Where</div>
+                    <div class="about-5w-text">The sacred battlefield of <strong>Kurukshetra</strong> in present-day Haryana, India — between two armies drawn up and ready for war, on a chariot positioned between both sides.</div>
+                </div>
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">⏳</div>
+                    <div class="about-5w-label">When</div>
+                    <div class="about-5w-text">Approximately <strong>5,000 years ago</strong> (c. 3102 BCE by tradition) — at the cusp of the Dvapara and Kali Yugas, marking a pivotal turning point in cosmic time.</div>
+                </div>
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">🗣️</div>
+                    <div class="about-5w-label">Who Spoke</div>
+                    <div class="about-5w-text"><strong>Lord Krishna</strong> — the Supreme Teacher, charioteer and divine friend of Arjuna, who revealed himself as the source of all existence and spoke the eternal wisdom of the Gita.</div>
+                </div>
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">🙏</div>
+                    <div class="about-5w-label">Who Listened</div>
+                    <div class="about-5w-text"><strong>Arjuna</strong> — the greatest warrior of the age, prince of the Pandavas, and devoted student of Krishna, who was overwhelmed by grief and moral confusion before the battle.</div>
+                </div>
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">❓</div>
+                    <div class="about-5w-label">Why It Happened</div>
+                    <div class="about-5w-text">Seeing beloved teachers, cousins and friends arrayed on both sides, Arjuna's limbs trembled, his bow slipped, his heart was consumed with pity. He collapsed and refused to fight — triggering Krishna's divine discourse.</div>
+                </div>
+                <div class="about-5w-card">
+                    <div class="about-5w-icon">📖</div>
+                    <div class="about-5w-label">What Was Taught</div>
+                    <div class="about-5w-text">Krishna answered the deepest human questions: <em>Who am I? What is my duty? Is the soul eternal? Who is God? How do I act without suffering? What is liberation?</em> — revealed across 701 verses in 18 chapters.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section-title">The Result</div>
+            <p class="about-para">At the close of Chapter 18, Arjuna declared: <em>"My delusion is destroyed, memory is regained. I stand firm, my doubts are gone — I shall act by Thy word."</em> He rose, took up his bow, and fulfilled his warrior duty. The Mahabharata war unfolded — and Krishna's teaching became a beacon for all of humanity across every generation.</p>
+            <p class="about-para">Sanjaya, the narrator who witnessed the dialogue with divine sight, told the blind king Dhritarashtra: <em>"Wherever there is Krishna, the Lord of Yoga, and wherever there is Arjuna, the wielder of the bow — there will always be prosperity, victory, happiness and firm righteousness."</em> (18:78)</p>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section-title">Structure: Three Groups of Six Chapters</div>
+            <p class="about-para" style="margin-bottom:1.1rem">The Gita's 18 chapters are traditionally grouped into three "sixes" — each exploring a distinct dimension of the divine teaching. Click any chapter to begin reading.</p>
+            <div class="about-groups">
+                ${mkGroup(
+                    [1,2,3,4,5,6],
+                    "Chapters 1 – 6", "Karma Shastra", "The Path of Action",
+                    `Who are we? What is the eternal soul? What is duty? These six chapters lay the entire foundation — covering Arjuna's grief and paralysis (Ch 1), the immortality of the Ātman (Ch 2), selfless action and its mechanics (Ch 3), the lineage of yoga and transcendental knowledge (Ch 4), the unity of renunciation and action (Ch 5), and deep meditation and the disciplined mind (Ch 6). Central question: <em>What should I do?</em>`,
+                    "rgba(201,168,76,0.04)", "rgba(201,168,76,0.18)"
+                )}
+                ${mkGroup(
+                    [7,8,9,10,11,12],
+                    "Chapters 7 – 12", "Bhakti Shastra", "The Path of Devotion",
+                    `Who is God? These six chapters reveal Krishna's divine nature in full — his material and spiritual energies (Ch 7), consciousness at the moment of death (Ch 8), the royal secret of devotion (Ch 9), his infinite divine glories (Ch 10), the awe-inspiring cosmic Vishwarupa form (Ch 11), and the qualities of his dearest devotee (Ch 12). Central question: <em>Who is God, and how do I love Him?</em>`,
+                    "rgba(143,180,255,0.04)", "rgba(143,180,255,0.18)"
+                )}
+                ${mkGroup(
+                    [13,14,15,16,17,18],
+                    "Chapters 13 – 18", "Jnana Shastra", "The Path of Knowledge",
+                    `What is ultimate reality? These six chapters reveal the deepest metaphysics — the field and the knower of the field (Ch 13), the three gunas binding all existence (Ch 14), the cosmic Ashvattha tree and the Supreme Person (Ch 15), divine and demoniac natures (Ch 16), the threefold nature of faith (Ch 17), and the grand conclusion: total surrender to God alone (Ch 18). Central question: <em>What is truly real — and how do I become free?</em>`,
+                    "rgba(74,222,128,0.03)", "rgba(74,222,128,0.15)"
+                )}
+            </div>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section-title">Why the Gita Endures</div>
+            <p class="about-para">Unlike scriptures addressed to a single religion or culture, the Gita speaks to every human being. Its insights into psychology, ethics, cosmology and the nature of consciousness remain strikingly alive today. The questions Arjuna asked — about fear, loss, duty and purpose — are the same questions we wrestle with in every age.</p>
+            <p class="about-para">Scientists, philosophers and leaders across history have drawn courage from its verses — from Mahatma Gandhi ("my mother" he called it) and Bal Gangadhar Tilak, to Albert Einstein, Aldous Huxley and J. Robert Oppenheimer, who quoted Gita 11:32 upon witnessing the first atomic bomb. It is a gift to all of humanity — and it awaits you, one verse at a time.</p>
+            <div style="margin-top:1.4rem;text-align:center">
+                <button class="daily-btn" onclick="beginReading()" style="font-size:0.9rem;padding:10px 28px">Begin Reading — Chapter 1 →</button>
+            </div>
+        </div>
+
+    </div>`;
+    document.getElementById("main").scrollTo(0, 0);
+    if (window.innerWidth <= 768) closeSidebar();
+}
+
+/* ══════════════════════════════════════════════
+   OFFLINE BANNER
+══════════════════════════════════════════════ */
+function updateOfflineBanner() {
+    document.getElementById("offline-banner").classList.toggle("show", !navigator.onLine);
+}
+window.addEventListener("online",  updateOfflineBanner);
+window.addEventListener("offline", updateOfflineBanner);
+
+/* ══════════════════════════════════════════════
+   SWIPE GESTURES (MOBILE)
+══════════════════════════════════════════════ */
+let _swipeX = 0;
+document.getElementById("main").addEventListener("touchstart", e => {
+    _swipeX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById("main").addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - _swipeX;
+    if (Math.abs(dx) > 55 && state.v) navigateVerse(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+/* ══════════════════════════════════════════════
+   BEGIN READING (first-time welcome flow)
+══════════════════════════════════════════════ */
+function beginReading() {
+    loadChapter(1);
+    setTimeout(startTour, 700);
+}
+
 function init() {
     if (state.dark) document.body.setAttribute("data-theme", "dark");
-    renderDailyVerse(); renderSidebar(); loadChapter(1);
+    applyFontSize();
+    updateOfflineBanner();
+    renderDailyVerse(); renderSidebar();
+    initStreak();
+    if (!localStorage.getItem("gita_welcomed")) {
+        localStorage.setItem("gita_welcomed", "1");
+        showAbout();
+    } else {
+        loadChapter(1);
+        setTimeout(startTour, 700);
+    }
 }
 init();
 </script>

@@ -4,6 +4,7 @@
   "description": "Compile all 700 verses of the Bhagavad Gita in Sanskrit, English, Hindi, transliteration, and word-by-word glosses from open-source datasets",
   "type": "module",
   "scripts": {
+    "test": "node scripts/verify.mjs",
     "build": "node build_gita.mjs",
     "start": "node build_gita.mjs",
     "dev": "npx http-server . -p 3000 -c-1 --cors"
