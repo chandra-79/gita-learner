@@ -37,6 +37,9 @@ node build_gita.mjs
 
 Requires **Node.js 18+** (uses native `fetch`).
 
+The repository is private and therefore runs verification CI only. Publishing
+is intentionally disabled until a deployment target is selected and enabled.
+
 ## Output Schema
 
 ```javascript
