@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Bhagavad Gita</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: #07102E; color: #F8F6F0; text-align: center;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; padding: 1.5rem;
+  }
+  .om { font-size: 3.4rem; color: #C9A84C; line-height: 1; }
+  h1 { font-weight: 600; font-size: 1.5rem; margin: 1rem 0 .5rem; }
+  p  { opacity: .75; max-width: 34rem; line-height: 1.6; margin: 0 0 1.6rem; }
+  a  {
+    display: inline-block; background: #C9A84C; color: #07102E; font-weight: 700;
+    text-decoration: none; padding: .8rem 1.6rem; border-radius: 9px;
+  }
+</style>
+</head>
+<body>
+  <div>
+    <div class="om" aria-hidden="true">ॐ</div>
+    <h1>This page could not be found</h1>
+    <p>Verses are addressed by chapter and verse, like
+       <code>#2.47</code>. Taking you back to the reader…</p>
+    <a href="./" id="home">Open the Gita</a>
+  </div>
+<script>
+  // Pages serves this for any unknown path. Keep a verse reference if the
+  // visitor had one, then return them to the app.
+  (function () {
+    var hash = location.hash || "";
+    var base = location.pathname.replace(/\/[^\/]*$/, "/");
+    var target = base + hash;
+    document.getElementById("home").setAttribute("href", target);
+    setTimeout(function () { location.replace(target); }, 1800);
+  })();
+</script>
+</body>
+</html>

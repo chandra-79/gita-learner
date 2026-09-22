@@ -212,6 +212,26 @@
         .mini-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 6px; }
         .mini-fill { height: 100%; background: linear-gradient(90deg, #9A7B0A, #C9A84C); border-radius: 2px; transition: width 0.3s; }
 
+        .icon-btn-install {
+            background: rgba(201,168,76,0.18);
+            border-color: rgba(201,168,76,0.55);
+            color: #F0D67E; font-weight: 600;
+        }
+        .icon-btn-install:hover { background: rgba(201,168,76,0.28); }
+
+        .audio-btn {
+            background: rgba(26,35,126,0.06); border: 1px solid var(--border);
+            color: var(--primary); border-radius: 7px; padding: 5px 12px;
+            font-size: 0.78rem; cursor: pointer; display: flex; align-items: center;
+            gap: 4px; transition: all 0.15s; font-weight: 500; white-space: nowrap;
+            font-family: inherit;
+        }
+        .audio-btn:hover { background: rgba(26,35,126,0.11); }
+        .audio-btn.playing { background: var(--primary); color: white; border-color: var(--primary); }
+        .audio-btn[disabled] { opacity: 0.55; cursor: default; }
+        [data-theme="dark"] .audio-btn { color: #8FB4FF; background: rgba(143,180,255,0.07); }
+        [data-theme="dark"] .audio-btn.playing { background: var(--primary); color: white; }
+
         .search-results {
             display: none; position: absolute; left: 0; right: 0; top: calc(100% + 4px);
             background: #111D38; border: 1px solid rgba(201,168,76,0.18);
@@ -953,6 +973,7 @@
         <button class="icon-btn" id="font-btn" onclick="cycleFontSize()" title="Cycle font size: Normal → Large → X-Large (A key)" aria-label="Change text size">Aa<span class="btn-label">Font</span></button>
         <button class="icon-btn" id="shortcuts-btn" onclick="showShortcuts()" title="Keyboard shortcuts reference (? key)" aria-label="Keyboard shortcuts"><span aria-hidden="true">⌨️</span><span class="btn-label">Keys</span></button>
         <button class="icon-btn" onclick="exportData()" title="Export your reading progress as JSON" aria-label="Export your reading progress"><span aria-hidden="true">💾</span><span class="btn-label">Export</span></button>
+        <button class="icon-btn icon-btn-install" id="install-btn" onclick="installApp()" title="Install this app on your device" aria-label="Install this app on your device" hidden><span aria-hidden="true">⬇</span><span class="btn-label">Install</span></button>
     </div>
 </header>
 
@@ -1062,6 +1083,7 @@
             <span class="shortcut-key">R</span>        <span class="shortcut-desc">Mark verse as read</span>
             <span class="shortcut-key">B</span>        <span class="shortcut-desc">Toggle bookmark</span>
             <span class="shortcut-key">N</span>        <span class="shortcut-desc">Toggle personal notes</span>
+            <span class="shortcut-key">L</span>        <span class="shortcut-desc">Listen to the verse / stop</span>
             <span class="shortcut-key">A</span>        <span class="shortcut-desc">Cycle font size</span>
             <span class="shortcut-key">Q</span>        <span class="shortcut-desc">Start quiz</span>
             <span class="shortcut-key">P</span>        <span class="shortcut-desc">Reading plans</span>
@@ -1337,6 +1359,154 @@ function loadVerse(ch, v) {
 }
 
 /* ══════════════════════════════════════════════
+   INSTALL AS AN APP
+   Chromium fires beforeinstallprompt when the PWA qualifies. We keep the
+   event and surface our own button, because the prompt can only be shown
+   from a user gesture and only once per event.
+══════════════════════════════════════════════ */
+let _installEvent = null;
+
+function showInstallButton(show) {
+    const b = document.getElementById("install-btn");
+    if (b) b.hidden = !show;
+}
+
+window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();              // suppress the browser's own mini-infobar
+    _installEvent = e;
+    showInstallButton(true);
+});
+
+async function installApp() {
+    if (!_installEvent) {
+        // iOS Safari never fires the event; it installs via the Share sheet.
+        const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        toast(iOS ? "Tap Share, then 'Add to Home Screen'" : "Use your browser menu to install this app");
+        return;
+    }
+    _installEvent.prompt();
+    const choice = await _installEvent.userChoice.catch(() => null);
+    if (choice && choice.outcome === "accepted") toast("Installing — find the Gita on your home screen 🙏");
+    _installEvent = null;            // the event can only be used once
+    showInstallButton(false);
+}
+
+window.addEventListener("appinstalled", () => {
+    _installEvent = null;
+    showInstallButton(false);
+    toast("Installed. The Gita is now on your device 🙏");
+});
+
+/* ══════════════════════════════════════════════
+   READ ALOUD  (Web Speech API)
+   Reads the IAST transliteration, which is the closest an English
+   speech voice gets to the Sanskrit. Nothing is downloaded: the voice
+   comes from the operating system, so this works offline too.
+══════════════════════════════════════════════ */
+const SPEECH_OK = typeof window !== "undefined" && "speechSynthesis" in window
+                  && typeof SpeechSynthesisUtterance !== "undefined";
+let _speechObj = null;      // utterance currently being spoken
+let _speechBtn = null;      // the button that started it
+let _speechTick = null;     // keep-alive timer (see below)
+let _voices = [];
+
+function loadVoices() {
+    if (!SPEECH_OK) return;
+    _voices = window.speechSynthesis.getVoices() || [];
+}
+if (SPEECH_OK) {
+    loadVoices();
+    // Chrome populates the voice list asynchronously and returns [] on the
+    // first synchronous call, so listen for the list arriving.
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+}
+
+function pickVoice() {
+    if (!_voices.length) loadVoices();
+    // An Indian-English voice pronounces transliterated Sanskrit far better
+    // than a US or UK one; fall back through any English voice.
+    return _voices.find(v => /^en-IN/i.test(v.lang))
+        || _voices.find(v => /^hi-IN/i.test(v.lang))
+        || _voices.find(v => /^en[-_]/i.test(v.lang))
+        || _voices[0] || null;
+}
+
+function _resetSpeechBtn() {
+    if (_speechBtn) {
+        _speechBtn.classList.remove("playing");
+        _speechBtn.setAttribute("aria-pressed", "false");
+        _speechBtn.setAttribute("aria-label", "Listen to this verse read aloud");
+        const label = _speechBtn.querySelector(".audio-btn-label");
+        if (label) label.textContent = "Listen";
+        _speechBtn.firstChild.nodeValue = "🔊 ";
+    }
+    _speechBtn = null;
+}
+
+function stopAudio() {
+    if (_speechTick) { clearInterval(_speechTick); _speechTick = null; }
+    if (SPEECH_OK && (window.speechSynthesis.speaking || window.speechSynthesis.pending)) {
+        window.speechSynthesis.cancel();
+    }
+    _speechObj = null;
+    _resetSpeechBtn();
+}
+
+function toggleAudio(ch, v) {
+    if (!SPEECH_OK) { toast("Your browser cannot read text aloud"); return; }
+    const btn = document.getElementById(`audio-${ch}-${v}`);
+
+    // A second press, or a press while another verse is speaking, stops it.
+    const wasSpeaking = !!_speechObj;
+    const sameButton = _speechBtn === btn;
+    stopAudio();
+    if (wasSpeaking && sameButton) return;
+
+    const verse = getVerse(ch, v);
+    if (!verse || !verse.transliteration) return;
+
+    const utter = new SpeechSynthesisUtterance(verse.transliteration.replace(/\n/g, ", "));
+    utter.rate = 0.72; utter.pitch = 0.95;
+    const voice = pickVoice();
+    if (voice) { utter.voice = voice; utter.lang = voice.lang; }
+
+    utter.onend = () => stopAudio();
+    utter.onerror = (e) => {
+        const reason = e && e.error;
+        stopAudio();
+        // "interrupted"/"canceled" are what we get when stopAudio() cancels on
+        // purpose, so they are not failures worth reporting.
+        if (reason === "interrupted" || reason === "canceled") return;
+        if (reason === "not-allowed") toast("Tap the Listen button directly to allow audio");
+        else toast("Speech is unavailable in this browser");
+    };
+
+    _speechObj = utter;
+    _speechBtn = btn;
+    if (btn) {
+        btn.classList.add("playing");
+        btn.setAttribute("aria-pressed", "true");
+        btn.setAttribute("aria-label", "Stop reading this verse");
+        const label = btn.querySelector(".audio-btn-label");
+        if (label) label.textContent = "Stop";
+        btn.firstChild.nodeValue = "⏹ ";
+    }
+    window.speechSynthesis.speak(utter);
+
+    // Chrome stops speaking after roughly 15 seconds unless it is nudged;
+    // pause/resume keeps longer verses going to the end.
+    _speechTick = setInterval(() => {
+        if (!window.speechSynthesis.speaking) { clearInterval(_speechTick); _speechTick = null; return; }
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+    }, 10000);
+}
+
+// Never leave a verse being read after the reader has moved on.
+window.addEventListener("beforeunload", stopAudio);
+window.addEventListener("pagehide", stopAudio);
+
+/* ══════════════════════════════════════════════
    DEEP LINKING  —  #2.47 addresses a single verse
    Gives every verse a shareable, bookmarkable URL and lets the
    browser Back button walk back through the reading history.
@@ -1381,6 +1551,7 @@ window.addEventListener("hashchange", () => { if (!_routing) applyRoute(); });
 window.addEventListener("popstate",  () => { if (!_routing) applyRoute(); });
 
 function loadVerseArea(ch, v) {
+    if (typeof stopAudio === "function") stopAudio();   // don't read the verse we just left
     state.ch = ch; state.v = v;
     addToHistory(ch, v);
     if (typeof setRoute === "function") {
@@ -1427,6 +1598,7 @@ function loadVerseArea(ch, v) {
         <div class="verse-top">
             <span class="verse-ref">Ch. ${ch} · Verse ${v}</span>
             <div class="verse-controls">
+                ${SPEECH_OK ? `<button class="audio-btn" id="audio-${ch}-${v}" onclick="toggleAudio(${ch},${v})" aria-pressed="false" aria-label="Listen to this verse read aloud">🔊 <span class="audio-btn-label">Listen</span></button>` : ""}
                 <div class="verse-actions">
                     <button class="btn ${isBm?"btn-bm-done":"btn-bm"}" onclick="toggleBookmark(${ch},${v})" aria-pressed="${isBm}" aria-label="${isBm?"Remove bookmark":"Bookmark this verse"}">${isBm?"🔖 Saved":"🔖 Save"}</button>
                     <button class="btn ${isRead?"btn-read-done":"btn-read"}" onclick="toggleRead(${ch},${v})" aria-pressed="${isRead}" aria-label="${isRead?"Mark as unread":"Mark as read"}">${isRead?"✅ Read":"📖 Mark"}</button>
@@ -1742,6 +1914,7 @@ window.addEventListener("keydown", e => {
     if (e.key === "r"||e.key==="R") { if (state.v) toggleRead(state.ch, state.v); }
     if (e.key === "b"||e.key==="B") { if (state.v) toggleBookmark(state.ch, state.v); }
     if (e.key === "n"||e.key==="N") { if (state.v) toggleNoteSection(`${state.ch}_${state.v}`); }
+    if (e.key === "l"||e.key==="L") { if (state.v) toggleAudio(state.ch, state.v); }
     if (e.key === "a"||e.key==="A") cycleFontSize();
     if (e.key === "q"||e.key==="Q") { closeShortcuts(); closePlans(); startQuiz(); }
     if (e.key === "p"||e.key==="P") { closeShortcuts(); closeQuiz(); showPlans(); }

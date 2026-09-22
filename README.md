@@ -10,6 +10,7 @@ The included `index.html` provides a fully-functional Bhagavad Gita learning app
 - 📖 **701 verses** across 18 chapters
 - 🌐 **Four languages**: Sanskrit, English, Telugu, Hindi — all 701 verses in each
 - 🔤 **IAST transliteration** and word-by-word glosses
+- 🔊 **Read aloud** — the transliteration spoken with an Indian-English voice where the device has one, using the operating system's own speech, so it works offline
 - 📜 **Scholarly commentary** from Swami Sivananda, Srila Prabhupada and Swami Chinmayananda, fetched on demand and cached for offline re-reading
 - 🔗 **Deep links** — every verse has its own URL (`…/#2.47`), so verses can be bookmarked, shared and reached with the browser Back button
 
@@ -24,7 +25,7 @@ The included `index.html` provides a fully-functional Bhagavad Gita learning app
 - 💾 **Export progress** as JSON
 
 **Platform**
-- ⚡ **PWA** — installable, works fully offline, with app shortcuts
+- ⚡ **PWA** — installable from an in-app button, works fully offline, with app shortcuts
 - ♿ **Accessible** — keyboard navigable throughout, screen-reader labelled, focus-managed dialogs, per-script `lang` tagging, honours reduced-motion and forced-colours
 - 📱 **Mobile-responsive** with a bottom navigation bar
 - 🌙 **Dark mode** and three text sizes
@@ -50,8 +51,9 @@ node build_gita.mjs
 
 Requires **Node.js 18+** (uses native `fetch`).
 
-The repository runs verification CI only. Publishing is intentionally disabled
-until a deployment target is selected and enabled.
+The app is published with GitHub Pages from `main` via
+`.github/workflows/static.yml`, and lives at
+**https://chandra-79.github.io/gita-learner/**. `npm test` runs on every push.
 
 ### Verification
 

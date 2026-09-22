@@ -8,6 +8,10 @@ const requiredAssets = [
   "sw.js",
   "robots.txt",
   "sitemap.xml",
+  "404.html",
+  ".nojekyll",
+  "screenshots/desktop.png",
+  "screenshots/mobile.png",
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/og-image.png",
@@ -93,6 +97,28 @@ for (const [pattern, what] of a11yChecks) {
   if (!pattern.test(html)) fail(`index.html is missing ${what}`);
 }
 
+/* ── App features ───────────────────────────────────────── */
+// Read-aloud was silently lost once in a large rewrite; keep it pinned.
+for (const fn of ["function toggleAudio", "function stopAudio", "function pickVoice"]) {
+  if (!html.includes(fn)) fail(`index.html is missing ${fn} — the read-aloud feature would be gone`);
+}
+if (!html.includes("SPEECH_OK")) fail("index.html no longer guards on speech support");
+if (!/id="audio-\$\{ch\}-\$\{v\}"/.test(html)) fail("The Listen button is no longer rendered on the verse card");
+
+// Installability
+if (!html.includes("beforeinstallprompt")) fail("index.html no longer listens for beforeinstallprompt");
+if (!html.includes('id="install-btn"')) fail("index.html is missing the install button");
+
+// Install UI needs screenshots and shortcuts to render richly
+if (!Array.isArray(manifest.screenshots) || manifest.screenshots.length < 2) {
+  fail("manifest.json needs at least two screenshots for the install dialog");
+}
+for (const shot of manifest.screenshots) {
+  if (!shot.form_factor) fail(`manifest screenshot ${shot.src} has no form_factor`);
+}
+if (!Array.isArray(manifest.shortcuts) || !manifest.shortcuts.length) fail("manifest.json has no app shortcuts");
+if (!manifest.icons.some((i) => String(i.purpose).includes("maskable"))) fail("manifest.json has no maskable icon");
+
 /* ── Deep linking ───────────────────────────────────────── */
 for (const fn of ["function parseRoute", "function applyRoute", "function verseUrl"]) {
   if (!html.includes(fn)) fail(`index.html is missing ${fn} — verse deep links would break`);
@@ -100,7 +126,9 @@ for (const fn of ["function parseRoute", "function applyRoute", "function verseU
 if (!/addEventListener\("hashchange"/.test(html)) fail("index.html does not listen for hashchange");
 
 console.log(
-  `Verified 701 verses across 18 chapters, the PWA manifest, offline caching ` +
-  `(install/activate/claim), ${ariaCount} ARIA attributes, social + structured-data ` +
-  `metadata, robots/sitemap, and verse deep linking.`
+  `Verified 701 verses across 18 chapters; the PWA manifest with ` +
+  `${manifest.screenshots.length} screenshots, ${manifest.shortcuts.length} shortcuts ` +
+  `and a maskable icon; offline caching (install/activate/claim); ` +
+  `${ariaCount} ARIA attributes; social + structured-data metadata; robots/sitemap/404; ` +
+  `read-aloud; installability; and verse deep linking.`
 );
