@@ -1,21 +1,34 @@
 # Bhagavad Gita — Multi-Language JSON Dataset & Web App
 
-A Node.js build script that compiles all 700 verses of the Bhagavad Gita in **Sanskrit, English, Hindi, transliteration, and word-by-word glosses** from public-domain and permissively-licensed open sources.
+A Node.js build script that compiles all 701 verses of the Bhagavad Gita in **Sanskrit, English, Hindi, Telugu, transliteration, and word-by-word glosses** from public-domain and permissively-licensed open sources — plus a complete offline-capable study app built on the result.
 
 ## Web App
 
 The included `index.html` provides a fully-functional Bhagavad Gita learning app with:
 
-- 📖 **700 verses** across 18 chapters
-- 🌐 **Multi-language support**: Sanskrit, English, Hindi, Telugu
-- 🔤 **IAST transliteration** and word-by-word analysis
-- 📱 **Mobile-responsive** design
-- 🌙 **Dark mode** toggle
-- 🔖 **Bookmarks** and reading progress tracking
-- 🔍 **Search** functionality
-- 📤 **Share verses** via clipboard or Web Share API
+**Reading**
+- 📖 **701 verses** across 18 chapters
+- 🌐 **Four languages**: Sanskrit, English, Telugu, Hindi — all 701 verses in each
+- 🔤 **IAST transliteration** and word-by-word glosses
+- 📜 **Scholarly commentary** from Swami Sivananda, Srila Prabhupada and Swami Chinmayananda, fetched on demand and cached for offline re-reading
+- 🔗 **Deep links** — every verse has its own URL (`…/#2.47`), so verses can be bookmarked, shared and reached with the browser Back button
+
+**Study**
+- 🗺️ **Guided reading plans** (Beginner, 50 Essentials, Karma Yoga, 18-Day)
+- 🧠 **Quiz** at three difficulty levels
+- 📝 **Personal notes** per verse
+- 🔖 **Bookmarks**, reading history and progress tracking
+- 🔥 **Reading streaks** with milestones and a reading calendar
+- 🔍 **Search** across transliteration, translations and glosses
+- 📷 **Verse image cards** and 📤 **sharing** via the Web Share API
 - 💾 **Export progress** as JSON
-- ⚡ **PWA features** (offline access, installable)
+
+**Platform**
+- ⚡ **PWA** — installable, works fully offline, with app shortcuts
+- ♿ **Accessible** — keyboard navigable throughout, screen-reader labelled, focus-managed dialogs, per-script `lang` tagging, honours reduced-motion and forced-colours
+- 📱 **Mobile-responsive** with a bottom navigation bar
+- 🌙 **Dark mode** and three text sizes
+- ⌨️ **Keyboard shortcuts** (`/` search, `←`/`→` verses, `?` help)
 
 ### Run the Web App
 
@@ -32,13 +45,49 @@ npm run dev
 
 ```bash
 node build_gita.mjs
-# → writes ./data.js with all 700 verses
+# → writes ./data.js with all 701 verses
 ```
 
 Requires **Node.js 18+** (uses native `fetch`).
 
-The repository is private and therefore runs verification CI only. Publishing
-is intentionally disabled until a deployment target is selected and enabled.
+The repository runs verification CI only. Publishing is intentionally disabled
+until a deployment target is selected and enabled.
+
+### Verification
+
+```bash
+npm test
+```
+
+`scripts/verify.mjs` is the guard rail for the things that have broken before or
+would break silently. It fails the build if:
+
+- the corpus is not exactly 701 verses across 18 chapters;
+- `data.js` contains an `export` statement — it is loaded with a plain `<script>`
+  tag, so a stray `export default` turns it into a module, throws a SyntaxError
+  and leaves the app completely blank (this has happened);
+- the service worker lacks an `activate` handler, never calls `caches.delete`, or
+  never claims open clients — any of which pins readers to a stale build forever;
+- social/structured-data metadata, `robots.txt` or `sitemap.xml` go missing;
+- accessibility drops below the current bar (ARIA attributes, skip link, dialog
+  roles, live region, reduced-motion, focus-visible, per-script `lang` tagging);
+- verse deep linking is removed.
+
+### Offline behaviour
+
+`sw.js` uses a strategy per resource rather than one blanket rule:
+
+| Resource | Strategy | Why |
+| --- | --- | --- |
+| Page navigations | network-first, cache fallback | a deploy reaches readers immediately; an offline reader still gets the app |
+| `data.js` | stale-while-revalidate | 1.3 MB — serve instantly, refresh in the background |
+| Web fonts | cache-first | immutable and versioned by URL |
+| Commentary (raw.githubusercontent.com) | stale-while-revalidate, separate cache | commentary you have opened once stays readable offline |
+| Other same-origin files | stale-while-revalidate | fresh without blocking |
+
+Superseded caches are deleted on `activate`. When a new version finishes
+installing, the app shows a "new version is ready" notice rather than swapping
+code underneath the reader.
 
 ## Output Schema
 
@@ -116,11 +165,16 @@ Unauthenticated GitHub API requests are limited to **60 per hour**. Since the sc
   node build_gita.mjs
   ```
 
-## Telugu: Not Available (Yet)
+## Telugu: Complete
 
-**No major open-source dataset of Telugu Gita translations exists.**
+All 701 verses now carry a Telugu translation, sourced from
+[`prasadkuruma/BhagavadGitaTelugu`](https://github.com/prasadkuruma/BhagavadGitaTelugu)
+(`chapter{N}.json` → `data.verses[].meaning`).
 
-### Why?
+The notes below record why this was hard to find, and remain useful if you want to
+swap in a different Telugu edition.
+
+### Why it was difficult
 - Most modern Telugu translations are copyrighted (Gita Press, ISKCON, etc.)
 - Older public-domain editions exist at archive.org but would require OCR + manual correction
 - The classical Telugu Gita (Andhra Mahabharatam by Tikkana/Errapragada) is public domain but a poetic adaptation, not verse-by-verse equivalent

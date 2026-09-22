@@ -1,0 +1,5 @@
+# Bhagavad Gita – Learn & Explore
+User-agent: *
+Allow: /
+
+Sitemap: https://chandra-79.github.io/gita-learner/sitemap.xml

@@ -1,15 +1,30 @@
 {
+  "id": "/gita-learner/",
   "name": "Bhagavad Gita – Learn & Explore",
   "short_name": "Gita",
-  "description": "Read and study all 701 verses of the Bhagavad Gita in Sanskrit, English, Hindi and Telugu with progress tracking.",
+  "description": "Read and study all 701 verses of the Bhagavad Gita in Sanskrit, English, Hindi and Telugu with word-by-word meaning, scholarly commentary, reading plans and progress tracking.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "orientation": "any",
   "background_color": "#F8F6F0",
   "theme_color": "#07102E",
   "lang": "en",
+  "dir": "ltr",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ],
-  "categories": ["education", "books"]
+  "shortcuts": [
+    { "name": "Verse of the Day", "short_name": "Daily", "url": "./", "description": "Open today's verse" },
+    { "name": "Chapter 2 — Sankhya Yoga", "short_name": "Ch 2", "url": "./#2.1", "description": "The heart of the Gita" },
+    { "name": "Karmanye Vadhikaraste (2.47)", "short_name": "Gita 2.47", "url": "./#2.47", "description": "The best known verse" },
+    { "name": "Chapter 12 — Bhakti Yoga", "short_name": "Ch 12", "url": "./#12.1", "description": "The path of devotion" }
+  ],
+  "categories": ["education", "books", "lifestyle"],
+  "prefer_related_applications": false
 }
